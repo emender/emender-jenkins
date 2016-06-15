@@ -15,4 +15,108 @@ components:
 . Jenkins server (via its API).
 . Git repositories.
 
+Emender-Jenkins Toolchain
+-------------------------
+[NOTE]
+Technically it is possible to create fully functional documentation testing
+toolchain w/o the need to use Emender-Jenkins, but the user experience is not
+optimal.
+
+The basic documentation testing toolchain contains three components:
+
+. Git server (with document repositories, see below)
+. Jenkins server (runs jobs automatically or manually, see below)
+. Emender and its libraries, setup as 'special' Jenkins jobs
+
+The *emend* command line tool is called by Jenkins job to run tests against selected document.
+
+Proposed workflow
+-----------------
+. Three jobs are configured for each document: test Preview, test Stage, test Production.
+. Jenkins calls these jobs according to its setup or according to calls made via Emender-Jenkins interface.
+. Each job calls *emend* (via CLI) to produce test results.
+. Test results are stored as artefacts.
+
+[ditaa]
+------------------------------------------------------------------------
+
+                                                +------------+
+                                                |{d}         |
+                                           +--->|Preview     |
+                                           |    |test results|
+                                           |    |(artefact)  |
+                                           |    +------------+
+                                           |
+                                           |
++------+      +-------+       +-------+    |    +------------+
+|{d}   |clone |Jenkins| calls |Emender|----+    |{d}         |
+|Git   |----->|       |------>|       |-------->|Stage       |
+|repo  |      |       |       |       |----+    |test results|
++------+      +-------+       +-------+    |    |(artefact)  |
+                | | |                      |    +------------+
+                | | |                      |
+         +------+ | +-------+              |
+         |        |         |              |
+         v        v         v              |    +------------+
+     +-------+ +-------+ +-------+         |    |{d}         |
+     |{s}    | |{s}    | |{s}    |         +--->|Production  |
+     |local  | |local  | |local  |              |test results|
+     |clone  | |clone  | |clone  |              |(artefact)  |
+     +-------+ +-------+ +-------+              +------------+
+
+------------------------------------------------------------------------
+
+Emender-Jenkins Interface API
+-----------------------------
+Emender-Jenkins Interface is controlled exclusively via REST API. This
+API is described in the document *rest_api.adoc*. Basic supported operations:
+
+Jobs CRUD:
+* create new job (that calls Emender)
+* read job config
+* update job (reconfigure)
+* delete job
+
+Other calls:
+* start job
+* enable job
+* disable job
+* get list of all jobs
+* get job results
+
+Emender-Jenkins interface integration into the work flow
+--------------------------------------------------------
+
+[ditaa]
+------------------------------------------------------------------------
+
+            REST API endpoint
+                  |                             +------------+
+                  |                             |{d}         |
+              /---+---\                    +--->|Preview     |
+              |Emender|                    |    |test results|
+              |   -   |                    |    |(artefact)  |
+              |Jenkins|                    |    +------------+
+              \--+----/                    |
+                 | ^                       |
+                 v |                       |
++------+      +----+--+       +-------+    |    +------------+
+|{d}   |clone |Jenkins| calls |Emender|----+    |{d}         |
+|Git   |----->|       |------>|       |-------->|Stage       |
+|repo  |      |       |       |       |----+    |test results|
++------+      +-------+       +-------+    |    |(artefact)  |
+                | | |                      |    +------------+
+                | | |                      |
+         +------+ | +-------+              |
+         |        |         |              |
+         v        v         v              |    +------------+
+     +-------+ +-------+ +-------+         |    |{d}         |
+     |{s}    | |{s}    | |{s}    |         +--->|Production  |
+     |local  | |local  | |local  |              |test results|
+     |clone  | |clone  | |clone  |              |(artefact)  |
+     |preview| |stage  | |prod.  |              +------------+
+     +-------+ +-------+ +-------+ 
+
+------------------------------------------------------------------------
+
 
