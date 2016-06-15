@@ -41,6 +41,7 @@ Info
 Gets information about the app, such as the version currently running.
 
 Method: +GET+
+
 Content-Type: +application/json+
 
 Response:
@@ -58,15 +59,20 @@ Banner
 Gets the banners that should be displayed in the UI.
 
 Method: +GET+
+
 Content­Type: +application/json+
 
 Response:
+
+[source,json]
+----
 [ 
     { 
         "message": "Alpha version",
         "type": "warning" 
     } 
 ] 
+----
 
 
 
@@ -78,30 +84,39 @@ Create new job
 Creates new jenkins job
 
 Method: +POST+
+
 Content­Type: +application/json+
 
 Post Data: 
-  {
-      "url_to_repo": "git@some:repo.git",
-      "name": "jobName (test)",
-      "branch": "preview",
-      "metadata": {
-          "product": "product name",
-          "version": "product version",
-          "language": "en­US",
-          "environment": "preview",
-          "content_directory": "Book directory",
-          "content_type": "book"
-      } 
-  } 
+
+[source,json]
+----
+{
+    "url_to_repo": "git@some:repo.git",
+    "name": "jobName (test)",
+    "branch": "preview",
+    "metadata": {
+        "product": "product name",
+        "version": "product version",
+        "language": "en­US",
+        "environment": "preview",
+        "content_directory": "Book directory",
+        "content_type": "book"
+    } 
+} 
+----
 
 Response:
-  {
-     "data": { 
-         "name": "jobName (test)"
-     },
-     "result": "jenkins job foobar has been created"
-  }
+
+[source,json]
+----
+{
+    "data": { 
+        "name": "jobName (test)"
+    },
+    "result": "jenkins job foobar has been created"
+}
+----
 
 
 
@@ -113,19 +128,28 @@ Delete job
 Deletes an existing Jenkins job.
 
 Method: +POST+
+
 Content-Type: +application/json+
 
 Post Data: 
-  {
-      "name": "job-name"
-  }
+
+[source,json]
+----
+{
+    "name": "job-name"
+}
+---
 
 
 
 Get job
 ~~~~~~~
 
-    /api/get_job
+    /api/get_job/${JOB_NAME}
+
+Method: +GET+
+
+Content-Type: +application/json+
 
 
 
@@ -136,22 +160,27 @@ Update job
 Updates an existing Jenkins job.
 
 Method: +POST+
+
 Content-Type: +application/json+
 
 Post Data: 
-  {
-      "url_to_repo": "git@some:repo.git",
-      "name": "jobName (test)",
-      "branch": "preview",
-      "metadata": {
-          "product": "product name",
-          "version": "product version",
-          "language": "en­US",
-          "environment": "preview",
-          "content_directory": "Book directory",
-          "content_type": "book"
-      } 
-  }
+
+[source,json]
+----
+{
+    "url_to_repo": "git@some:repo.git",
+    "name": "jobName (test)",
+    "branch": "preview",
+    "metadata": {
+        "product": "product name",
+        "version": "product version",
+        "language": "en­US",
+        "environment": "preview",
+        "content_directory": "Book directory",
+        "content_type": "book"
+    } 
+}
+----
 
 
 
@@ -159,6 +188,10 @@ Get jobs
 ~~~~~~~~
 
     /api/get_jobs
+
+Method: +GET+
+
+Content-Type: +application/json+
 
 
 
@@ -168,12 +201,17 @@ Get job results
     /api/get_job_results
 
 Method: +POST+
+
 Content-Type: +application/json+
 
 Post Data: 
-  {
-      "name": "job-name"
-  }
+
+[source,json]
+----
+{
+    "name": "job-name"
+}
+----
 
 
 
@@ -185,12 +223,17 @@ Start job
 Starts a Jenkins job.
 
 Method: +POST+
+
 Content-Type: +application/json+
 
 Post Data: 
-  {
-      "name": "job-name"
-  }
+
+[source,json]
+----
+{
+    "name": "job-name"
+}
+----
 
 
 
@@ -202,12 +245,17 @@ Enable job
 Enables a Jenkins job.
 
 Method: +POST+
+
 Content-Type: +application/json+
 
 Post Data: 
-  {
-      "name": "job-name"
-  }
+
+[source,json]
+----
+{
+    "name": "job-name"
+}
+----
 
 
 
@@ -219,10 +267,15 @@ Disable job
 Disables a Jenkins job.
 
 Method: +POST+
+
 Content-Type: +application/json+
 
 Post Data: 
-  {
-      "name": "job-name"
-  }
+
+[source,json]
+----
+{
+    "name": "job-name"
+}
+----
 
