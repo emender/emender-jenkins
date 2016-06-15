@@ -1,0 +1,18 @@
+Overview of Emender-Jenkins Interface Architecture
+==================================================
+:icons: font
+Pavel Tišnovský <ptisnovs@redhat.com>
+v1.0, 2016-06-15
+
+Emender-Jenkins Interface
+-------------------------
+Emender-Jenkins Interface is a software component designated to control how
+Emender jobs are created, changed and possibly deleted in selected Jenkins
+server. Basically, Emender-Jenkins Interface communicates with other external
+components:
+
+. Control application that displays nice and consistent user interface and allows users to work with Emender tests and test results indirectly.
+. Jenkins server (via its API).
+. Git repositories.
+
+
