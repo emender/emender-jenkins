@@ -28,3 +28,202 @@ Other calls:
 * get banner
 
 
+REST API calls
+--------------
+
+
+
+Info
+~~~~
+
+$/api$
+
+Gets information about the app, such as the version currently running.
+
+Method: $GET$
+Content-Type: $application/json
+
+Response:
+{
+    "version": "0.1.0"
+}
+
+
+
+Banner
+~~~~~~
+
+$api/system/banners
+
+Gets the banners that should be displayed in the UI.
+
+Method: $GET$
+Content­Type: $application/json$
+
+Response:
+[ 
+    { 
+        "message": "Alpha version",
+        "type": "warning" 
+    } 
+] 
+
+
+
+Create new job
+~~~~~~~~~~~~~~
+
+$/api/create_job$
+
+Creates new jenkins job
+
+Method: $POST$
+Content­Type: $application/json$
+
+Post Data: 
+  {
+      "url_to_repo": "git@some:repo.git",
+      "name": "jobName (test)",
+      "branch": "preview",
+      "metadata": {
+          "product": "product name",
+          "version": "product version",
+          "language": "en­US",
+          "environment": "preview",
+          "content_directory": "Book directory",
+          "content_type": "book"
+      } 
+  } 
+
+Response:
+  {
+     "data": { 
+         "name": "jobName (test)"
+     },
+     "result": "jenkins job foobar has been created"
+  }
+
+
+
+Delete job
+~~~~~~~~~~
+
+$/api/delete_job$
+
+Deletes an existing Jenkins job.
+
+Method: $POST$$
+Content-Type: $application/json
+
+Post Data: 
+  {
+      "name": "job-name"
+  }
+
+
+
+Get job
+~~~~~~~
+
+$/api/get_job
+
+
+
+Update job$
+~~~~~~~~~~~
+
+$/api/update_job$
+
+Updates an existing Jenkins job.
+
+Method: $POST$$
+Content-Type: $application/json
+
+Post Data: 
+  {
+      "url_to_repo": "git@some:repo.git",
+      "name": "jobName (test)",
+      "branch": "preview",
+      "metadata": {
+          "product": "product name",
+          "version": "product version",
+          "language": "en­US",
+          "environment": "preview",
+          "content_directory": "Book directory",
+          "content_type": "book"
+      } 
+  }
+
+
+
+Get jobs
+~~~~~~~~
+
+$/api/get_jobs$
+
+
+
+Get job results
+~~~~~~~~~~~~~~~
+
+$/api/get_job_results$
+
+Method: $POST$$
+Content-Type: $application/json
+
+Post Data: 
+  {
+      "name": "job-name"
+  }
+
+
+
+Start job
+~~~~~~~~~
+
+$/api/start_job$
+
+Starts a Jenkins job.
+
+Method: $POST$$
+Content-Type: $application/json
+
+Post Data: 
+  {
+      "name": "job-name"
+  }
+
+
+
+Enable job
+~~~~~~~~~~
+
+$/api/enable_job$
+
+Enables a Jenkins job.
+
+Method: $POST$$
+Content-Type: $application/json
+
+Post Data: 
+  {
+      "name": "job-name"
+  }
+
+
+
+Disable job
+~~~~~~~~~~~
+
+$/api/disable_job$
+
+Disables a Jenkins job.
+
+Method: $POST$$
+Content-Type: $application/json
+
+Post Data: 
+  {
+      "name": "job-name"
+  }
+
