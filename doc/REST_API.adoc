@@ -44,6 +44,8 @@ Method: +GET+
 
 Content-Type: +application/json+
 
+Example: +curl http://url-to-interface:port/api+
+
 Response:
 
 [source,json]
