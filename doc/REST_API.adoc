@@ -45,9 +45,13 @@ Method: +GET+
 Content-Type: +application/json+
 
 Response:
+
+[source,json]
+----
 {
     "version": "0.1.0"
 }
+----
 
 
 
@@ -138,14 +142,14 @@ Post Data:
 {
     "name": "job-name"
 }
----
+----
 
 
 
 Get job
 ~~~~~~~
 
-    /api/get_job/${JOB_NAME}
+    /api/get_job/{JOB_NAME}
 
 Method: +GET+
 
