@@ -72,12 +72,14 @@ Emender-Jenkins Interface is controlled exclusively via REST API. This
 API is described in the document *rest_api.adoc*. Basic supported operations:
 
 Jobs CRUD:
+
 * create new job (that calls Emender)
 * read job config
 * update job (reconfigure)
 * delete job
 
 Other calls:
+
 * start job
 * enable job
 * disable job

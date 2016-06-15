@@ -36,12 +36,12 @@ REST API calls
 Info
 ~~~~
 
-$/api$
+    /api
 
 Gets information about the app, such as the version currently running.
 
-Method: $GET$
-Content-Type: $application/json
+Method: +GET+
+Content-Type: +application/json+
 
 Response:
 {
@@ -53,12 +53,12 @@ Response:
 Banner
 ~~~~~~
 
-$api/system/banners
+    api/system/banners
 
 Gets the banners that should be displayed in the UI.
 
-Method: $GET$
-Content­Type: $application/json$
+Method: +GET+
+Content­Type: +application/json+
 
 Response:
 [ 
@@ -73,12 +73,12 @@ Response:
 Create new job
 ~~~~~~~~~~~~~~
 
-$/api/create_job$
+    /api/create_job
 
 Creates new jenkins job
 
-Method: $POST$
-Content­Type: $application/json$
+Method: +POST+
+Content­Type: +application/json+
 
 Post Data: 
   {
@@ -108,12 +108,12 @@ Response:
 Delete job
 ~~~~~~~~~~
 
-$/api/delete_job$
+    /api/delete_job
 
 Deletes an existing Jenkins job.
 
-Method: $POST$$
-Content-Type: $application/json
+Method: +POST+
+Content-Type: +application/json+
 
 Post Data: 
   {
@@ -125,19 +125,18 @@ Post Data:
 Get job
 ~~~~~~~
 
-$/api/get_job
+    /api/get_job
 
 
 
-Update job$
-~~~~~~~~~~~
-
-$/api/update_job$
+Update job
+~~~~~~~~~~
+    /api/update_job
 
 Updates an existing Jenkins job.
 
-Method: $POST$$
-Content-Type: $application/json
+Method: +POST+
+Content-Type: +application/json+
 
 Post Data: 
   {
@@ -159,17 +158,17 @@ Post Data:
 Get jobs
 ~~~~~~~~
 
-$/api/get_jobs$
+    /api/get_jobs
 
 
 
 Get job results
 ~~~~~~~~~~~~~~~
 
-$/api/get_job_results$
+    /api/get_job_results
 
-Method: $POST$$
-Content-Type: $application/json
+Method: +POST+
+Content-Type: +application/json+
 
 Post Data: 
   {
@@ -181,12 +180,12 @@ Post Data:
 Start job
 ~~~~~~~~~
 
-$/api/start_job$
+    /api/start_job
 
 Starts a Jenkins job.
 
-Method: $POST$$
-Content-Type: $application/json
+Method: +POST+
+Content-Type: +application/json+
 
 Post Data: 
   {
@@ -198,12 +197,12 @@ Post Data:
 Enable job
 ~~~~~~~~~~
 
-$/api/enable_job$
+    /api/enable_job
 
 Enables a Jenkins job.
 
-Method: $POST$$
-Content-Type: $application/json
+Method: +POST+
+Content-Type: +application/json+
 
 Post Data: 
   {
@@ -215,12 +214,12 @@ Post Data:
 Disable job
 ~~~~~~~~~~~
 
-$/api/disable_job$
+    /api/disable_job
 
 Disables a Jenkins job.
 
-Method: $POST$$
-Content-Type: $application/json
+Method: +POST+
+Content-Type: +application/json+
 
 Post Data: 
   {
