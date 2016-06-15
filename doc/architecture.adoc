@@ -35,7 +35,7 @@ Proposed workflow
 . Three jobs are configured for each document: test Preview, test Stage, test Production.
 . Jenkins calls these jobs according to its setup or according to calls made via Emender-Jenkins interface.
 . Each job calls *emend* (via CLI) to produce test results.
-. Test results are stored as artefacts.
+. Test results are stored as artifacts.
 
 [ditaa]
 ------------------------------------------------------------------------
@@ -44,7 +44,7 @@ Proposed workflow
                                                 |{d}         |
                                            +--->|Preview     |
                                            |    |test results|
-                                           |    |(artefact)  |
+                                           |    |(artifact)  |
                                            |    +------------+
                                            |
                                            |
@@ -52,7 +52,7 @@ Proposed workflow
 |{d}   |clone |Jenkins| calls |Emender|----+    |{d}         |
 |Git   |----->|       |------>|       |-------->|Stage       |
 |repo  |      |       |       |       |----+    |test results|
-+------+      +-------+       +-------+    |    |(artefact)  |
++------+      +-------+       +-------+    |    |(artifact)  |
                 | | |                      |    +------------+
                 | | |                      |
          +------+ | +-------+              |
@@ -61,7 +61,7 @@ Proposed workflow
      +-------+ +-------+ +-------+         |    |{d}         |
      |{s}    | |{s}    | |{s}    |         +--->|Production  |
      |local  | |local  | |local  |              |test results|
-     |clone  | |clone  | |clone  |              |(artefact)  |
+     |clone  | |clone  | |clone  |              |(artifact)  |
      +-------+ +-------+ +-------+              +------------+
 
 ------------------------------------------------------------------------
@@ -95,7 +95,7 @@ Emender-Jenkins interface integration into the work flow
                   |                             |{d}         |
               /---+---\                    +--->|Preview     |
               |Emender|                    |    |test results|
-              |   -   |                    |    |(artefact)  |
+              |   -   |                    |    |(artifact)  |
               |Jenkins|                    |    +------------+
               \--+----/                    |
                  | ^                       |
@@ -104,7 +104,7 @@ Emender-Jenkins interface integration into the work flow
 |{d}   |clone |Jenkins| calls |Emender|----+    |{d}         |
 |Git   |----->|       |------>|       |-------->|Stage       |
 |repo  |      |       |       |       |----+    |test results|
-+------+      +-------+       +-------+    |    |(artefact)  |
++------+      +-------+       +-------+    |    |(artifact)  |
                 | | |                      |    +------------+
                 | | |                      |
          +------+ | +-------+              |
@@ -113,7 +113,7 @@ Emender-Jenkins interface integration into the work flow
      +-------+ +-------+ +-------+         |    |{d}         |
      |{s}    | |{s}    | |{s}    |         +--->|Production  |
      |local  | |local  | |local  |              |test results|
-     |clone  | |clone  | |clone  |              |(artefact)  |
+     |clone  | |clone  | |clone  |              |(artifact)  |
      |preview| |stage  | |prod.  |              +------------+
      +-------+ +-------+ +-------+ 
 
