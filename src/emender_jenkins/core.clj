@@ -1,7 +1,14 @@
 (ns emender-jenkins.core)
 
+(require '[ring.adapter.jetty      :as jetty])
+(require '[ring.middleware.params  :as http-params])
+(require '[ring.middleware.cookies :as cookies])
 (require '[clojure.tools.cli       :as cli])
  
+(require '[emender-jenkins.config       :as config])
+(require '[emender-jenkins.server       :as server])
+(require '[emender-jenkins.process-info :as process-info])
+
 (def cli-options
     ;; an option with a required argument
     [["-h"   "--help"                       "show help"                                                    :id :help]
@@ -10,6 +17,57 @@
      ["-t"   "--test-jobs-suffix suffix"    "test jobs suffix, for example 'test'"                         :id :test-jobs-suffix]
      ["-f"   "--fetch-only"                 "just start job fetcher once, then stop processing"            :id :fetch-only]
      ["-c"   "--config"                     "just show the actual configuration"                           :id :show-config]])
+
+(def access-control-allow-origins
+    "Only following domains will be properly handled by HTTP access control."
+    [
+     #".*localhost"
+     #".*localhost:[0-9]+"])
+
+; we don't use this handler and the whole cors library due to error in it
+;(defn cors-handler
+;    "Handler for the HTTP access control (CORS)"
+;    [handler]
+;    ;(cors/wrap-cors handler
+;    (cors/wrap-cors handler
+;        :access-control-allow-origin access-control-allow-origins
+;        :access-control-allow-methods [:get :put :post]))
+;        ;:access-control-allow-methods [:get :put :post :delete :options :head]))
+
+(defn get-cors-headers 
+    [origin]
+    {"Access-Control-Allow-Origin"      origin
+     "Access-Control-Allow-Headers"     "Origin, Content-Type, Accept, Authorization"
+     "Access-Control-Allow-Credentials" "true"
+     "Access-Control-Allow-Methods"     "GET,POST,OPTIONS" })
+
+(defn origin-allowed?
+    "Returns truth value (not nil) when the origin matches at least one
+     regexp declared in access-control-allow-origins sequence."
+    [allowed-origins origin]
+    (if origin
+        (some #(re-matches %1 origin) access-control-allow-origins)))
+
+(defn all-cors
+    "Allow requests from all origins, not as good as cors-handler, but it does not work properly"
+    [handler]
+    (fn [request]
+        (let [headers (get request :headers)
+              origin  (get headers "origin")
+              response (handler request)]
+              (println "Origin: " origin)
+              (if (origin-allowed? access-control-allow-origins origin)
+                  (update-in response [:headers]
+                   merge (get-cors-headers origin))
+                   response))))
+
+(def app
+    "Ring application."
+    (-> server/handler
+        cookies/wrap-cookies
+        http-params/wrap-params
+        all-cors))
+        ;cors-handler))
 
 (defn start-server-on-regular-machine
     [port]
@@ -64,6 +122,36 @@
         (doseq [property properties]
             (println (key property) (val property)))
         (println)))
+
+(defn fetch-jobs-only
+    [options]
+    ;(config/load-all-configuration-options-if-necessary)
+    (println "Generating data2.edn")
+    ;(job-data-fetcher/try-to-fetch-and-export-data)
+    (println "Done"))
+
+(defn show-config
+    [options]
+    (let [port                (options :port)
+          jenkins-url         (options :jenkins-url)
+          test-jobs-suffix    (options :test-jobs-suffix)
+          openshift-ip        (System/getenv "OPENSHIFT_CLOJURE_HTTP_IP")
+          openshift-port      (System/getenv "OPENSHIFT_CLOJURE_HTTP_PORT")]
+        (println "Finished")))
+
+(defn run-app
+    [options]
+    (let [port                (options :port)
+          jenkins-url         (options :jenkins-url)
+          test-jobs-suffix    (options :test-jobs-suffix)
+          openshift-ip        (System/getenv "OPENSHIFT_CLOJURE_HTTP_IP")
+          openshift-port      (System/getenv "OPENSHIFT_CLOJURE_HTTP_PORT")]
+       ;(config/load-all-configuration-options-if-necessary)
+       ;(config/override-options-by-cli jenkins-url preview-jobs-suffix stage-jobs-suffix portal-jobs-suffix)
+       ;(product-list/read-product-list-if-necessary config/load-product-list-from-database)
+       ;(job-data-fetcher/read-books-info)
+       ;(.start (Thread. job-data-fetcher/run-fetcher))
+        (start-server (get-port port) openshift-port openshift-ip)))
 
 (defn -main
     "Entry point to the titan server."
