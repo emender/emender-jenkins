@@ -44,6 +44,27 @@
         config/default-port
         (get-and-check-port specified-port)))
 
+(defn show-help
+    [summary]
+    (println "Usage:")
+    (println summary))
+
+(defn print-environment-configuration
+    []
+    (let [properties (process-info/read-properties)]
+        (println "Environment configuration")
+        (println "=========================")
+        (println "KeyStore:      " (System/getProperty "javax.net.ssl.keyStore"))
+        (println "Trust Store:   " (System/getProperty "javax.net.ssl.trustStore"))
+        (println "OpenShift IP:  " (System/getenv "OPENSHIFT_CLOJURE_HTTP_IP"))
+        (println "OpenShift PORT:" (System/getenv "OPENSHIFT_CLOJURE_HTTP_PORT"))
+        (println)
+        (println "Properties")
+        (println "----------")
+        (doseq [property properties]
+            (println (key property) (val property)))
+        (println)))
+
 (defn -main
     "Entry point to the titan server."
     [& args]
