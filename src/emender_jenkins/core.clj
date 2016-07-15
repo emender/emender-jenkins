@@ -28,6 +28,22 @@
         (start-server-on-openshift openshift-port openshift-ip)
         (start-server-on-regular-machine port)))
 
+(defn get-and-check-port
+    "Accepts port number represented by string and throws AssertionError
+     if port number is outside defined range."
+    [port]
+    (let [port-number (. Integer parseInt port)]
+        (assert (> port-number 0))
+        (assert (< port-number 65536))
+        port))
+
+(defn get-port
+    "Returns specified port or default port if none is specified on the command line."
+    [specified-port]
+    (if (or (not specified-port) (not (string? specified-port)) (empty? specified-port))
+        config/default-port
+        (get-and-check-port specified-port)))
+
 (defn -main
     "Entry point to the titan server."
     [& args]
