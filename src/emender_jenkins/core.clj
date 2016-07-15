@@ -11,6 +11,23 @@
      ["-f"   "--fetch-only"                 "just start job fetcher once, then stop processing"            :id :fetch-only]
      ["-c"   "--config"                     "just show the actual configuration"                           :id :show-config]])
 
+(defn start-server-on-regular-machine
+    [port]
+    (println "Starting the server at the port: " port)
+    (jetty/run-jetty app {:port (read-string port)}))
+
+(defn start-server-on-openshift
+    [port host]
+    (println "Starting the server on openshift at the port: " port " and host: " host)
+    (jetty/run-jetty app {:port (read-string port) :host host}))
+
+(defn start-server
+    "Start server on specified port."
+    [port openshift-port openshift-ip]
+    (if (and openshift-ip openshift-port)
+        (start-server-on-openshift openshift-port openshift-ip)
+        (start-server-on-regular-machine port)))
+
 (defn -main
     "Entry point to the titan server."
     [& args]
