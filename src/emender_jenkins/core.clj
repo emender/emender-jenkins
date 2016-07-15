@@ -20,7 +20,8 @@
 
 (def access-control-allow-origins
     "Only following domains will be properly handled by HTTP access control."
-    [
+    [#".*\.com"
+     #".*\.com:[0-9]+"
      #".*localhost"
      #".*localhost:[0-9]+"])
 
