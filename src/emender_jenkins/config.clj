@@ -25,3 +25,11 @@
     [filename]
     (config-loader/load-configuration-file filename))
 
+(defn override-options-by-cli
+    [configuration jenkins-url test-jobs-suffix]
+    )
+
+(defn print-configuration
+    [configuration]
+    (pprint/pprint configuration))
+
