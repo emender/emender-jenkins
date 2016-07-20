@@ -3,13 +3,16 @@
 (require '[ring.adapter.jetty      :as jetty])
 (require '[ring.middleware.params  :as http-params])
 (require '[ring.middleware.cookies :as cookies])
+
 (require '[clojure.tools.cli       :as cli])
- 
-(require '[emender-jenkins.config       :as config])
+
 (require '[emender-jenkins.server       :as server])
+(require '[emender-jenkins.config       :as config])
+(require '[emender-jenkins.middleware   :as middleware])
 (require '[emender-jenkins.process-info :as process-info])
 
 (def cli-options
+    "Definitions of all command line options that are  currenty supported."
     ;; an option with a required argument
     [["-h"   "--help"                       "show help"                                                    :id :help]
      ["-p"   "--port   PORT"                "port number on which Stage Dashboard should accepts requests" :id :port]
@@ -17,6 +20,9 @@
      ["-t"   "--test-jobs-suffix suffix"    "test jobs suffix, for example 'test'"                         :id :test-jobs-suffix]
      ["-f"   "--fetch-only"                 "just start job fetcher once, then stop processing"            :id :fetch-only]
      ["-c"   "--config"                     "just show the actual configuration"                           :id :show-config]])
+
+; we need to load the configuration in advance so the 'app' could use it
+(def configuration (config/load-configuration-from-ini "config.ini"))
 
 (def access-control-allow-origins
     "Only following domains will be properly handled by HTTP access control."
@@ -63,10 +69,11 @@
                    response))))
 
 (def app
-    "Ring application."
-    (-> server/handler
-        cookies/wrap-cookies
-        http-params/wrap-params
+    "Definition of a Ring-based application behaviour."
+    (-> server/handler            ; handle all events
+        (middleware/inject-configuration configuration) ; inject configuration structure into the parameter
+        cookies/wrap-cookies      ; we need to work with cookies
+        http-params/wrap-params   ; and to process request parameters, of course
         all-cors))
         ;cors-handler))
 
@@ -126,7 +133,6 @@
 
 (defn fetch-jobs-only
     [options]
-    ;(config/load-all-configuration-options-if-necessary)
     (println "Generating data2.edn")
     ;(job-data-fetcher/try-to-fetch-and-export-data)
     (println "Done"))
@@ -138,6 +144,8 @@
           test-jobs-suffix    (options :test-jobs-suffix)
           openshift-ip        (System/getenv "OPENSHIFT_CLOJURE_HTTP_IP")
           openshift-port      (System/getenv "OPENSHIFT_CLOJURE_HTTP_PORT")]
+        (print-environment-configuration)
+        ;(config/override-options-by-cli jenkins-url test-jobs-suffix)
         (println "Finished")))
 
 (defn run-app
@@ -155,7 +163,7 @@
         (start-server (get-port port) openshift-port openshift-ip)))
 
 (defn -main
-    "Entry point to the titan server."
+    "Entry point to the Emender service server."
     [& args]
     (let [all-options         (cli/parse-opts args cli-options)
           options             (all-options :options)
@@ -164,9 +172,10 @@
           show-config?        (options :show-config)]
           (System/setProperty "javax.net.ssl.keyStore",   "keystore")
           (System/setProperty "javax.net.ssl.trustStore", "keystore")
-          (print-environment-configuration)
           (cond show-help?   (show-help (:summary all-options))
                 fetch-only?  (fetch-jobs-only options)
                 show-config? (show-config options)
                 :else        (run-app options))))
+
+; finito
 
