@@ -78,21 +78,27 @@
         ;cors-handler))
 
 (defn start-server-on-regular-machine
-    [port]
+    [ring-app port]
     (println "Starting the server at the port: " port)
-    (jetty/run-jetty app {:port (read-string port)}))
+    (jetty/run-jetty ring-app {:port (read-string port)}))
 
 (defn start-server-on-openshift
-    [port host]
+    [ring-app port host]
     (println "Starting the server on openshift at the port: " port " and host: " host)
-    (jetty/run-jetty app {:port (read-string port) :host host}))
+    (jetty/run-jetty ring-app {:port (read-string port) :host host}))
 
 (defn start-server
     "Start server on specified port."
-    [port openshift-port openshift-ip]
-    (if (and openshift-ip openshift-port)
-        (start-server-on-openshift openshift-port openshift-ip)
-        (start-server-on-regular-machine port)))
+    [configuration port openshift-port openshift-ip]
+    (let [ring-app
+        (-> server/handler            ; handle all events
+            (middleware/inject-configuration configuration) ; inject configuration structure into the parameter
+            cookies/wrap-cookies      ; we need to work with cookies
+            http-params/wrap-params   ; and to process request parameters, of course
+            all-cors)]
+        (if (and openshift-ip openshift-port)
+            (start-server-on-openshift       ring-app openshift-port openshift-ip)
+            (start-server-on-regular-machine ring-app port))))
 
 (defn get-and-check-port
     "Accepts port number represented by string and throws AssertionError
@@ -145,7 +151,9 @@
           openshift-ip        (System/getenv "OPENSHIFT_CLOJURE_HTTP_IP")
           openshift-port      (System/getenv "OPENSHIFT_CLOJURE_HTTP_PORT")]
         (print-environment-configuration)
-        ;(config/override-options-by-cli jenkins-url test-jobs-suffix)
+        (let [configuration (config/load-configuration-from-ini "config.ini")]
+            (config/override-options-by-cli configuration jenkins-url test-jobs-suffix)
+            (config/print-configuration configuration))
         (println "Finished")))
 
 (defn run-app
@@ -155,12 +163,9 @@
           test-jobs-suffix    (options :test-jobs-suffix)
           openshift-ip        (System/getenv "OPENSHIFT_CLOJURE_HTTP_IP")
           openshift-port      (System/getenv "OPENSHIFT_CLOJURE_HTTP_PORT")]
-       ;(config/load-all-configuration-options-if-necessary)
-       ;(config/override-options-by-cli jenkins-url preview-jobs-suffix stage-jobs-suffix portal-jobs-suffix)
-       ;(product-list/read-product-list-if-necessary config/load-product-list-from-database)
-       ;(job-data-fetcher/read-books-info)
-       ;(.start (Thread. job-data-fetcher/run-fetcher))
-        (start-server (get-port port) openshift-port openshift-ip)))
+        (let [configuration (config/load-configuration-from-ini "config.ini")]
+            (config/override-options-by-cli configuration jenkins-url test-jobs-suffix)
+        (start-server configuration (get-port port) openshift-port openshift-ip))))
 
 (defn -main
     "Entry point to the Emender service server."
