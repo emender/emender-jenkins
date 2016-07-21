@@ -54,10 +54,21 @@
     (if (= uri "/api")
         (rest-api/info-handler request (get-hostname))
         (condp = [method (get-api-command uri (config/get-api-prefix request))]
-            [:get  ""]         (rest-api/info-handler request (get-hostname))
-            [:get  "system"    (rest-api/system-banners request)]
-            ;[:post "
-                                     (rest-api/unknown-call-handler uri method))))
+            [:get  ""]                 (rest-api/info-handler request (get-hostname))
+            [:get  "system"]           (rest-api/system-banners       request)
+            [:post "create_job"]       (rest-api/create-job           request)
+            [:post "delete_job"]       (rest-api/delete-job           request)
+            [:post "start_job"]        (rest-api/start-job            request)
+            [:post "enable_job"]       (rest-api/enable-job           request)
+            [:post "disable_job"]      (rest-api/disable-job          request)
+            [:get  "get_job"]          (rest-api/get-job              request)
+            [:post "update_job"]       (rest-api/update-job           request)
+            [:get  "get_jobs"]         (rest-api/get-jobs             request)
+            [:post "get_job_results"]  (rest-api/get-job-results      request)
+            [:post "job_started"]      (rest-api/job-started-handler  request)
+            [:post "job_finished"]     (rest-api/job-finished-handler request)
+            [:post "job_results"]      (rest-api/job-results          request)
+                                       (rest-api/unknown-call-handler uri method))))
 
 (defn non-api-call-handler
     [request uri]
