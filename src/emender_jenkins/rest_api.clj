@@ -43,6 +43,59 @@
                     :configuration (:configuration request)}]
         (send-response response)))
 
+(defn system-banners
+    [request]
+    )
+
+(defn create-job
+    [request]
+    )
+
+(defn delete-job
+    [request]
+    )
+
+(defn start-job
+    [request]
+    )
+
+(defn enable-job
+    [request]
+    )
+
+(defn disable-job
+    [request]
+    )
+
+(defn get-job
+    [request]
+    )
+
+(defn update-job
+    [request]
+    )
+
+(defn get-jobs
+    [request]
+    )
+
+(defn get-job-results
+    [request]
+    )
+
+(defn job-started-handler
+    [request]
+    )
+
+(defn job-finished-handler
+    [request]
+    )
+
+(defn job-results
+    [request]
+    )
+
+
 (defn unknown-call-handler
     [uri method]
     (let [response {:status :error
