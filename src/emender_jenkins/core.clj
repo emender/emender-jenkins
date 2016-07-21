@@ -151,8 +151,9 @@
           openshift-ip        (System/getenv "OPENSHIFT_CLOJURE_HTTP_IP")
           openshift-port      (System/getenv "OPENSHIFT_CLOJURE_HTTP_PORT")]
         (print-environment-configuration)
-        (let [configuration (config/load-configuration-from-ini "config.ini")]
-            (config/override-options-by-cli configuration jenkins-url test-jobs-suffix)
+        (let [configuration (->
+                 (config/load-configuration-from-ini "config.ini")
+                 (config/override-options-by-cli jenkins-url test-jobs-suffix))]
             (config/print-configuration configuration))
         (println "Finished")))
 
@@ -163,9 +164,10 @@
           test-jobs-suffix    (options :test-jobs-suffix)
           openshift-ip        (System/getenv "OPENSHIFT_CLOJURE_HTTP_IP")
           openshift-port      (System/getenv "OPENSHIFT_CLOJURE_HTTP_PORT")]
-        (let [configuration (config/load-configuration-from-ini "config.ini")]
-            (config/override-options-by-cli configuration jenkins-url test-jobs-suffix)
-        (start-server configuration (get-port port) openshift-port openshift-ip))))
+        (let [configuration (->
+                 (config/load-configuration-from-ini "config.ini")
+                 (config/override-options-by-cli jenkins-url test-jobs-suffix))]
+            (start-server configuration (get-port port) openshift-port openshift-ip))))
 
 (defn -main
     "Entry point to the Emender service server."
