@@ -68,6 +68,8 @@ Method: +GET+
 
 Content­Type: +application/json+
 
+Example: +curl http://url-to-interface:port/api/system/banners+
+
 Response:
 
 [source,json]
@@ -283,5 +285,144 @@ Post Data:
 {
     "name": "job-name"
 }
+----
+
+Job started
+~~~~~~~~~~~
+
+    /api/job_started
+
+To be called by Emender when the job is started.
+
+Method: +POST+
+
+Content-Type: +application/json+
+
+Post Data: 
+
+[source,json]
+----
+{
+    "name": "job-name"
+}
+----
+
+
+Job finished
+~~~~~~~~~~~~
+
+    /api/job_finished
+
+To be called by Emender when the job is finished.
+
+Method: +POST+
+
+Content-Type: +application/json+
+
+Post Data: 
+
+[source,json]
+----
+{
+    "name": "job-name"
+}
+----
+
+
+Job results
+~~~~~~~~~~~~
+
+    /api/job_results
+
+To be called by Emender with the job data.
+
+Method: +POST+
+
+Content-Type: +application/json+
+
+Post Data: 
+
+[source,json]
+----
+{
+    "metadata" : {
+        "name":"doc-Red_Hat_Enterprise_Linux-6-Deployment_Guide (test)"
+    },
+    "results" : {
+        "Test1": {
+            "testA": [
+                {
+                    "status":  "pass",
+                    "message": "The function Test1.testA() is called properly."
+                }
+            ],
+            "testB": [
+                {
+                    "status":  "pass",
+                    "message": "The function Test1.testB() is called properly."
+                }
+            ],
+            "testCallOtherFunction": [
+                {
+                    "status":  "pass",
+                    "message": "The function Test1.xyzzy() is called from another function."
+                }
+            ],
+            "testReadLocalValue": [
+                {
+                    "status":  "pass",
+                    "message": "Local variable bind to the test has the value 42"
+                }
+            ],
+            "testReadWriteLocalValue": [
+                {
+                    "status":  "pass",
+                    "message": "Old value is properly set to 42"
+                },
+                {
+                    "status":  "pass",
+                    "message": "New value is properly set to 42"
+                }
+            ]
+        },
+        "Test2": {
+            "testA": [
+                {
+                    "status":  "pass",
+                    "message": "The function Test2.testA() is called properly."
+                }
+            ],
+            "testB": [
+                {
+                    "status":  "pass",
+                    "message": "The function Test2.testB() is called properly."
+                }
+            ],
+            "testCallOtherFunction": [
+                {
+                    "status":  "pass",
+                    "message": "The function Test2.xyzzy() is called from another function."
+                }
+            ],
+            "testReadLocalValue": [
+                {
+                    "status":  "pass",
+                    "message": "Local variable bind to the test has the value 42"
+                }
+            ],
+            "testReadWriteLocalValue": [
+                {
+                    "status":  "pass",
+                    "message": "Old value is properly set to 42"
+                },
+                {
+                    "status":  "pass",
+                    "message": "New value is properly set to 42"
+                }
+            ]
+        }
+    }
+}
+
 ----
 
