@@ -1,6 +1,34 @@
+;
+;  (C) Copyright 2016  Pavel Tisnovsky
+;
+;  All rights reserved. This program and the accompanying materials
+;  are made available under the terms of the Eclipse Public License v1.0
+;  which accompanies this distribution, and is available at
+;  http://www.eclipse.org/legal/epl-v10.html
+;
+;  Contributors:
+;      Pavel Tisnovsky
+;
+
 (ns emender-jenkins.config-loader)
 
 (require '[clojure-ini.core :as clojure-ini])
+
+(defn parse-int
+    "Parse the given string as an integer number."
+    [string]
+    (java.lang.Integer/parseInt string))
+
+(defn parse-float
+    "Parse the given string as a float number."
+    [string]
+    (java.lang.Float/parseFloat string))
+
+(defn parse-boolean
+    "Parse the given string as a boolean value."
+    [string]
+    (or (= string "true")
+        (= string "True")))
 
 (defn properties->map
     "Convert property entries into map."
