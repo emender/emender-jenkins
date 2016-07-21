@@ -21,15 +21,43 @@
     "Default port used when no -p or --port CLI option is specified."
     "3000")
 
+(defn update-configuration
+    "Update selected items in the configuration structure."
+    [configuration]
+    (-> configuration
+        (update-in [:config :verbose]      config-loader/parse-boolean)
+        (update-in [:config :pretty-print] config-loader/parse-boolean)))
+
 (defn load-configuration-from-ini
-    [filename]
-    (config-loader/load-configuration-file filename))
+    "Load configuration from the provided INI file and perform conversions on numeric and Boolean values."
+    [ini-file-name]
+    (-> (config-loader/load-configuration-file ini-file-name)
+        update-configuration))
+
+(defn assoc-in-if-not-nil
+    [input selector value]
+    (if value
+        (assoc-in input selector value)
+        input))
 
 (defn override-options-by-cli
+    "Update configuration options read form the INI file by new values."
     [configuration jenkins-url test-jobs-suffix]
-    )
+    (-> configuration
+        (assoc-in-if-not-nil [:jenkins :jenkins-url]      jenkins-url)
+        (assoc-in-if-not-nil [:jobs    :test-jobs-suffix] test-jobs-suffix)))
 
 (defn print-configuration
+    "Print actual configuration to the output."
     [configuration]
     (pprint/pprint configuration))
+
+(defn get-api-prefix
+    [request]
+    (-> request :configuration :api :prefix))
+
+(defn verbose?
+    [request]
+    (-> request :configuration :config :verbose))
+
 
