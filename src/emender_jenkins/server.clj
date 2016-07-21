@@ -38,17 +38,26 @@
 
 (defn get-api-command
     "Retrieve the actual command from the API call."
-    [request uri]
+    [uri prefix]
     (if uri
-        (re-find #"/[^/]*" (subs uri (count (config/get-api-prefix request))))))
+        (if (.startsWith uri prefix)
+            (let [uri-without-prefix (subs uri (count prefix))]
+                (if (empty? uri-without-prefix) ; special handler for a call with / only
+                    ""
+                 (let [api-part (re-find #"/[^/]*" (subs uri (count prefix)))]
+                    (if (and api-part (.startsWith api-part "/"))
+                        (subs api-part 1)
+                        api-part)))))))
 
 (defn api-call-handler
     [request uri method]
     (if (= uri "/api")
         (rest-api/info-handler request (get-hostname))
-        (condp = [method (get-api-command request uri)]
-            [:get  "/"]             (rest-api/info-handler request (get-hostname))
-                                    (rest-api/unknown-call-handler uri method))))
+        (condp = [method (get-api-command uri (config/get-api-prefix request))]
+            [:get  ""]         (rest-api/info-handler request (get-hostname))
+            [:get  "system"    (rest-api/system-banners request)]
+            ;[:post "
+                                     (rest-api/unknown-call-handler uri method))))
 
 (defn non-api-call-handler
     [request uri]
