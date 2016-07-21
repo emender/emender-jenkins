@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
 pushd .. > /dev/null
-lein run -- -h
+lein ring server-headless
 popd > /dev/null
 

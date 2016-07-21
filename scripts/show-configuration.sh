@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 pushd .. > /dev/null
 lein run -- -c
