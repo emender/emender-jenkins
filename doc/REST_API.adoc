@@ -60,6 +60,56 @@ Response:
 
 
 
+Show configuration
+~~~~~~~~~~~~~~~~~~
+
+    /api/configuration
+
+Gets information about the current configuration.
+
+Method: +GET+
+
+Content-Type: +application/json+
+
+Example: +curl http://url-to-interface:port/api/configuration+
+
+Response:
+
+[source,json]
+----
+{
+    "info":
+    {
+        "version":"0.1.0"
+    },
+    "jenkins":{
+        "jenkins-url":"https:\/\/10.20.30.40\/",
+        "jenkins-job-prefix-url":"job\/",
+        "jenkins-job-list-url":"foobar",
+        "jenkins-auth":""
+    },
+    "jobs":
+    {
+        "test-jobs-suffix":"(test)"
+    },
+    "config":
+    {
+        "verbose":true,
+        "pretty-print":true
+    },
+    "api":
+    {
+        "prefix":"\/api"
+    },
+    "fetcher":
+    {
+        "delay":"10"
+    }
+}
+----
+
+
+
 Banner
 ~~~~~~
 
