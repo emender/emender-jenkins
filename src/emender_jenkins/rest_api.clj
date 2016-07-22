@@ -39,8 +39,15 @@
 
 (defn info-handler
     [request hostname]
-    (let [response {:toasterNotifications [(str "info|Api response|<strong>Emender Service</strong> api v1 on</br>" hostname)]
-                    :configuration (:configuration request)}]
+    (let [response {:name       "Emender Jenkins Service"
+                    :version    (config/get-version request)
+                    :api_prefix (config/get-api-prefix request)
+                    :hostname   hostname :test "/api"}]
+        (send-response response)))
+
+(defn configuration-handler
+    [request]
+    (let [response (-> request :configuration)]
         (send-response response)))
 
 (defn system-banners
