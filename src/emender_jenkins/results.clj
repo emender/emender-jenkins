@@ -61,14 +61,28 @@
               (clojure.string/replace book-name "_" " ")
               "unknown")))
 
-(defn read-results
+(defn compute-job-status
+    [jenkins-job-status buildable?]
+    ; check if the 'disabled' option is set in job config
+    (if (not buildable?)
+        :disabled
+        (if jenkins-job-status ; job is buildable, so let's check the icon
+            (cond (= jenkins-job-status "blue")     :ok
+                  (= jenkins-job-status "disabled") :disabled ; should it happen?
+                  :else                             :failure)
+            :does-not-exists)))
+
+(defn read-update-job-info
     [job-list]
     (for [job job-list]
-        (let [job-name (get job "name")]
+        (let [job-name (get job "name")
+              job-color  (get job "color")
+              buildable? (get job "buildable")]
             {:job-name  job-name
              :product   (job-name->product-name job-name)
              :version   (job-name->version job-name)
              :book-name (job-name->book-name job-name)
+             :job-status (compute-job-status job-color buildable?)
             })))
 
 (defn reload-all-results
@@ -76,7 +90,7 @@
     (let [job-list (jenkins-api/read-list-of-test-jobs (-> configuration :jenkins :jenkins-url)
                                                        (-> configuration :jenkins :jenkins-job-list-url)
                                                        (-> configuration :jobs    :test-jobs-suffix))
-          job-results (read-results job-list)]
+          job-results (read-update-job-info job-list)]
           (clojure.pprint/pprint job-results)
           ;job-results (read-all-test-results configuration job-list)]
           (reset! results job-results)
