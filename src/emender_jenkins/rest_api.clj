@@ -56,7 +56,9 @@
 
 (defn reload-all-results
     [request]
-    (results/reload-all-results (:configuration request)))
+    (results/reload-all-results (:configuration request))
+    (let [response @results/results]
+        (send-response response)))
 
 (defn create-job
     [request]

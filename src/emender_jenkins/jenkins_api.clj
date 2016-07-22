@@ -15,3 +15,9 @@
                 (get data "jobs")
                 nil))))
 
+(defn read-list-of-test-jobs
+    [jenkins-url job-list-part suffix]
+     (let [all-jobs (read-list-of-all-jobs jenkins-url job-list-part)
+           test-jobs (filter #(.endsWith (get %1 "name") suffix) all-jobs)]
+           test-jobs))
+
