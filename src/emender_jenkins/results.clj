@@ -38,9 +38,48 @@
         ; rename files atomically (on the same filesystem)
         (file-utils/mv-file "results2.edn" "results.edn")))
 
+(defn job-name->product-name
+    [job-name]
+    (let [name-version (clojure.string/split job-name #"-")
+          product-name (second name-version)]
+          (if product-name
+              (clojure.string/replace product-name "_" " "))))
+
+(defn job-name->version
+    [job-name]
+    (let [name-version (clojure.string/split job-name #"-")
+          version      (get name-version 2)]
+          (if (and version (re-matches #"[0-9.]+" version))
+              version
+              "unknown")))
+
+(defn job-name->book-name
+    [job-name]
+    (let [name-version (clojure.string/split job-name #"-")
+          book-name    (get name-version 3)]
+          (if book-name
+              (clojure.string/replace book-name "_" " ")
+              "unknown")))
+
+(defn read-results
+    [job-list]
+    (for [job job-list]
+        (let [job-name (get job "name")]
+            {:job-name  job-name
+             :product   (job-name->product-name job-name)
+             :version   (job-name->version job-name)
+             :book-name (job-name->book-name job-name)
+            })))
+
 (defn reload-all-results
     [configuration]
-    (let [job-list (jenkins-api/read-list-of-all-jobs (-> configuration :jenkins :jenkins-url)
-                                                      (-> configuration :jenkins :jenkins-job-list-url))]
-    ))
+    (let [job-list (jenkins-api/read-list-of-test-jobs (-> configuration :jenkins :jenkins-url)
+                                                       (-> configuration :jenkins :jenkins-job-list-url)
+                                                       (-> configuration :jobs    :test-jobs-suffix))
+          job-results (read-results job-list)]
+          (clojure.pprint/pprint job-results)
+          ;job-results (read-all-test-results configuration job-list)]
+          (reset! results job-results)
+          ;job-results))
+))
 
