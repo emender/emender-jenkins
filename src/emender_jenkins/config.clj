@@ -60,4 +60,7 @@
     [request]
     (-> request :configuration :config :verbose))
 
+(defn get-version
+    [request]
+    (-> request :configuration :info :version))
 

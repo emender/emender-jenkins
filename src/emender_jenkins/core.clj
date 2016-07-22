@@ -19,6 +19,7 @@
 (require '[clojure.tools.cli       :as cli])
 
 (require '[emender-jenkins.server       :as server])
+(require '[emender-jenkins.results      :as results])
 (require '[emender-jenkins.config       :as config])
 (require '[emender-jenkins.middleware   :as middleware])
 (require '[emender-jenkins.process-info :as process-info])
@@ -179,6 +180,7 @@
         (let [configuration (->
                  (config/load-configuration-from-ini "config.ini")
                  (config/override-options-by-cli jenkins-url test-jobs-suffix))]
+            (results/reload-all-results configuration)
             (start-server configuration (get-port port) openshift-port openshift-ip))))
 
 (defn -main
