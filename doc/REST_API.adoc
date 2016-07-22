@@ -51,7 +51,10 @@ Response:
 [source,json]
 ----
 {
-    "version": "0.1.0"
+    "name" : "Emender Jenkins Service",
+    "version" : "0.1.0",
+    "api_prefix" : "/api",
+    "hostname" : "hostname"
 }
 ----
 
