@@ -14,7 +14,9 @@
 
 (require '[clojure.pprint :as pprint])
 
-(require '[emender-jenkins.file-utils :as file-utils])
+(require '[emender-jenkins.file-utils  :as file-utils])
+(require '[emender-jenkins.jenkins-api :as jenkins-api])
+(require '[emender-jenkins.config      :as config])
 
 (def results (atom {}))
 
@@ -35,4 +37,10 @@
         (spit "results2.edn" edn-data)
         ; rename files atomically (on the same filesystem)
         (file-utils/mv-file "results2.edn" "results.edn")))
+
+(defn reload-all-results
+    [configuration]
+    (let [job-list (jenkins-api/read-list-of-all-jobs (-> configuration :jenkins :jenkins-url)
+                                                      (-> configuration :jenkins :jenkins-job-list-url))]
+    ))
 

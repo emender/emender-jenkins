@@ -54,6 +54,10 @@
     [request]
     )
 
+(defn reload-all-results
+    [request]
+    (results/reload-all-results (:configuration request)))
+
 (defn create-job
     [request]
     )
