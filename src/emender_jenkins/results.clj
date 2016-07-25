@@ -115,6 +115,11 @@
           ;job-results))
 ))
 
+(defn get-job-names
+    []
+    (into []
+        (for [job @results] (:job-name job))))
+
 (defn find-job-with-name
     [job-name]
     (some #(if (= job-name (:job-name %)) %) @results))

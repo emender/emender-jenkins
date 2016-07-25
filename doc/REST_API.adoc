@@ -271,6 +271,15 @@ Method: +GET+
 
 Content-Type: +application/json+
 
+Response:
+
+[source,json]
+----
+[
+    "name-of-1st job",
+    "name-of-2nd job"
+]
+
 
 
 Get job results

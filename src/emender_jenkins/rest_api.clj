@@ -108,7 +108,8 @@
 
 (defn get-jobs
     [request]
-    )
+    (let [job-names (results/get-job-names)]
+        (send-response job-names)))
 
 (defn get-job-results
     [request]
