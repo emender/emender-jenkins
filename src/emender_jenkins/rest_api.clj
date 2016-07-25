@@ -29,9 +29,20 @@
     [body]
     (json/read-str body))
 
-(defn body->test-info
+(defn body->job-info
     [body]
     (json/read-str body :key-fn clojure.core/keyword))
+
+(defn get-job-name
+    [json]
+    (if json
+        (get json :name)))
+
+(defn get-job-name-from-body
+    [request]
+    (-> (read-request-body request)
+        body->job-info
+        get-job-name))
 
 (defn send-response
     [response]
@@ -75,19 +86,27 @@
 
 (defn delete-job
     [request]
-    )
+    (let [job-name (get-job-name-from-body request)]
+         (println job-name)
+    ))
 
 (defn start-job
     [request]
-    )
+    (let [job-name (get-job-name-from-body request)]
+         (println job-name)
+    ))
 
 (defn enable-job
     [request]
-    )
+    (let [job-name (get-job-name-from-body request)]
+         (println job-name)
+    ))
 
 (defn disable-job
     [request]
-    )
+    (let [job-name (get-job-name-from-body request)]
+         (println job-name)
+    ))
 
 (defn uri->job-name
     [uri prefix]
@@ -129,14 +148,17 @@
 
 (defn job-started-handler
     [request]
+    (println "job-started")
     )
 
 (defn job-finished-handler
     [request]
+    (println "job-finished")
     )
 
 (defn job-results
     [request]
+    (println "job-results")
     )
 
 (defn unknown-call-handler
