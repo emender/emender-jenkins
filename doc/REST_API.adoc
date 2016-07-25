@@ -383,7 +383,7 @@ Post Data:
 
 
 Job results
-~~~~~~~~~~~~
+~~~~~~~~~~~
 
     /api/job_results
 
@@ -475,6 +475,26 @@ Post Data:
             ]
         }
     }
+}
+
+----
+
+Reload all results
+~~~~~~~~~~~~~~~~~~
+
+    /api/reload-all-results
+
+Force to reload all results.
+
+Method: +POST+
+
+Content-Type: +application/json+
+
+Post Data: 
+
+[source,json]
+----
+{
 }
 
 ----
