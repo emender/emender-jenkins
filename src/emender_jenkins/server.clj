@@ -72,6 +72,18 @@
             [:post "job_results"]         (rest-api/job-results           request)
                                           (rest-api/unknown-call-handler uri method))))
 
+(defn restcall-options-handler
+    []
+    (println "Method:  OPTIONS")
+    (-> (http-response/response "")
+        (http-response/content-type "application/json")))
+
+(defn restcall-head-handler
+    []
+    (println "Method:  HEAD")
+    (-> (http-response/response "")
+        (http-response/content-type "application/json")))
+
 (defn non-api-call-handler
     [request uri]
     (condp = uri
@@ -83,9 +95,12 @@
     [request]
     (if (config/verbose? request)
         (pprint/pprint request))
-    (let [uri    (:uri request)
-          method (:request-method request)]
-         (if (.startsWith uri (config/get-api-prefix request))
-             (api-call-handler     request uri method)
-             (non-api-call-handler request uri))))
+    (cond (= (:request-method request) :options) (restcall-options-handler)
+          (= (:request-method request) :head)    (restcall-head-handler)
+          :else
+        (let [uri    (:uri request)
+              method (:request-method request)]
+             (if (.startsWith uri (config/get-api-prefix request))
+                 (api-call-handler     request uri method)
+                 (non-api-call-handler request uri)))))
 
