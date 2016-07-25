@@ -285,18 +285,40 @@ Response:
 Get job results
 ~~~~~~~~~~~~~~~
 
-    /api/get_job_results
+    /api/get_job_results/{JOB_NAME}
 
-Method: +POST+
+Method: +GET+
 
 Content-Type: +application/json+
 
-Post Data: 
+Response:
 
 [source,json]
 ----
 {
-    "name": "job-name"
+    "metadata" : {
+        "name":"doc-book-name (test)"
+    },
+    "results" : {
+        "FirstTest": {
+            "testCase#1": [
+                {
+                    "status":  "info",
+                    "message": "xxx"
+                }
+            ],
+            "testCase#2": [
+                {
+                    "status":  "info",
+                    "message": "ACLRef.xml"
+                },
+                {
+                    "status":  "info",
+                    "message": "Administration_Guide.xml"
+                }
+            ]
+        }
+    }
 }
 ----
 
@@ -366,6 +388,8 @@ Post Data:
 }
 ----
 
+
+
 Job started
 ~~~~~~~~~~~
 
@@ -385,6 +409,7 @@ Post Data:
     "name": "job-name"
 }
 ----
+
 
 
 Job finished
