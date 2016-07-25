@@ -212,6 +212,23 @@ Method: +GET+
 
 Content-Type: +application/json+
 
+Response:
+
+[source,json]
+----
+{
+    "job-name:    "doc-${PRODUCT}-${VERSION}-${BOOK-NAME}-${LANGUAGE} (test)",
+    "product":    "${PRODUCT}
+    "version":    "${VERSION}
+    "book-name":  "${BOOK-NAME}",
+    "job-status": "ok/unstable/failure/disabled",
+    "test-summary": {
+        "message:": "Total: 7  Passed: 5  Failed: 2",
+        "results": {"total":7,"passed":5,"failed":2}
+    }
+}
+----
+
 
 
 Update job
