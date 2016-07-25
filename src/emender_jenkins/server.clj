@@ -66,7 +66,7 @@
             [:get  "get_job"]             (rest-api/get-job               request uri)
             [:post "update_job"]          (rest-api/update-job            request)
             [:get  "get_jobs"]            (rest-api/get-jobs              request)
-            [:post "get_job_results"]     (rest-api/get-job-results       request)
+            [:get  "get_job_results"]     (rest-api/get-job-results       request uri)
             [:post "job_started"]         (rest-api/job-started-handler   request)
             [:post "job_finished"]        (rest-api/job-finished-handler  request)
             [:post "job_results"]         (rest-api/job-results           request)

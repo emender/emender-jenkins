@@ -21,3 +21,9 @@
            test-jobs (filter #(.endsWith (get %1 "name") suffix) all-jobs)]
            test-jobs))
 
+(defn read-job-results
+    [job-name jenkins-url]
+    (let [url (str jenkins-url "job/" (.replaceAll job-name " " "%20") "/lastSuccessfulBuild/artifact/results.json/")]
+        (println "Using the following URL to retrieve job results: " url)
+        (slurp url)))
+

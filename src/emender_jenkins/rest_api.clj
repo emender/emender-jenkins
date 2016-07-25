@@ -19,6 +19,7 @@
 (require '[emender-jenkins.file-utils   :as file-utils])
 (require '[emender-jenkins.results      :as results])
 (require '[emender-jenkins.config       :as config])
+(require '[emender-jenkins.jenkins-api  :as jenkins-api])
 
 (defn read-request-body
     [request]
@@ -35,6 +36,11 @@
 (defn send-response
     [response]
     (-> (http-response/response (json/write-str response))
+        (http-response/content-type "application/json")))
+
+(defn send-plain-response
+    [response]
+    (-> (http-response/response response)
         (http-response/content-type "application/json")))
 
 (defn info-handler
@@ -84,9 +90,9 @@
     )
 
 (defn uri->job-name
-    [uri]
+    [uri prefix]
     (try
-        (let [secondPart (subs uri (count "/api/get_job/"))
+        (let [secondPart (subs uri (count prefix))
               job-name
                  (-> secondPart
                      clojure.string/trim
@@ -97,10 +103,10 @@
 
 (defn get-job
     [request uri]
-    (let [job-name (uri->job-name uri)]
+    (let [job-name (uri->job-name uri "/api/get_job/")]
         (if job-name
-            (let [job-results (results/find-job-with-name job-name)]
-                 (send-response job-results)))))
+            (let [job-metadata (results/find-job-with-name job-name)]
+                 (send-response job-metadata)))))
 
 (defn update-job
     [request]
@@ -112,8 +118,14 @@
         (send-response job-names)))
 
 (defn get-job-results
-    [request]
-    )
+    [request uri]
+    (println uri)
+    (let [job-name (uri->job-name uri "/api/get_job_results/")]
+        (if job-name
+            (let [configuration (:configuration request)
+                  job-results   (jenkins-api/read-job-results job-name (-> configuration :jenkins :jenkins-url))]
+                 (send-plain-response job-results)))))
+ ;                http://10.34.3.139:8080/view/Tests/job/doc-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US%20(test)/lastSuccessfulBuild/artifact/results.json/*view*/
 
 (defn job-started-handler
     [request]
@@ -126,7 +138,6 @@
 (defn job-results
     [request]
     )
-
 
 (defn unknown-call-handler
     [uri method]
