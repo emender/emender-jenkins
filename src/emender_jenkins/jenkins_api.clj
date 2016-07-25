@@ -25,5 +25,9 @@
     [job-name jenkins-url]
     (let [url (str jenkins-url "job/" (.replaceAll job-name " " "%20") "/lastSuccessfulBuild/artifact/results.json/")]
         (println "Using the following URL to retrieve job results: " url)
-        (slurp url)))
+        (try
+            (slurp url)
+            (catch Exception e
+                 (.printStackTrace e)
+                 nil))))
 
