@@ -56,8 +56,8 @@
         (condp = [method (get-api-command uri (config/get-api-prefix request))]
             [:get  ""]                    (rest-api/info-handler request (get-hostname))
             [:get  "configuration"]       (rest-api/configuration-handler request)
-            [:get  "system"]              (rest-api/system-banners        request)
-            [:post "reload-all-results"]  (rest-api/reload-all-results      request)
+            [:get  "system"]              (rest-api/system-banners        request uri)
+            [:post "reload-all-results"]  (rest-api/reload-all-results    request)
             [:post "create_job"]          (rest-api/create-job            request)
             [:post "delete_job"]          (rest-api/delete-job            request)
             [:post "start_job"]           (rest-api/start-job             request)

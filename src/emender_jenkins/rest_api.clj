@@ -51,8 +51,11 @@
         (send-response response)))
 
 (defn system-banners
-    [request]
-    )
+    [request uri]
+    (if (= uri "/api/system/banners")
+        (let [response {:message "Alpha version"
+                        :type    "Warning"}]
+        (send-response response))))
 
 (defn reload-all-results
     [request]
