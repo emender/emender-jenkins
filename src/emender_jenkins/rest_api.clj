@@ -83,9 +83,24 @@
     [request]
     )
 
+(defn uri->job-name
+    [uri]
+    (try
+        (let [secondPart (subs uri (count "/api/get_job/"))
+              job-name
+                 (-> secondPart
+                     clojure.string/trim
+                     (.replaceAll "%20" " "))]
+                 (if (empty? job-name) nil job-name))
+        (catch IndexOutOfBoundsException e
+             nil)))
+
 (defn get-job
-    [request]
-    )
+    [request uri]
+    (let [job-name (uri->job-name uri)]
+        (if job-name
+            (let [job-results (results/find-job-with-name job-name)]
+                 (send-response job-results)))))
 
 (defn update-job
     [request]

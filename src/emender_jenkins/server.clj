@@ -63,7 +63,7 @@
             [:post "start_job"]           (rest-api/start-job             request)
             [:post "enable_job"]          (rest-api/enable-job            request)
             [:post "disable_job"]         (rest-api/disable-job           request)
-            [:get  "get_job"]             (rest-api/get-job               request)
+            [:get  "get_job"]             (rest-api/get-job               request uri)
             [:post "update_job"]          (rest-api/update-job            request)
             [:get  "get_jobs"]            (rest-api/get-jobs              request)
             [:post "get_job_results"]     (rest-api/get-job-results       request)
