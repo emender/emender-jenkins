@@ -119,13 +119,13 @@
 
 (defn get-job-results
     [request uri]
-    (println uri)
     (let [job-name (uri->job-name uri "/api/get_job_results/")]
         (if job-name
-            (let [configuration (:configuration request)
-                  job-results   (jenkins-api/read-job-results job-name (-> configuration :jenkins :jenkins-url))]
-                 (send-plain-response job-results)))))
- ;                http://10.34.3.139:8080/view/Tests/job/doc-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US%20(test)/lastSuccessfulBuild/artifact/results.json/*view*/
+            (let [job-metadata (results/find-job-with-name job-name)]
+                (if job-metadata
+                    (let [configuration (:configuration request)
+                          job-results   (jenkins-api/read-job-results job-name (-> configuration :jenkins :jenkins-url))]
+                         (send-plain-response job-results)))))))
 
 (defn job-started-handler
     [request]
