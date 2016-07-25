@@ -68,21 +68,39 @@
         :disabled
         (if jenkins-job-status ; job is buildable, so let's check the icon
             (cond (= jenkins-job-status "blue")     :ok
+                  (= jenkins-job-status "yellow")   :unstable
                   (= jenkins-job-status "disabled") :disabled ; should it happen?
                   :else                             :failure)
             :does-not-exists)))
+
+(defn parse-int
+    [string]
+    (java.lang.Integer/parseInt string))
+
+(defn parse-test-results
+    [message]
+    (if message
+        (let [parsed (re-matches #"Total: ([0-9]+)  Passed: ([0-9]+)  Failed: ([0-9]+)" message)]
+            (if (= (count parsed) 4)
+                {:total  (parse-int (get parsed 1))
+                 :passed (parse-int (get parsed 2))
+                 :failed (parse-int (get parsed 3))}))))
 
 (defn read-update-job-info
     [job-list]
     (for [job job-list]
         (let [job-name (get job "name")
               job-color  (get job "color")
-              buildable? (get job "buildable")]
+              buildable? (get job "buildable")
+              message    (-> (get job "lastSuccessfulBuild")
+                             (get "description"))]
             {:job-name  job-name
              :product   (job-name->product-name job-name)
              :version   (job-name->version job-name)
              :book-name (job-name->book-name job-name)
              :job-status (compute-job-status job-color buildable?)
+             :message    message
+             :results    (parse-test-results message)
             })))
 
 (defn reload-all-results
