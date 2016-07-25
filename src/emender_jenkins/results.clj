@@ -18,7 +18,7 @@
 (require '[emender-jenkins.jenkins-api :as jenkins-api])
 (require '[emender-jenkins.config      :as config])
 
-(def results (atom {}))
+(def results (atom nil))
 
 (defn render-edn-data
     "Render EDN data to be used for debugging purposes etc."
@@ -114,4 +114,8 @@
           (reset! results job-results)
           ;job-results))
 ))
+
+(defn find-job-with-name
+    [job-name]
+    (some #(if (= job-name (:job-name %)) %) @results))
 
