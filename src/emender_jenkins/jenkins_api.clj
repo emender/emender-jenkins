@@ -61,15 +61,31 @@
                  (.printStackTrace e)
                  nil))))
 
+(defn job-related-command
+    [jenkins-url jenkins-auth job-name command]
+    (try
+        (let [response (post-command jenkins-url jenkins-auth job-name command)]
+            {:status   "ok"
+             :job-name job-name
+             :command  command
+             :jenkins-response response})
+        (catch Exception e
+            (.printStackTrace e)
+            {:status "error"
+             :job-name job-name
+             :command  command
+             :message (.getMessage e)
+            })))
+
 (defn start-job
     [jenkins-url jenkins-auth job-name]
-    (post-command jenkins-url jenkins-auth job-name "build"))
+    (job-related-command jenkins-url jenkins-auth job-name "build"))
 
 (defn enable-job
     [jenkins-url jenkins-auth job-name]
-    (post-command jenkins-url jenkins-auth job-name "enable"))
+    (job-related-command jenkins-url jenkins-auth job-name "enable"))
 
 (defn disable-job
     [jenkins-url jenkins-auth job-name]
-    (post-command jenkins-url jenkins-auth job-name "disable"))
+    (job-related-command jenkins-url jenkins-auth job-name "disable"))
 
