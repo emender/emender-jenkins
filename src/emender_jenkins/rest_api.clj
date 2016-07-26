@@ -90,35 +90,45 @@
          (println job-name)
     ))
 
+(defn job-does-not-exist-response
+    [job-name command]
+    {:status "error"
+     :job-name job-name
+     :command "start"
+     :message "Job does not exist"})
+
 (defn start-job
     [request]
     (let [job-name (get-job-name-from-body request)]
-        (when (results/job-exists? job-name)
-           (println "Starting " job-name)
-           (let [response (jenkins-api/start-job (config/get-jenkins-url request)
-                                                 (config/get-jenkins-auth request)
-                                                 job-name)]
-               (send-response response)))))
+        (if (results/job-exists? job-name)
+            (-> (jenkins-api/start-job (config/get-jenkins-url request)
+                                       (config/get-jenkins-auth request)
+                                       job-name)
+                send-response)
+            (-> (job-does-not-exist-response job-name "start")
+                send-response))))
 
 (defn enable-job
     [request]
     (let [job-name (get-job-name-from-body request)]
-        (when (results/job-exists? job-name)
-           (println "Enabling: " job-name)
-           (let [response (jenkins-api/enable-job (config/get-jenkins-url request)
-                                                  (config/get-jenkins-auth request)
-                                                  job-name)]
-               (send-response response)))))
+        (if (results/job-exists? job-name)
+            (-> (jenkins-api/enable-job (config/get-jenkins-url request)
+                                        (config/get-jenkins-auth request)
+                                        job-name)
+                send-response)
+            (-> (job-does-not-exist-response job-name "enable")
+                send-response))))
 
 (defn disable-job
     [request]
     (let [job-name (get-job-name-from-body request)]
-        (when (results/job-exists? job-name)
-           (println "Disabling " job-name)
-           (let [response (jenkins-api/disable-job (config/get-jenkins-url request)
-                                                   (config/get-jenkins-auth request)
-                                                   job-name)]
-               (send-response response)))))
+        (if (results/job-exists? job-name)
+            (-> (jenkins-api/disable-job (config/get-jenkins-url request)
+                                         (config/get-jenkins-auth request)
+                                         job-name)
+                send-response)
+            (-> (job-does-not-exist-response job-name "enable")
+                send-response))))
 
 (defn uri->job-name
     [uri prefix]
