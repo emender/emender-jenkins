@@ -89,3 +89,7 @@
     [jenkins-url jenkins-auth job-name]
     (job-related-command jenkins-url jenkins-auth job-name "disable"))
 
+(defn delete-job
+    [jenkins-url jenkins-auth job-name]
+    (job-related-command jenkins-url jenkins-auth job-name "doDelete"))
+
