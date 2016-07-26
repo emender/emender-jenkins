@@ -93,20 +93,26 @@
 (defn start-job
     [request]
     (let [job-name (get-job-name-from-body request)]
-         (println job-name)
-    ))
+        (when (results/job-exists? job-name)
+           (println "Starting " job-name)
+           (let [response (jenkins-api/start-job (config/get-jenkins-url request) job-name)]
+               (send-response response)))))
 
 (defn enable-job
     [request]
     (let [job-name (get-job-name-from-body request)]
-         (println job-name)
-    ))
+        (when (results/job-exists? job-name)
+           (println "Enabling: " job-name)
+           (let [response (jenkins-api/enable-job (config/get-jenkins-url request) job-name)]
+               (send-response response)))))
 
 (defn disable-job
     [request]
     (let [job-name (get-job-name-from-body request)]
-         (println job-name)
-    ))
+        (when (results/job-exists? job-name)
+           (println "Disabling " job-name)
+           (let [response (jenkins-api/disable-job (config/get-jenkins-url request) job-name)]
+               (send-response response)))))
 
 (defn uri->job-name
     [uri prefix]
@@ -139,12 +145,10 @@
 (defn get-job-results
     [request uri]
     (let [job-name (uri->job-name uri "/api/get_job_results/")]
-        (if job-name
-            (let [job-metadata (results/find-job-with-name job-name)]
-                (if job-metadata
-                    (let [configuration (:configuration request)
-                          job-results   (jenkins-api/read-job-results job-name (-> configuration :jenkins :jenkins-url))]
-                         (send-plain-response job-results)))))))
+        (if (results/job-exists? job-name)
+            (let [job-results   (jenkins-api/read-job-results (config/get-jenkins-url request) job-name)]
+                 (if job-results
+                     (send-plain-response job-results))))))
 
 (defn job-started-handler
     [request]

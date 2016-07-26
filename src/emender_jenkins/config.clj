@@ -64,3 +64,7 @@
     [request]
     (-> request :configuration :info :version))
 
+(defn get-jenkins-url
+    [request]
+    (-> request :configuration :jenkins :jenkins-url))
+
