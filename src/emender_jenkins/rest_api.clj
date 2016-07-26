@@ -93,7 +93,7 @@
     [job-name command]
     {:status "error"
      :job-name job-name
-     :command "start"
+     :command command
      :message "Job does not exist"})
 
 (defn start-job
