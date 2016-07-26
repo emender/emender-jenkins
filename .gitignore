@@ -8,3 +8,4 @@ pom.xml.asc
 /.lein-*
 /.nrepl-port
 scripts/devel-start-headless_pavel.sh
+test/api/vm62*.sh
