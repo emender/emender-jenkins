@@ -68,3 +68,7 @@
     [request]
     (-> request :configuration :jenkins :jenkins-url))
 
+(defn get-jenkins-auth
+    [request]
+    (-> request :configuration :jenkins :jenkins-auth))
+

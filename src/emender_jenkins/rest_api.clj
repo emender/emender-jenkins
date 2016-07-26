@@ -95,7 +95,9 @@
     (let [job-name (get-job-name-from-body request)]
         (when (results/job-exists? job-name)
            (println "Starting " job-name)
-           (let [response (jenkins-api/start-job (config/get-jenkins-url request) job-name)]
+           (let [response (jenkins-api/start-job (config/get-jenkins-url request)
+                                                 (config/get-jenkins-auth request)
+                                                 job-name)]
                (send-response response)))))
 
 (defn enable-job
@@ -103,7 +105,9 @@
     (let [job-name (get-job-name-from-body request)]
         (when (results/job-exists? job-name)
            (println "Enabling: " job-name)
-           (let [response (jenkins-api/enable-job (config/get-jenkins-url request) job-name)]
+           (let [response (jenkins-api/enable-job (config/get-jenkins-url request)
+                                                  (config/get-jenkins-auth request)
+                                                  job-name)]
                (send-response response)))))
 
 (defn disable-job
@@ -111,7 +115,9 @@
     (let [job-name (get-job-name-from-body request)]
         (when (results/job-exists? job-name)
            (println "Disabling " job-name)
-           (let [response (jenkins-api/disable-job (config/get-jenkins-url request) job-name)]
+           (let [response (jenkins-api/disable-job (config/get-jenkins-url request)
+                                                   (config/get-jenkins-auth request)
+                                                   job-name)]
                (send-response response)))))
 
 (defn uri->job-name

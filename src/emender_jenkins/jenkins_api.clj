@@ -20,9 +20,15 @@
     [jenkins-url job-name]
     (str jenkins-url "job/" (.replaceAll job-name " " "%20")))
 
+(defn update-jenkins-url
+    [job-config-url jenkins-auth]
+    (cond (.startsWith job-config-url "https://") (str "https://" jenkins-auth "@" (subs job-config-url 8))
+          (.startsWith job-config-url "http://")  (str "http://"  jenkins-auth "@" (subs job-config-url 7))
+          :else job-config-url))
+
 (defn post-command
-    [jenkins-url job-name command]
-    (let [url (str (job-name->url jenkins-url job-name) "/" command)]
+    [jenkins-url jenkins-auth job-name command]
+    (let [url (str (job-name->url (update-jenkins-url jenkins-url jenkins-auth) job-name) "/" command)]
         (println "URL to use: " url)
         (http-client/post url {
                     :keystore "keystore"
@@ -56,14 +62,14 @@
                  nil))))
 
 (defn start-job
-    [jenkins-url job-name]
-    (post-command jenkins-url job-name "build"))
+    [jenkins-url jenkins-auth job-name]
+    (post-command jenkins-url jenkins-auth job-name "build"))
 
 (defn enable-job
-    [jenkins-url job-name]
-    (post-command jenkins-url job-name "enable"))
+    [jenkins-url jenkins-auth job-name]
+    (post-command jenkins-url jenkins-auth job-name "enable"))
 
 (defn disable-job
-    [jenkins-url job-name]
-    (post-command jenkins-url job-name "disable"))
+    [jenkins-url jenkins-auth job-name]
+    (post-command jenkins-url jenkins-auth job-name "disable"))
 
