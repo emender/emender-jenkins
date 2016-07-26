@@ -74,6 +74,11 @@
                         :type    "Warning"}]
         (send-response response))))
 
+(defn reload-job-list
+    [previous-response request]
+    (results/reload-all-results (:configuration request))
+    previous-response)
+
 (defn reload-all-results
     [request]
     (results/reload-all-results (:configuration request))
@@ -83,12 +88,6 @@
 (defn create-job
     [request]
     )
-
-(defn delete-job
-    [request]
-    (let [job-name (get-job-name-from-body request)]
-         (println job-name)
-    ))
 
 (defn job-does-not-exist-response
     [job-name command]
@@ -128,6 +127,18 @@
                                          job-name)
                 send-response)
             (-> (job-does-not-exist-response job-name "enable")
+                send-response))))
+
+(defn delete-job
+    [request]
+    (let [job-name (get-job-name-from-body request)]
+        (if (results/job-exists? job-name)
+            (-> (jenkins-api/delete-job (config/get-jenkins-url request)
+                                        (config/get-jenkins-auth request)
+                                        job-name)
+                (reload-job-list request)
+                send-response)
+            (-> (job-does-not-exist-response job-name "delete")
                 send-response))))
 
 (defn uri->job-name
