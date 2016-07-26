@@ -183,10 +183,32 @@ Response:
 [source,json]
 ----
 {
-    "data": { 
-        "name": "jobName (test)"
-    },
-    "result": "jenkins job foobar has been created"
+    "status"   : "ok",
+    "job-name" : "doc-Test_Product-1.0-Test_Book-en-US (test)",
+    "command"  : "create",
+    "jenkins-response":{ "status":200, ...}
+}
+----
+
+Response when error occurs:
+
+[source,json]
+----
+{
+    "status"   : "error",
+    "job-name" : "doc-Test_Product-1.0-Test_Book-en-US (test)",
+    "command"  : "create",
+    "message"  : "Job already exist"}
+}
+----
+
+[source,json]
+----
+{
+    "status"   : "error",
+    "job-name" : "doc-Test_Product-1.0-Test_Book-en-US (test)",
+    "command"  : "create",
+    "message"  : "invalid input"}
 }
 ----
 
@@ -314,6 +336,7 @@ Response:
     "name-of-1st job",
     "name-of-2nd job"
 ]
+----
 
 
 
