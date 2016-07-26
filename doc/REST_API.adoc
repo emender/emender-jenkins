@@ -201,6 +201,30 @@ Post Data:
 }
 ----
 
+Response:
+
+[source,json]
+----
+{
+    "status"   : "ok",
+    "job-name" : "doc-Test_Product-1.0-Test_Book-en-US (test)",
+    "command"  : "doDelete",
+    "jenkins-response":{"status":302...}}
+}
+----
+
+Response when error occurs:
+
+[source,json]
+----
+{
+    "status"   : "error",
+    "job-name" : "doc-Test_Product-1.0-Test_Book-en-US (test)",
+    "command"  : "delete",
+    "message"  : "Job does not exist"}
+}
+----
+
 
 
 Get job
@@ -344,6 +368,30 @@ Post Data:
 }
 ----
 
+Response:
+
+[source,json]
+----
+{
+    "status"   : "ok",
+    "job-name" : "doc-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US (test)",
+    "command"  : "build",
+    "jenkins-response":{"status":302...}}
+}
+----
+
+Response when error occurs:
+
+[source,json]
+----
+{
+    "status"   : "error",
+    "job-name" : "doc-Test_Product-1.0-Test_Book-en-US (test)",
+    "command"  : "start",
+    "message"  : "Job does not exist"}
+}
+----
+
 
 
 Enable job
@@ -366,6 +414,30 @@ Post Data:
 }
 ----
 
+Response:
+
+[source,json]
+----
+{
+    "status"   : "ok",
+    "job-name" : "doc-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US (test)",
+    "command"  : "enable",
+    "jenkins-response":{"status":302...}}
+}
+----
+
+Response when error occurs:
+
+[source,json]
+----
+{
+    "status"   : "error",
+    "job-name" : "doc-Test_Product-1.0-Test_Book-en-US (test)",
+    "command"  : "enable",
+    "message"  : "Job does not exist"}
+}
+----
+
 
 
 Disable job
@@ -385,6 +457,30 @@ Post Data:
 ----
 {
     "name": "job-name"
+}
+----
+
+Response:
+
+[source,json]
+----
+{
+    "status"   : "ok",
+    "job-name" : "doc-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US (test)",
+    "command"  : "disable",
+    "jenkins-response":{"status":302...}}
+}
+----
+
+Response when error occurs:
+
+[source,json]
+----
+{
+    "status"   : "error",
+    "job-name" : "doc-Test_Product-1.0-Test_Book-en-US (test)",
+    "command"  : "disable",
+    "message"  : "Job does not exist"}
 }
 ----
 
