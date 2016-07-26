@@ -85,16 +85,20 @@
     (let [response @results/results]
         (send-response response)))
 
-(defn create-job
-    [request]
-    )
-
-(defn job-does-not-exist-response
-    [job-name command]
+(defn error-response
+    [job-name command message]
     {:status "error"
      :job-name job-name
      :command command
-     :message "Job does not exist"})
+     :message message})
+
+(defn job-does-not-exist-response
+    [job-name command]
+    (error-response job-name command "Job does not exist"))
+
+(defn job-already-exist-response
+    [job-name command]
+    (error-response job-name command "Job already exist"))
 
 (defn start-job
     [request]
@@ -140,6 +144,25 @@
                 send-response)
             (-> (job-does-not-exist-response job-name "delete")
                 send-response))))
+
+(defn create-job
+    [request]
+    (let [input-data (-> (read-request-body request)
+                         body->job-info)
+          job-name   (get input-data :name)
+          git-repo   (get input-data :url_to_repo)
+          branch     (get input-data :branch)]
+        (if (results/job-exists? job-name)
+            (-> (job-already-exist-response job-name "create")
+                send-response)
+            (if (and job-name git-repo branch)
+                (-> (jenkins-api/create-job (config/get-jenkins-url request)
+                                            (config/get-jenkins-auth request)
+                                            job-name git-repo branch)
+                    (reload-job-list request)
+                    send-response)
+                (-> (error-response (or job-name "not set!") "create" "invalid input")
+                    send-response)))))
 
 (defn uri->job-name
     [uri prefix]

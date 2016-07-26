@@ -148,7 +148,18 @@ Method: +POST+
 
 Content­Type: +application/json+
 
-Post Data: 
+Post Data (minimal version):
+
+[source,json]
+----
+{
+    "url_to_repo": "git@some:repo.git",
+    "name": "jobName (test)",
+    "branch": "preview"
+} 
+----
+
+Post Data (max. version):
 
 [source,json]
 ----
