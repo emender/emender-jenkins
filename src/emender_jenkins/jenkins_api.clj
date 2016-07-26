@@ -22,9 +22,11 @@
 
 (defn update-jenkins-url
     [job-config-url jenkins-auth]
-    (cond (.startsWith job-config-url "https://") (str "https://" jenkins-auth "@" (subs job-config-url 8))
-          (.startsWith job-config-url "http://")  (str "http://"  jenkins-auth "@" (subs job-config-url 7))
-          :else job-config-url))
+    (if (empty? jenkins-auth)
+        job-config-url
+        (cond (.startsWith job-config-url "https://") (str "https://" jenkins-auth "@" (subs job-config-url 8))
+              (.startsWith job-config-url "http://")  (str "http://"  jenkins-auth "@" (subs job-config-url 7))
+              :else job-config-url)))
 
 (defn post-command
     [jenkins-url jenkins-auth job-name command]
@@ -77,6 +79,12 @@
              :message (.getMessage e)
             })))
 
+(defn update-template
+    [template git-repo branch]
+    (-> template
+        (clojure.string/replace "<placeholder id=\"git-repo\" />" git-repo)
+        (clojure.string/replace "<placeholder id=\"git-branch\" />" (str "*/" branch))))
+
 (defn start-job
     [jenkins-url jenkins-auth job-name]
     (job-related-command jenkins-url jenkins-auth job-name "build"))
@@ -92,4 +100,35 @@
 (defn delete-job
     [jenkins-url jenkins-auth job-name]
     (job-related-command jenkins-url jenkins-auth job-name "doDelete"))
+
+(defn create-job
+    [jenkins-url jenkins-auth job-name git-repo branch]
+    (println "***create job***")
+    (println "job-name" job-name)
+    (println "git-repo" git-repo)
+    (println "branch"   branch)
+    (let [template (slurp "data/template.xml")
+          config   (update-template template git-repo branch)
+          url      (str (update-jenkins-url jenkins-url jenkins-auth) "createItem?name=" (.replaceAll job-name " " "%20"))]
+          (println "URL to use: " url)
+          ;(spit "data/config2.xml" config)
+          (try
+              (let [response (http-client/post url {
+                      :body config
+                      :content-type "application/xml"
+                      :keystore "keystore"
+                      :keystore-pass "changeit"
+                      :trust-store "keystore"
+                      :trust-store-pass "changeit"})]
+                {:status   "ok"
+                 :job-name job-name
+                 :command  "create"
+                 :jenkins-response response})
+            (catch Exception e
+                (.printStackTrace e)
+                {:status "error"
+                 :job-name job-name
+                 :command  "create"
+                 :message (.getMessage e)
+                }))))
 
