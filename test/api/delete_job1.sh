@@ -1,3 +1,3 @@
 #!/bin/env bash
-curl -X POST --header "Content-Type: application/json" -d '{"name":"doc-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US (test)"}' localhost:3000/api/delete_job
+curl -X POST --header "Content-Type: application/json" -d '{"name":"doc-Test_Product-1.0-Test_Book-en-US (test)"}' localhost:3000/api/delete_job
 
