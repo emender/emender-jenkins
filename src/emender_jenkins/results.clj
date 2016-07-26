@@ -124,3 +124,8 @@
     [job-name]
     (some #(if (= job-name (:job-name %)) %) @results))
 
+(defn job-exists?
+    [job-name]
+    (if job-name
+        (some #(= job-name (:job-name %)) @results)))
+
