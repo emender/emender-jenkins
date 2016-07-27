@@ -23,3 +23,30 @@
     [function-name]
     (clojure.test/function? function-name))
 
+;
+; Tests for various function definitions
+;
+
+(deftest test-start-server-existence
+    "Check that the emender-jenkins.core/start-server definition exists."
+    (testing "if the emender-jenkins.core/start-server definition exists."
+        (is (callable? 'emender-jenkins.core/start-server))))
+
+
+(deftest test-get-and-check-port-existence
+    "Check that the emender-jenkins.core/get-and-check-port definition exists."
+    (testing "if the emender-jenkins.core/get-and-check-port definition exists."
+        (is (callable? 'emender-jenkins.core/get-and-check-port))))
+
+
+(deftest test-get-port-existence
+    "Check that the emender-jenkins.core/get-port definition exists."
+    (testing "if the emender-jenkins.core/get-port definition exists."
+        (is (callable? 'emender-jenkins.core/get-port))))
+
+
+(deftest test--main-existence
+    "Check that the emender-jenkins.core/-main definition exists."
+    (testing "if the emender-jenkins.core/-main definition exists."
+        (is (callable? 'emender-jenkins.core/-main))))
+
