@@ -9,7 +9,7 @@ Basic supported operations:
 
 Jobs CRUD:
 
-* create new job (that calls Emender)
+* create new job (that calls Emender using its build script)
 * read job config
 * update job (reconfigure)
 * delete job
@@ -298,11 +298,24 @@ Method: +POST+
 
 Content-Type: +application/json+
 
-Post Data: 
+Post Data (minimal version):
 
 [source,json]
 ----
 {
+    "job-name:    "doc-${PRODUCT}-${VERSION}-${BOOK-NAME}-${LANGUAGE} (test)",
+    "url_to_repo": "git@some:repo.git",
+    "name": "jobName (test)",
+    "branch": "preview"
+} 
+----
+
+Post Data (max. version): 
+
+[source,json]
+----
+{
+    "job-name:    "doc-${PRODUCT}-${VERSION}-${BOOK-NAME}-${LANGUAGE} (test)",
     "url_to_repo": "git@some:repo.git",
     "name": "jobName (test)",
     "branch": "preview",
