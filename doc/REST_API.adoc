@@ -323,18 +323,45 @@ Get jobs
 ~~~~~~~~
 
     /api/get_jobs
+    /api/get_jobs?product=PRODUCT-NAME
+    /api/get_jobs?product=PRODCUT-NAME&version=VERSION
+
+Get list of job statuses. This list can be filtered for given product or product+version.
 
 Method: +GET+
 
 Content-Type: +application/json+
+
+Example: +curl http://url-to-interface:port/api/system/banners+
+curl -X GET -v localhost:3000/api/get_jobs?product=TEST%20PRODUCT\&version=1
 
 Response:
 
 [source,json]
 ----
 [
-    "name-of-1st job",
-    "name-of-2nd job"
+    {
+        "job-name":"doc-Product-6.3-Book1-en-US (test)",
+        "product":"Product",
+        "version":"6.3",
+        "book-name":"Book1",
+        "job-status":"disabled",
+        "message":null,"results":null
+    },
+    {
+        "job-name":"doc-Product-6.3-Book1-en-US (test)",
+        "product":"Product",
+        "version":"6.3",
+        "book-name":"Book2",
+        "job-status":"unstable",
+        "message":"Total: 7  Passed: 5  Failed: 2",
+        "results":
+        {
+            "total":  7,
+            "passed": 5,
+            "failed": 2
+        },
+    }
 ]
 ----
 
