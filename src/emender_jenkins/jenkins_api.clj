@@ -140,3 +140,17 @@
                   (.printStackTrace e)
                   (error-response-structure job-name "create" e)))))
 
+(defn update-job
+    [jenkins-url jenkins-auth job-name git-repo branch]
+    (log-operation job-name git-repo branch "update")
+    (let [template (slurp "data/template.xml")
+          config   (update-template template git-repo branch)
+          url      (str (job-name->url (update-jenkins-url jenkins-url jenkins-auth) job-name) "/config.xml")]
+          (println "URL to use: " url)
+          (try
+              (->> (send-configuration-xml-to-jenkins url config)
+                   (ok-response-structure job-name "update"))
+              (catch Exception e
+                  (.printStackTrace e)
+                  (error-response-structure job-name "update" e)))))
+
