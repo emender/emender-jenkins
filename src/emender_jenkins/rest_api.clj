@@ -189,8 +189,11 @@
 
 (defn get-jobs
     [request]
-    (let [job-names (results/get-job-names)]
-        (send-response job-names)))
+    (let [params  (:params request)
+          product (get params "product")
+          version (get params "version")
+          results (results/get-job-results product version)]
+        (send-response results)))
 
 (defn get-job-results
     [request uri]
