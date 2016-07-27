@@ -23,3 +23,12 @@
     [function-name]
     (clojure.test/function? function-name))
 
+;
+; Tests for various function definitions
+;
+
+(deftest test-inject-configuration-existence
+    "Check that the emender-jenkins.middleware/inject-configuration definition exists."
+    (testing "if the emender-jenkins.middleware/inject-configuration definition exists."
+        (is (callable? 'emender-jenkins.middleware/inject-configuration))))
+
