@@ -23,3 +23,25 @@
     [function-name]
     (clojure.test/function? function-name))
 
+;
+; Tests for various function definitions
+;
+
+(deftest test-parse-int-existence
+    "Check that the emender-jenkins.config-loader/parse-int definition exists."
+    (testing "if the emender-jenkins.config-loader/parse-int definition exists."
+        (is (callable? 'emender-jenkins.config-loader/parse-int))))
+
+
+(deftest test-parse-float-existence
+    "Check that the emender-jenkins.config-loader/parse-float definition exists."
+    (testing "if the emender-jenkins.config-loader/parse-float definition exists."
+        (is (callable? 'emender-jenkins.config-loader/parse-float))))
+
+
+(deftest test-parse-boolean-existence
+    "Check that the emender-jenkins.config-loader/parse-boolean definition exists."
+    (testing "if the emender-jenkins.config-loader/parse-boolean definition exists."
+        (is (callable? 'emender-jenkins.config-loader/parse-boolean))))
+
+
