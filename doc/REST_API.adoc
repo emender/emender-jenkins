@@ -303,10 +303,9 @@ Post Data (minimal version):
 [source,json]
 ----
 {
-    "job-name:    "doc-${PRODUCT}-${VERSION}-${BOOK-NAME}-${LANGUAGE} (test)",
-    "url_to_repo": "git@some:repo.git",
-    "name": "jobName (test)",
-    "branch": "preview"
+    "name"        : "doc-${PRODUCT}-${VERSION}-${BOOK-NAME}-${LANGUAGE} (test)",
+    "url_to_repo" : "git@some:repo.git",
+    "branch"      : "preview"
 } 
 ----
 
@@ -315,10 +314,9 @@ Post Data (max. version):
 [source,json]
 ----
 {
-    "job-name:    "doc-${PRODUCT}-${VERSION}-${BOOK-NAME}-${LANGUAGE} (test)",
-    "url_to_repo": "git@some:repo.git",
-    "name": "jobName (test)",
-    "branch": "preview",
+    "name"        : "doc-${PRODUCT}-${VERSION}-${BOOK-NAME}-${LANGUAGE} (test)",
+    "url_to_repo" : "git@some:repo.git",
+    "branch"      : "preview"
     "metadata": {
         "product": "product name",
         "version": "product version",
