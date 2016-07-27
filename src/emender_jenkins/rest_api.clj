@@ -221,17 +221,17 @@
 (defn job-started-handler
     [request]
     (println "job-started")
-    )
+    (send-response {:status "ok"}))
 
 (defn job-finished-handler
     [request]
     (println "job-finished")
-    )
+    (send-response {:status "ok"}))
 
 (defn job-results
     [request]
     (println "job-results")
-    )
+    (send-response {:status "ok"}))
 
 (defn unknown-call-handler
     [uri method]
