@@ -115,10 +115,17 @@
           ;job-results))
 ))
 
-(defn get-job-names
-    []
+(defn select-jobs
+    [results pred]
     (into []
-        (for [job @results] (:job-name job))))
+        (filter pred results)))
+
+(defn get-job-results
+    [product version]
+    (cond
+        (and product version) (select-jobs @results #(and (= product (:product %)) (= version (:version %))))
+        product               (select-jobs @results #(= product (:product %)))
+        :else                 (into [] @results)))
 
 (defn find-job-with-name
     [job-name]
