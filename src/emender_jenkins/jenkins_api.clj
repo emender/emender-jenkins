@@ -63,21 +63,29 @@
                  (.printStackTrace e)
                  nil))))
 
+(defn ok-response-structure
+    [job-name command jenkins-response]
+    {:status   "ok"
+     :job-name job-name
+     :command  command
+     :jenkins-response jenkins-response})
+
+(defn error-response-structure
+    [job-name command exception]
+    {:status   "error"
+     :job-name job-name
+     :command  command
+     :message  (.getMessage exception)
+    })
+
 (defn job-related-command
     [jenkins-url jenkins-auth job-name command]
     (try
         (let [response (post-command jenkins-url jenkins-auth job-name command)]
-            {:status   "ok"
-             :job-name job-name
-             :command  command
-             :jenkins-response response})
+            (ok-response-structure job-name command response))
         (catch Exception e
             (.printStackTrace e)
-            {:status "error"
-             :job-name job-name
-             :command  command
-             :message (.getMessage e)
-            })))
+            (error-response-structure job-name command e))))
 
 (defn update-template
     [template git-repo branch]
@@ -101,34 +109,34 @@
     [jenkins-url jenkins-auth job-name]
     (job-related-command jenkins-url jenkins-auth job-name "doDelete"))
 
-(defn create-job
-    [jenkins-url jenkins-auth job-name git-repo branch]
-    (println "***create job***")
+(defn log-operation
+    [job-name git-repo branch operation]
+    (println "***" operation "***")
     (println "job-name" job-name)
     (println "git-repo" git-repo)
-    (println "branch"   branch)
+    (println "branch"   branch))
+
+(defn send-configuration-xml-to-jenkins
+    [url config]
+    (http-client/post url {
+        :body             config
+        :content-type     "application/xml"
+        :keystore         "keystore"
+        :keystore-pass    "changeit"
+        :trust-store      "keystore"
+        :trust-store-pass "changeit"}))
+
+(defn create-job
+    [jenkins-url jenkins-auth job-name git-repo branch]
+    (log-operation job-name git-repo branch "create")
     (let [template (slurp "data/template.xml")
           config   (update-template template git-repo branch)
           url      (str (update-jenkins-url jenkins-url jenkins-auth) "createItem?name=" (.replaceAll job-name " " "%20"))]
           (println "URL to use: " url)
-          ;(spit "data/config2.xml" config)
           (try
-              (let [response (http-client/post url {
-                      :body config
-                      :content-type "application/xml"
-                      :keystore "keystore"
-                      :keystore-pass "changeit"
-                      :trust-store "keystore"
-                      :trust-store-pass "changeit"})]
-                {:status   "ok"
-                 :job-name job-name
-                 :command  "create"
-                 :jenkins-response response})
-            (catch Exception e
-                (.printStackTrace e)
-                {:status "error"
-                 :job-name job-name
-                 :command  "create"
-                 :message (.getMessage e)
-                }))))
+              (->> (send-configuration-xml-to-jenkins url config)
+                   (ok-response-structure job-name "create"))
+              (catch Exception e
+                  (.printStackTrace e)
+                  (error-response-structure job-name "create" e)))))
 
