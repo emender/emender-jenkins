@@ -57,3 +57,32 @@
         (is (callable? 'emender-jenkins.config/print-configuration))))
 
 
+(deftest test-get-api-prefix-existence
+    "Check that the emender-jenkins.config/get-api-prefix definition exists."
+    (testing "if the emender-jenkins.config/get-api-prefix definition exists."
+        (is (callable? 'emender-jenkins.config/get-api-prefix))))
+
+
+(deftest test-verbose?-existence
+    "Check that the emender-jenkins.config/verbose? definition exists."
+    (testing "if the emender-jenkins.config/verbose? definition exists."
+        (is (callable? 'emender-jenkins.config/verbose?))))
+
+
+(deftest test-get-version-existence
+    "Check that the emender-jenkins.config/get-version definition exists."
+    (testing "if the emender-jenkins.config/get-version definition exists."
+        (is (callable? 'emender-jenkins.config/get-version))))
+
+
+(deftest test-get-jenkins-url-existence
+    "Check that the emender-jenkins.config/get-jenkins-url definition exists."
+    (testing "if the emender-jenkins.config/get-jenkins-url definition exists."
+        (is (callable? 'emender-jenkins.config/get-jenkins-url))))
+
+
+(deftest test-get-jenkins-auth-existence
+    "Check that the emender-jenkins.config/get-jenkins-auth definition exists."
+    (testing "if the emender-jenkins.config/get-jenkins-auth definition exists."
+        (is (callable? 'emender-jenkins.config/get-jenkins-auth))))
+
