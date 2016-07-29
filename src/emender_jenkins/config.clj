@@ -36,6 +36,7 @@
         update-configuration))
 
 (defn assoc-in-if-not-nil
+    "Assoc new (updated) value into the configuration map, but only when new value exists."
     [input selector value]
     (if value
         (assoc-in input selector value)
@@ -54,22 +55,27 @@
     (pprint/pprint configuration))
 
 (defn get-api-prefix
+    "Read prefix for API calls from the configuration passed via HTTP request."
     [request]
     (-> request :configuration :api :prefix))
 
 (defn verbose?
+    "Read verbose mode settings from the configuration passed via HTTP request."
     [request]
     (-> request :configuration :config :verbose))
 
 (defn get-version
+    "Read service version from the configuration passed via HTTP request."
     [request]
     (-> request :configuration :info :version))
 
 (defn get-jenkins-url
+    "Read Jenkins URL from the configuration passed via HTTP request."
     [request]
     (-> request :configuration :jenkins :jenkins-url))
 
 (defn get-jenkins-auth
+    "Read Jenkins auth string from the configuration passed via HTTP request."
     [request]
     (-> request :configuration :jenkins :jenkins-auth))
 
