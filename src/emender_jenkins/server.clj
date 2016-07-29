@@ -19,8 +19,11 @@
 (require '[emender-jenkins.rest-api :as rest-api])
 
 (defn return-file
+    "Creates HTTP response containing content of specified file.
+     Special value nil / HTTP response 404 is returned in case of any I/O error."
     [file-name content-type]
-    (http-response/file-response file-name {:root "www"}))
+    (-> (http-response/file-response file-name {:root "www"})
+        (http-response/content-type content-type)))
 
 (defn render-front-page
     "Create front page."
