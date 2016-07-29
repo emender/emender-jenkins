@@ -10,7 +10,8 @@
 ;      Pavel Tisnovsky
 ;
 
-(ns emender-jenkins.server)
+(ns emender-jenkins.server
+    "Server module that accepts all requests from users and generates proper responses.")
 
 (require '[clojure.pprint           :as pprint])
 (require '[ring.util.response       :as http-response])
@@ -36,6 +37,7 @@
     (return-file "error.html" "text/html"))
 
 (defn get-hostname
+    "Returns hostname of the server."
     []
     (.. java.net.InetAddress getLocalHost getHostName))
 
@@ -53,6 +55,8 @@
                         api-part)))))))
 
 (defn api-call-handler
+    "This function is used to handle all API calls. Three parameters are expected:
+     data structure containing HTTP request, string with URI, and the HTTP method."
     [request uri method]
     (if (= uri "/api")
         (rest-api/info-handler request (get-hostname))
@@ -76,18 +80,22 @@
                                           (rest-api/unknown-call-handler uri method))))
 
 (defn restcall-options-handler
+    "Empty handler for OPTIONS method."
     []
     (println "Method:  OPTIONS")
     (-> (http-response/response "")
         (http-response/content-type "application/json")))
 
 (defn restcall-head-handler
+    "Empty handler for HEAD method."
     []
     (println "Method:  HEAD")
     (-> (http-response/response "")
         (http-response/content-type "application/json")))
 
 (defn non-api-call-handler
+    "This function is used to handle all API calls. Two parameters are expected:
+     data structure containing HTTP request and string with URI."
     [request uri]
     (condp = uri
         "/"                      (render-front-page request)
