@@ -12,6 +12,8 @@
 
 (ns emender-jenkins.job-data-fetcher)
 
+(require '[emender-jenkins.results :as results])
+
 (def started-on    (atom nil))
 (def finished-on   (atom nil))
 (def last-duration (atom nil))
@@ -34,13 +36,13 @@
 
 (defn fetch-data
     "Dynamically creates file containing EDN data about books."
-    []
-    )
+    [configuration]
+    (results/reload-all-results configuration))
 
 (defn try-to-fetch-data
-    []
+    [configuration]
     (try
-        (fetch-data)
+        (fetch-data configuration)
         (catch Exception e
             (println "*** Exception in fetcher:" (.getMessage e)))))
 
@@ -53,13 +55,13 @@
 (defn run-fetcher-in-a-loop
     "Run the fetcher periodically. The sleep amount should containg time delay
     in minutes."
-    [sleep-amount]
+    [sleep-amount configuration]
     (let [ms-to-sleep (compute-sleep-amount sleep-amount)]
         (while true
             (do
                 (println "[Fetcher] reading job results")
                 (let [start-time (System/currentTimeMillis)]
-                    (try-to-fetch-data)
+                    (try-to-fetch-data configuration)
                     (let [end-time (System/currentTimeMillis)
                           duration (- end-time start-time)]
                           (reset! started-on  (get-formatted-time start-time))
@@ -70,11 +72,12 @@
 
 (defn run-fetcher
     "Run the endless fetcher loop."
-    [sleep-amount]
-    (println "Fetcher started in its own thread")
-    (run-fetcher-in-a-loop sleep-amount))
+    [configuration]
+    (let [sleep-amount  (-> configuration :fetcher :delay)]
+        (println "Fetcher started in its own thread, configured sleep amount: " sleep-amount)
+        (run-fetcher-in-a-loop (-> configuration :fetcher :delay) configuration)))
 
 (defn run-fetcher-in-thread
-    [sleep-amount]
-    (.start (Thread. #(run-fetcher sleep-amount))))
+    [configuration]
+    (.start (Thread. #(run-fetcher configuration))))
 

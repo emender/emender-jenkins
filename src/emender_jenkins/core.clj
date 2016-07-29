@@ -181,8 +181,8 @@
         (let [configuration (->
                  (config/load-configuration-from-ini "config.ini")
                  (config/override-options-by-cli jenkins-url test-jobs-suffix))]
-            (results/reload-all-results configuration)
-            (job-data-fetcher/run-fetcher-in-thread (-> configuration :fetcher :delay))
+            ;(results/reload-all-results configuration) ; to be done in the job-data-fetcher module
+            (job-data-fetcher/run-fetcher-in-thread configuration)
             (start-server configuration (get-port port) openshift-port openshift-ip))))
 
 (defn -main
