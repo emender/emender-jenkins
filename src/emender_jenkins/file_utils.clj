@@ -10,7 +10,8 @@
 ;      Pavel Tisnovsky
 ;
 
-(ns emender-jenkins.file-utils)
+(ns emender-jenkins.file-utils
+    "Various file and directory related utility functions.")
 
 (require '[hozumi.rm-rf    :as rm-rf])
 

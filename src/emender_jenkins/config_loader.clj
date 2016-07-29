@@ -10,7 +10,8 @@
 ;      Pavel Tisnovsky
 ;
 
-(ns emender-jenkins.config-loader)
+(ns emender-jenkins.config-loader
+    "Configuration file(s) parsing and processing functions.")
 
 (require '[clojure-ini.core :as clojure-ini])
 

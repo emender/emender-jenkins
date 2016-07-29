@@ -10,7 +10,8 @@
 ;      Pavel Tisnovsky
 ;
 
-(ns emender-jenkins.core)
+(ns emender-jenkins.core
+    "Core module that contains -main function called by Leiningen to start the application.")
 
 (require '[ring.adapter.jetty      :as jetty])
 (require '[ring.middleware.params  :as http-params])
