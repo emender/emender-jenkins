@@ -10,7 +10,8 @@
 ;      Pavel Tisnovsky
 ;
 
-(ns emender-jenkins.job-data-fetcher)
+(ns emender-jenkins.job-data-fetcher
+     "Module that contains the job fetching machinery that should be run in a separate thread.")
 
 (require '[emender-jenkins.results :as results])
 
@@ -19,34 +20,39 @@
 (def last-duration (atom nil))
 
 (defn minutes-to-seconds
-    "Converts minutes to seconds."
+    "Convert minutes to seconds."
     [minutes]
     (* minutes 60))
 
 (defn seconds-to-ms
-    "Converts seconds to milliseconds."
+    "Convert seconds to milliseconds."
     [seconds]
     (* seconds 1000))
 
 (defn compute-sleep-amount
+    "Convert sleep amount specified in minutes into millisesonds."
     [minutes]
     (-> minutes
         minutes-to-seconds
         seconds-to-ms))
 
 (defn fetch-data
-    "Dynamically creates file containing EDN data about books."
+    "Read job statuses and job results. Stores them in the data structure in result module."
     [configuration]
     (results/reload-all-results configuration))
 
 (defn try-to-fetch-data
+    "Fetch job statuses etc. from Jenkins."
     [configuration]
     (try
         (fetch-data configuration)
         (catch Exception e
             (println "*** Exception in fetcher:" (.getMessage e)))))
 
+;TODO put it into the proper module."
+
 (defn get-formatted-time
+    "Returns formatted time."
     [ms]
     (let [sdf         (new java.text.SimpleDateFormat "yyyy-MM-dd HH:mm:ss")
           result-date (new java.util.Date ms)]
@@ -78,6 +84,8 @@
         (run-fetcher-in-a-loop (-> configuration :fetcher :delay) configuration)))
 
 (defn run-fetcher-in-thread
+    "Run the fetcher (its loop) in a separate thread."
     [configuration]
+    ; he have to use lambda here because we need to pass parameter into the run-fetcher function
     (.start (Thread. #(run-fetcher configuration))))
 
