@@ -216,7 +216,11 @@
         (if (results/job-exists? job-name)
             (let [job-results   (jenkins-api/read-job-results (config/get-jenkins-url request) job-name)]
                  (if job-results
-                     (send-plain-response job-results))))))
+                     (send-plain-response job-results)
+                     (-> (error-response job-name "get_job_results" "can not read test results")
+                         send-response)))
+            (-> (job-does-not-exist-response job-name "get_job_results")
+                send-response))))
 
 (defn job-started-handler
     [request]
