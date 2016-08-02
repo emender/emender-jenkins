@@ -87,30 +87,32 @@
                  :failed (parse-int (get parsed 3))}))))
 
 (defn read-update-job-info
-    [job-list]
+    [job-list preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix]
     (for [job job-list]
         (let [job-name (get job "name")
               job-color  (get job "color")
               buildable? (get job "buildable")
               message    (-> (get job "lastSuccessfulBuild")
                              (get "description"))]
-            {:job-name  job-name
-             :product   (job-name->product-name job-name)
-             :version   (job-name->version job-name)
-             :book-name (job-name->book-name job-name)
-             :job-status (compute-job-status job-color buildable?)
-             :message    message
-             :results    (parse-test-results message)
+            {:job-name    job-name
+             :product     (job-name->product-name job-name)
+             :version     (job-name->version job-name)
+             :environment (job-name->environment job-name preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix)
+             :book-name   (job-name->book-name job-name)
+             :job-status  (compute-job-status job-color buildable?)
+             :message     message
+             :results     (parse-test-results message)
             })))
 
 (defn reload-all-results
     [configuration]
-    (let [job-list (jenkins-api/read-list-of-test-jobs (-> configuration :jenkins :jenkins-url)
+    (let [preview-jobs-suffix (-> configuration :jobs    :preview-test-jobs-suffix)
+          stage-jobs-suffix   (-> configuration :jobs    :stage-test-jobs-suffix)
+          prod-jobs-suffix    (-> configuration :jobs    :prod-test-jobs-suffix)
+          job-list (jenkins-api/read-list-of-test-jobs (-> configuration :jenkins :jenkins-url)
                                                        (-> configuration :jenkins :jenkins-job-list-url)
-                                                       (-> configuration :jobs    :preview-test-jobs-suffix)
-                                                       (-> configuration :jobs    :stage-test-jobs-suffix)
-                                                       (-> configuration :jobs    :prod-test-jobs-suffix))
-          job-results (read-update-job-info job-list)]
+                                                       preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix)
+          job-results (read-update-job-info job-list   preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix)]
           (clojure.pprint/pprint job-results)
           ;job-results (read-all-test-results configuration job-list)]
           (reset! results job-results)
