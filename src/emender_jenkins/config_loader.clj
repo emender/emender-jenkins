@@ -17,12 +17,12 @@
 
 (defn parse-int
     "Parse the given string as an integer number."
-    [string]
+    [^String string]
     (java.lang.Integer/parseInt string))
 
 (defn parse-float
     "Parse the given string as a float number."
-    [string]
+    [^String string]
     (java.lang.Float/parseFloat string))
 
 (defn parse-boolean
