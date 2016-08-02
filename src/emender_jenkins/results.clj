@@ -80,6 +80,18 @@
                   :else                             :failure)
             :does-not-exists)))
 
+(defn compute-job-disabled
+    [jenkins-job-status buildable?]
+    ; check if the 'disabled' option is set in job config
+    (if (not buildable?)
+        true
+        (if jenkins-job-status ; job is buildable, so let's check the icon
+            (cond (= jenkins-job-status "blue")     false
+                  (= jenkins-job-status "yellow")   false
+                  (= jenkins-job-status "disabled") true
+                  :else                             false)
+            true)))
+
 (defn parse-int
     [string]
     (java.lang.Integer/parseInt string))
@@ -107,6 +119,7 @@
              :environment (job-name->environment job-name preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix)
              :book-name   (job-name->book-name job-name)
              :job-status  (compute-job-status job-color buildable?)
+             :disabled    (compute-job-disabled job-color buildable?)
              :message     message
              :results     (parse-test-results message)
             })))
