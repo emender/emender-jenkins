@@ -355,6 +355,7 @@ Response:
         "job-name":"doc-Product-6.3-Book1-en-US (test)",
         "product":"Product",
         "version":"6.3",
+        "environment":"stage",
         "book-name":"Book1",
         "job-status":"disabled",
         "message":null,"results":null
@@ -363,6 +364,7 @@ Response:
         "job-name":"doc-Product-6.3-Book1-en-US (test)",
         "product":"Product",
         "version":"6.3",
+        "environment":"prod",
         "book-name":"Book2",
         "job-status":"unstable",
         "message":"Total: 7  Passed: 5  Failed: 2",
@@ -418,6 +420,17 @@ Response:
 }
 ----
 
+Response when error occurs:
+
+[source,json]
+----
+{
+    "status"   : "error",
+    "job-name" : "doc-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US (test)",
+    "command"  : "get_job_results",
+    "message"  : "Job does not exist"
+}
+----
 
 
 Start job
