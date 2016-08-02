@@ -134,6 +134,7 @@
                                                        preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix)
           job-results (read-update-job-info job-list   preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix)]
           (clojure.pprint/pprint job-results)
+          ;(spit "test.edn" (with-out-str (clojure.pprint/pprint job-results)))
           ;job-results (read-all-test-results configuration job-list)]
           (reset! results job-results)
           ;job-results))
@@ -144,12 +145,21 @@
     (into []
         (filter pred results)))
 
-(defn get-job-results
+(defn read-job-results
     [product version]
     (cond
         (and product version) (select-jobs @results #(and (= product (:product %)) (= version (:version %))))
         product               (select-jobs @results #(= product (:product %)))
         :else                 (into [] @results)))
+
+
+(defn get-job-results
+    [product version]
+    (let [results  (read-job-results product version)
+          products (all-products results)] ; set of all products read from test results
+          (into {}
+                (for [product products]
+                     [product (select-results-for-product product results)]))))
 
 (defn find-job-with-name
     [job-name]
@@ -159,4 +169,7 @@
     [job-name]
     (if job-name
         (some #(= job-name (:job-name %)) @results)))
+
+; REPL testing
+;(def results (atom (clojure.edn/read-string (slurp "x.edn"))))
 
