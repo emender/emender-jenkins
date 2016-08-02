@@ -152,6 +152,50 @@
         product               (select-jobs @results #(= product (:product %)))
         :else                 (into [] @results)))
 
+(defn all-products
+    "Returns set containing names of all products taken from results."
+    [results]
+    (into #{} (for [result results] (:product result))))
+
+(defn versions-per-products
+    "Returns set containing versions for given product."
+    [product results]
+    (into #{} (for [result results :when (= (:product result) product)] (:version result))))
+
+(defn books-for-product-version
+    [results product version]
+    (into #{}
+    (for [job (select-jobs results #(and (= product (:product %)) (= version (:version %))))]
+        (:book-name job))))
+
+(defn job-for-environment
+    [product version book-name environment results]
+    (-> (select-jobs results #(and (= product (:product %))
+                                   (= version (:version %))
+                                   (= book-name (:book-name %))
+                                   (= environment (:environment %))))
+        first))
+
+(defn select-results-for-book
+    "Select results for given book and return them as a map with results separated for preview, stage, prod."
+    [product version book-name results]
+    {:preview (job-for-environment product version book-name :preview results)
+     :stage   (job-for-environment product version book-name :stage   results)
+     :prod    (job-for-environment product version book-name :prod    results)})
+
+(defn select-results-for-product-version
+    "Select results for all books for given product and version."
+    [product version results]
+    (into {}
+          (for [book (books-for-product-version results product version)]
+               [book (select-results-for-book product version book results)])))
+
+(defn select-results-for-product
+    "Select results for all books for given product."
+    [product results]
+    (into {}
+          (for [version (versions-per-products product results)]
+               [version (select-results-for-product-version product version results)])))
 
 (defn get-job-results
     [product version]
