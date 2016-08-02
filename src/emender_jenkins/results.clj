@@ -107,7 +107,9 @@
     [configuration]
     (let [job-list (jenkins-api/read-list-of-test-jobs (-> configuration :jenkins :jenkins-url)
                                                        (-> configuration :jenkins :jenkins-job-list-url)
-                                                       (-> configuration :jobs    :test-jobs-suffix))
+                                                       (-> configuration :jobs    :preview-test-jobs-suffix)
+                                                       (-> configuration :jobs    :stage-test-jobs-suffix)
+                                                       (-> configuration :jobs    :prod-test-jobs-suffix))
           job-results (read-update-job-info job-list)]
           (clojure.pprint/pprint job-results)
           ;job-results (read-all-test-results configuration job-list)]
