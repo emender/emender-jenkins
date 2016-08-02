@@ -61,6 +61,13 @@
               (clojure.string/replace book-name "_" " ")
               "unknown")))
 
+(defn job-name->environment
+    [job-name preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix]
+    (cond
+        (.endsWith job-name preview-jobs-suffix) :preview
+        (.endsWith job-name stage-jobs-suffix)   :stage
+        (.endsWith job-name prod-jobs-suffix)    :prod))
+
 (defn compute-job-status
     [jenkins-job-status buildable?]
     ; check if the 'disabled' option is set in job config
