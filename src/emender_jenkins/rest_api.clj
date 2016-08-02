@@ -48,6 +48,7 @@
     [response]
     (-> (http-response/response (json/write-str response))
         (http-response/content-type "application/json")))
+   ;(-> (http-response/response (with-out-str (json/pprint response)))
 
 (defn send-plain-response
     [response]
