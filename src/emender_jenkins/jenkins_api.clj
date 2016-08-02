@@ -59,11 +59,17 @@
                 (get data "jobs")
                 nil))))
 
+(defn filter-test-jobs
+    [all-jobs preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix]
+    (filter #(or (.endsWith (get %1 "name") preview-jobs-suffix)
+                 (.endsWith (get %1 "name") stage-jobs-suffix)
+                 (.endsWith (get %1 "name") prod-jobs-suffix))
+            all-jobs))
+
 (defn read-list-of-test-jobs
-    [jenkins-url job-list-part suffix]
-     (let [all-jobs (read-list-of-all-jobs jenkins-url job-list-part)
-           test-jobs (filter #(.endsWith (get %1 "name") suffix) all-jobs)]
-           test-jobs))
+    [jenkins-url job-list-part preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix]
+    (-> (read-list-of-all-jobs jenkins-url job-list-part)
+        (filter-test-jobs preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix)))
 
 (defn read-job-results
     [jenkins-url job-name]
