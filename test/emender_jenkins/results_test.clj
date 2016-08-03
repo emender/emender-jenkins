@@ -42,3 +42,27 @@
         (is (callable? 'emender-jenkins.results/store-results))))
 
 
+(deftest test-job-name->product-name-existence
+    "Check that the emender-jenkins.results/job-name->product-name definition exists."
+    (testing "if the emender-jenkins.results/job-name->product-name definition exists."
+        (is (callable? 'emender-jenkins.results/job-name->product-name))))
+
+
+(deftest test-job-name->version-existence
+    "Check that the emender-jenkins.results/job-name->version definition exists."
+    (testing "if the emender-jenkins.results/job-name->version definition exists."
+        (is (callable? 'emender-jenkins.results/job-name->version))))
+
+
+(deftest test-job-name->book-name-existence
+    "Check that the emender-jenkins.results/job-name->book-name definition exists."
+    (testing "if the emender-jenkins.results/job-name->book-name definition exists."
+        (is (callable? 'emender-jenkins.results/job-name->book-name))))
+
+
+(deftest test-job-name->environment-existence
+    "Check that the emender-jenkins.results/job-name->environment definition exists."
+    (testing "if the emender-jenkins.results/job-name->environment definition exists."
+        (is (callable? 'emender-jenkins.results/job-name->environment))))
+
+
