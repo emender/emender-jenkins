@@ -66,3 +66,27 @@
         (is (callable? 'emender-jenkins.results/job-name->environment))))
 
 
+(deftest test-compute-job-status-existence
+    "Check that the emender-jenkins.results/compute-job-status definition exists."
+    (testing "if the emender-jenkins.results/compute-job-status definition exists."
+        (is (callable? 'emender-jenkins.results/compute-job-status))))
+
+
+(deftest test-compute-job-disabled-existence
+    "Check that the emender-jenkins.results/compute-job-disabled definition exists."
+    (testing "if the emender-jenkins.results/compute-job-disabled definition exists."
+        (is (callable? 'emender-jenkins.results/compute-job-disabled))))
+
+
+(deftest test-parse-int-existence
+    "Check that the emender-jenkins.results/parse-int definition exists."
+    (testing "if the emender-jenkins.results/parse-int definition exists."
+        (is (callable? 'emender-jenkins.results/parse-int))))
+
+
+(deftest test-parse-test-results-existence
+    "Check that the emender-jenkins.results/parse-test-results definition exists."
+    (testing "if the emender-jenkins.results/parse-test-results definition exists."
+        (is (callable? 'emender-jenkins.results/parse-test-results))))
+
+
