@@ -75,6 +75,36 @@
         (is (callable? 'emender-jenkins.core/get-port))))
 
 
+(deftest test-show-help-existence
+    "Check that the emender-jenkins.core/show-help definition exists."
+    (testing "if the emender-jenkins.core/show-help definition exists."
+        (is (callable? 'emender-jenkins.core/show-help))))
+
+
+(deftest test-print-environment-configuration-existence
+    "Check that the emender-jenkins.core/print-environment-configuration definition exists."
+    (testing "if the emender-jenkins.core/print-environment-configuration definition exists."
+        (is (callable? 'emender-jenkins.core/print-environment-configuration))))
+
+
+(deftest test-fetch-jobs-only-existence
+    "Check that the emender-jenkins.core/fetch-jobs-only definition exists."
+    (testing "if the emender-jenkins.core/fetch-jobs-only definition exists."
+        (is (callable? 'emender-jenkins.core/fetch-jobs-only))))
+
+
+(deftest test-show-config-existence
+    "Check that the emender-jenkins.core/show-config definition exists."
+    (testing "if the emender-jenkins.core/show-config definition exists."
+        (is (callable? 'emender-jenkins.core/show-config))))
+
+
+(deftest test-run-app-existence
+    "Check that the emender-jenkins.core/run-app definition exists."
+    (testing "if the emender-jenkins.core/run-app definition exists."
+        (is (callable? 'emender-jenkins.core/run-app))))
+
+
 (deftest test--main-existence
     "Check that the emender-jenkins.core/-main definition exists."
     (testing "if the emender-jenkins.core/-main definition exists."
