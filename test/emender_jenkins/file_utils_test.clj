@@ -23,3 +23,35 @@
     [function-name]
     (clojure.test/function? function-name))
 
+
+(deftest test-print-slurp-exception-existence
+    "Check that the emender-jenkins.file-utils/print-slurp-exception definition exists."
+    (testing "if the emender-jenkins.file-utils/print-slurp-exception definition exists."
+        (is (callable? 'emender-jenkins.file-utils/print-slurp-exception))))
+
+
+(deftest test-slurp--existence
+    "Check that the emender-jenkins.file-utils/slurp- definition exists."
+    (testing "if the emender-jenkins.file-utils/slurp- definition exists."
+        (is (callable? 'emender-jenkins.file-utils/slurp-))))
+
+
+(deftest test-silent-slurp-existence
+    "Check that the emender-jenkins.file-utils/silent-slurp definition exists."
+    (testing "if the emender-jenkins.file-utils/silent-slurp definition exists."
+        (is (callable? 'emender-jenkins.file-utils/silent-slurp))))
+
+
+(deftest test-new-file-existence
+    "Check that the emender-jenkins.file-utils/new-file definition exists."
+    (testing "if the emender-jenkins.file-utils/new-file definition exists."
+        (is (callable? 'emender-jenkins.file-utils/new-file))))
+
+
+(deftest test-make-temporary-log-file-name-existence
+    "Check that the emender-jenkins.file-utils/make-temporary-log-file-name definition exists."
+    (testing "if the emender-jenkins.file-utils/make-temporary-log-file-name definition exists."
+        (is (callable? 'emender-jenkins.file-utils/make-temporary-log-file-name))))
+
+
+
