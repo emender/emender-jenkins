@@ -179,7 +179,7 @@
 (defn select-results-for-book
     "Select results for given book and return them as a map with results separated for preview, stage, prod."
     [product version book-name results]
-    {:jobs
+    {:tests
         {:preview (job-for-environment product version book-name :preview results)
          :stage   (job-for-environment product version book-name :stage   results)
          :prod    (job-for-environment product version book-name :prod    results)}})
@@ -187,7 +187,7 @@
 (defn select-results-for-product-version
     "Select results for all books for given product and version."
     [product version results]
-    {:books
+    {:titles
         (into {}
               (for [book (books-for-product-version results product version)]
                    [book (select-results-for-book product version book results)]))})
