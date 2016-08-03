@@ -54,4 +54,32 @@
         (is (callable? 'emender-jenkins.file-utils/make-temporary-log-file-name))))
 
 
+(deftest test-make-temporary-directory-existence
+    "Check that the emender-jenkins.file-utils/make-temporary-directory definition exists."
+    (testing "if the emender-jenkins.file-utils/make-temporary-directory definition exists."
+        (is (callable? 'emender-jenkins.file-utils/make-temporary-directory))))
+
+
+(deftest test-remove-directory-existence
+    "Check that the emender-jenkins.file-utils/remove-directory definition exists."
+    (testing "if the emender-jenkins.file-utils/remove-directory definition exists."
+        (is (callable? 'emender-jenkins.file-utils/remove-directory))))
+
+
+(deftest test-move-file-existence
+    "Check that the emender-jenkins.file-utils/move-file definition exists."
+    (testing "if the emender-jenkins.file-utils/move-file definition exists."
+        (is (callable? 'emender-jenkins.file-utils/move-file))))
+
+
+(deftest test-mv-file-existence
+    "Check that the emender-jenkins.file-utils/mv-file definition exists."
+    (testing "if the emender-jenkins.file-utils/mv-file definition exists."
+        (is (callable? 'emender-jenkins.file-utils/mv-file))))
+
+
+(deftest test->abs-path-existence
+    "Check that the emender-jenkins.file-utils/>abs-path definition exists."
+    (testing "if the emender-jenkins.file-utils/>abs-path definition exists."
+        (is (callable? 'emender-jenkins.file-utils/>abs-path))))
 
