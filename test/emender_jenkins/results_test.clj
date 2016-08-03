@@ -23,3 +23,22 @@
     [function-name]
     (clojure.test/function? function-name))
 
+
+(deftest test-render-edn-data-existence
+    "Check that the emender-jenkins.results/render-edn-data definition exists."
+    (testing "if the emender-jenkins.results/render-edn-data definition exists."
+        (is (callable? 'emender-jenkins.results/render-edn-data))))
+
+
+(deftest test-add-new-results-existence
+    "Check that the emender-jenkins.results/add-new-results definition exists."
+    (testing "if the emender-jenkins.results/add-new-results definition exists."
+        (is (callable? 'emender-jenkins.results/add-new-results))))
+
+
+(deftest test-store-results-existence
+    "Check that the emender-jenkins.results/store-results definition exists."
+    (testing "if the emender-jenkins.results/store-results definition exists."
+        (is (callable? 'emender-jenkins.results/store-results))))
+
+
