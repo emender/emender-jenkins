@@ -45,10 +45,12 @@
         get-job-name))
 
 (defn send-response
-    [response]
-    (-> (http-response/response (json/write-str response))
-        (http-response/content-type "application/json")))
-   ;(-> (http-response/response (with-out-str (json/pprint response)))
+    [response request]
+    (if (config/pretty-print? request)
+        (-> (http-response/response (with-out-str (json/pprint response)))
+            (http-response/content-type "application/json"))
+        (-> (http-response/response (json/write-str response))
+            (http-response/content-type "application/json"))))
 
 (defn send-plain-response
     [response]
@@ -61,19 +63,19 @@
                     :version    (config/get-version request)
                     :api_prefix (config/get-api-prefix request)
                     :hostname   hostname :test "/api"}]
-        (send-response response)))
+        (send-response response request)))
 
 (defn configuration-handler
     [request]
     (let [response (-> request :configuration)]
-        (send-response response)))
+        (send-response response request)))
 
 (defn system-banners
     [request uri]
     (if (= uri "/api/system/banners")
         (let [response {:message "Alpha version"
                         :type    "Warning"}]
-        (send-response response))))
+        (send-response response request))))
 
 (defn reload-job-list
     [previous-response request]
@@ -84,7 +86,7 @@
     [request]
     (results/reload-all-results (:configuration request))
     (let [response @results/results]
-        (send-response response)))
+        (send-response response request)))
 
 (defn error-response
     [job-name command message]
@@ -108,9 +110,9 @@
             (-> (jenkins-api/start-job (config/get-jenkins-url request)
                                        (config/get-jenkins-auth request)
                                        job-name)
-                send-response)
+                (send-response request))
             (-> (job-does-not-exist-response job-name "start")
-                send-response))))
+                (send-response request)))))
 
 (defn enable-job
     [request]
@@ -119,9 +121,9 @@
             (-> (jenkins-api/enable-job (config/get-jenkins-url request)
                                         (config/get-jenkins-auth request)
                                         job-name)
-                send-response)
+                (send-response request))
             (-> (job-does-not-exist-response job-name "enable")
-                send-response))))
+                (send-response request)))))
 
 (defn disable-job
     [request]
@@ -130,9 +132,9 @@
             (-> (jenkins-api/disable-job (config/get-jenkins-url request)
                                          (config/get-jenkins-auth request)
                                          job-name)
-                send-response)
+                (send-response request))
             (-> (job-does-not-exist-response job-name "enable")
-                send-response))))
+                (send-response request)))))
 
 (defn delete-job
     [request]
@@ -142,9 +144,9 @@
                                         (config/get-jenkins-auth request)
                                         job-name)
                 (reload-job-list request)
-                send-response)
+                (send-response request))
             (-> (job-does-not-exist-response job-name "delete")
-                send-response))))
+                (send-response request)))))
 
 (defn create-job
     [request]
@@ -155,15 +157,15 @@
           branch     (get input-data :branch)]
         (if (results/job-exists? job-name)
             (-> (job-already-exist-response job-name "create")
-                send-response)
+                (send-response request))
             (if (and job-name git-repo branch)
                 (-> (jenkins-api/create-job (config/get-jenkins-url request)
                                             (config/get-jenkins-auth request)
                                             job-name git-repo branch)
                     (reload-job-list request)
-                    send-response)
+                    (send-response request))
                 (-> (error-response (or job-name "not set!") "create" "invalid input")
-                    send-response)))))
+                    (send-response request))))))
 
 (defn uri->job-name
     [uri prefix]
@@ -182,7 +184,7 @@
     (let [job-name (uri->job-name uri "/api/get_job/")]
         (if job-name
             (let [job-metadata (results/find-job-with-name job-name)]
-                 (send-response job-metadata)))))
+                 (send-response job-metadata request)))))
 
 (defn update-job
     [request]
@@ -197,11 +199,11 @@
                                             (config/get-jenkins-auth request)
                                             job-name git-repo branch)
                     ;(reload-job-list request)
-                    send-response)
+                    (send-response request))
                 (-> (error-response (or job-name "not set!") "update" "invalid input")
-                    send-response))
+                    (send-response request)))
             (-> (job-does-not-exist-response job-name "update")
-                send-response))))
+                (send-response request)))))
 
 (defn get-jobs
     [request]
@@ -209,7 +211,7 @@
           product (get params "product")
           version (get params "version")
           results (results/get-job-results product version)]
-        (send-response results)))
+        (send-response results request)))
 
 (defn get-job-results
     [request uri]
@@ -219,30 +221,30 @@
                  (if job-results
                      (send-plain-response job-results)
                      (-> (error-response job-name "get_job_results" "can not read test results")
-                         send-response)))
+                         (send-response request))))
             (-> (job-does-not-exist-response job-name "get_job_results")
-                send-response))))
+                (send-response request)))))
 
 (defn job-started-handler
     [request]
     (println "job-started")
-    (send-response {:status "ok"}))
+    (send-response {:status "ok"} request))
 
 (defn job-finished-handler
     [request]
     (println "job-finished")
-    (send-response {:status "ok"}))
+    (send-response {:status "ok"} request))
 
 (defn job-results
     [request]
     (println "job-results")
-    (send-response {:status "ok"}))
+    (send-response {:status "ok"} request))
 
 (defn unknown-call-handler
-    [uri method]
+    [request uri method]
     (let [response {:status :error
                     :error "Unknown API call"
                     :uri uri
                     :method method}]
-        (send-response response)))
+        (send-response response request)))
 
