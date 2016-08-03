@@ -350,32 +350,84 @@ Response:
 
 [source,json]
 ----
-[
-    {
-        "job-name":"doc-Product-6.3-Book1-en-US (test)",
-        "product":"Product",
-        "version":"6.3",
-        "environment":"stage",
-        "book-name":"Book1",
-        "job-status":"disabled",
-        "message":null,"results":null
-    },
-    {
-        "job-name":"doc-Product-6.3-Book1-en-US (test)",
-        "product":"Product",
-        "version":"6.3",
-        "environment":"prod",
-        "book-name":"Book2",
-        "job-status":"unstable",
-        "message":"Total: 7  Passed: 5  Failed: 2",
-        "results":
-        {
-            "total":  7,
-            "passed": 5,
-            "failed": 2
-        },
-    }
-]
+{"products":
+    {"Red Hat Enterprise Linux":
+        {"versions":
+            {"7":
+                {"titles":
+                    {"Developer Guide":
+                     {"tests":
+                      {"preview":
+                       {"job-name":
+                        "doc-Red_Hat_Enterprise_Linux-7-Developer_Guide-en-US (test-preview)",
+                        "disabled":false,
+                        "book-name":"Developer Guide",
+                        "job-status":"failure",
+                        "product":"Red Hat Enterprise Linux",
+                        "environment":"preview",
+                        "version":"7",
+                        "message":null,
+                        "results":null},
+                       "stage":
+                       {"job-name":
+                        "doc-Red_Hat_Enterprise_Linux-7-Developer_Guide-en-US (test-stage)",
+                        "disabled":false,
+                        "book-name":"Developer Guide",
+                        "job-status":"failure",
+                        "product":"Red Hat Enterprise Linux",
+                        "environment":"stage",
+                        "version":"7",
+                        "message":null,
+                        "results":null},
+                       "prod":null}
+                      }
+                     }
+                },
+             "6":
+                {"titles":
+                    {"Security Guide":
+                     {"tests":
+                      {"preview":
+                       {"job-name":
+                        "doc-Red_Hat_Enterprise_Linux-6-Security_Guide-en-US (test-preview)",
+                        "disabled":false,
+                        "book-name":"Security Guide",
+                        "job-status":"unstable",
+                        "product":"Red Hat Enterprise Linux",
+                        "environment":"preview",
+                        "version":"6",
+                        "message":null,
+                        "results":null},
+                       "stage":
+                       {"job-name":
+                        "doc-Red_Hat_Enterprise_Linux-6-Security_Guide-en-US (test-stage)",
+                        "disabled":false,
+                        "book-name":"Security Guide",
+                        "job-status":"unstable",
+                        "product":"Red Hat Enterprise Linux",
+                        "environment":"stage",
+                        "version":"6",
+                        "message":null,
+                        "results":null},
+                       "prod":
+                       {"job-name":
+                        "doc-Red_Hat_Enterprise_Linux-6-Security_Guide-en-US (test-prod)",
+                        "disabled":false,
+                        "book-name":"Security Guide",
+                        "job-status":"unstable",
+                        "product":"Red Hat Enterprise Linux",
+                        "environment":"prod",
+                        "version":"6",
+                        "message":null,
+                        "results":null}
+                       }
+                      }
+                     }
+                 }
+             }
+         }
+     }
+}
 ----
 
 
@@ -431,6 +483,17 @@ Response when error occurs:
     "message"  : "Job does not exist"
 }
 ----
+
+[source,json]
+----
+{
+    "status"   : "error",
+    "job-name" : "doc-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US (test)",
+    "command"  : "get_job_results",
+    "message"  : "can not read test results"
+}
+----
+
 
 
 Start job
