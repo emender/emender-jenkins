@@ -23,3 +23,22 @@
     [function-name]
     (clojure.test/function? function-name))
 
+
+(deftest test-read-request-body-existence
+    "Check that the emender-jenkins.rest-api/read-request-body definition exists."
+    (testing "if the emender-jenkins.rest-api/read-request-body definition exists."
+        (is (callable? 'emender-jenkins.rest-api/read-request-body))))
+
+
+(deftest test-body->results-existence
+    "Check that the emender-jenkins.rest-api/body->results definition exists."
+    (testing "if the emender-jenkins.rest-api/body->results definition exists."
+        (is (callable? 'emender-jenkins.rest-api/body->results))))
+
+
+(deftest test-body->job-info-existence
+    "Check that the emender-jenkins.rest-api/body->job-info definition exists."
+    (testing "if the emender-jenkins.rest-api/body->job-info definition exists."
+        (is (callable? 'emender-jenkins.rest-api/body->job-info))))
+
+
