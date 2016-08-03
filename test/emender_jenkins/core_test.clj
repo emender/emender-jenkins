@@ -27,6 +27,36 @@
 ; Tests for various function definitions
 ;
 
+(deftest test-get-cors-headers-existence
+    "Check that the emender-jenkins.core/get-cors-headers definition exists."
+    (testing "if the emender-jenkins.core/get-cors-headers definition exists."
+        (is (callable? 'emender-jenkins.core/get-cors-headers))))
+
+
+(deftest test-origin-allowed?-existence
+    "Check that the emender-jenkins.core/origin-allowed? definition exists."
+    (testing "if the emender-jenkins.core/origin-allowed? definition exists."
+        (is (callable? 'emender-jenkins.core/origin-allowed?))))
+
+
+(deftest test-all-cors-existence
+    "Check that the emender-jenkins.core/all-cors definition exists."
+    (testing "if the emender-jenkins.core/all-cors definition exists."
+        (is (callable? 'emender-jenkins.core/all-cors))))
+
+
+(deftest test-start-server-on-regular-machine-existence
+    "Check that the emender-jenkins.core/start-server-on-regular-machine definition exists."
+    (testing "if the emender-jenkins.core/start-server-on-regular-machine definition exists."
+        (is (callable? 'emender-jenkins.core/start-server-on-regular-machine))))
+
+
+(deftest test-start-server-on-openshift-existence
+    "Check that the emender-jenkins.core/start-server-on-openshift definition exists."
+    (testing "if the emender-jenkins.core/start-server-on-openshift definition exists."
+        (is (callable? 'emender-jenkins.core/start-server-on-openshift))))
+
+
 (deftest test-start-server-existence
     "Check that the emender-jenkins.core/start-server definition exists."
     (testing "if the emender-jenkins.core/start-server definition exists."
