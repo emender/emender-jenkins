@@ -179,31 +179,35 @@
 (defn select-results-for-book
     "Select results for given book and return them as a map with results separated for preview, stage, prod."
     [product version book-name results]
-    {:preview (job-for-environment product version book-name :preview results)
-     :stage   (job-for-environment product version book-name :stage   results)
-     :prod    (job-for-environment product version book-name :prod    results)})
+    {:jobs
+        {:preview (job-for-environment product version book-name :preview results)
+         :stage   (job-for-environment product version book-name :stage   results)
+         :prod    (job-for-environment product version book-name :prod    results)}})
 
 (defn select-results-for-product-version
     "Select results for all books for given product and version."
     [product version results]
-    (into {}
-          (for [book (books-for-product-version results product version)]
-               [book (select-results-for-book product version book results)])))
+    {:books
+        (into {}
+              (for [book (books-for-product-version results product version)]
+                   [book (select-results-for-book product version book results)]))})
 
 (defn select-results-for-product
     "Select results for all books for given product."
     [product results]
-    (into {}
-          (for [version (versions-per-products product results)]
-               [version (select-results-for-product-version product version results)])))
+    {:versions
+        (into {}
+              (for [version (versions-per-products product results)]
+                   [version (select-results-for-product-version product version results)]))})
 
 (defn get-job-results
     [product version]
     (let [results  (read-job-results product version)
           products (all-products results)] ; set of all products read from test results
-          (into {}
-                (for [product products]
-                     [product (select-results-for-product product results)]))))
+          {:products
+              (into {}
+                    (for [product products]
+                         [product (select-results-for-product product results)]))}))
 
 (defn find-job-with-name
     [job-name]
@@ -215,5 +219,11 @@
         (some #(= job-name (:job-name %)) @results)))
 
 ; REPL testing
-;(def results (atom (clojure.edn/read-string (slurp "x.edn"))))
+; (require '[clojure.pprint :as pprint])
+; (require '[clojure.edn])
+; (def results (atom (clojure.edn/read-string (slurp "x.edn"))))
+
+; (clojure.pprint/pprint
+; (get-job-results "Red Hat Enterprise Linux" "6")
+; )
 
