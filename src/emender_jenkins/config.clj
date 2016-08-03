@@ -79,3 +79,8 @@
     [request]
     (-> request :configuration :jenkins :jenkins-auth))
 
+(defn pretty-print?
+    "Read the pretty-print settings (it is used for JSON output etc.)"
+    [request]
+    (-> request :configuration :config :pretty-print))
+
