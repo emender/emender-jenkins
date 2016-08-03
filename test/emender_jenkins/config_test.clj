@@ -86,3 +86,9 @@
     (testing "if the emender-jenkins.config/get-jenkins-auth definition exists."
         (is (callable? 'emender-jenkins.config/get-jenkins-auth))))
 
+
+(deftest test-pretty-print?-existence
+    "Check that the emender-jenkins.config/pretty-print? definition exists."
+    (testing "if the emender-jenkins.config/pretty-print? definition exists."
+        (is (callable? 'emender-jenkins.config/pretty-print?))))
+
