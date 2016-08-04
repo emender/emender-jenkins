@@ -147,6 +147,15 @@
             (assoc-in-if-not-nil {:first {:left "L" :right "R"} :second {:left "L" :right "R"}} [:second :left] "***")  {:first {:left "L",   :right "R"},   :second {:left "***", :right "R"}}
             (assoc-in-if-not-nil {:first {:left "L" :right "R"} :second {:left "L" :right "R"}} [:second :right] "***") {:first {:left "L",   :right "R"},   :second {:left "L",   :right "***"}})))
 
+(deftest test-assoc-in-if-not-nil-6
+    "Check the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+    (testing "the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+        (are [x y] (= x y)
+            (assoc-in-if-not-nil {:first {:left "L" :right "R"} :second {:left "L" :right "R"}} [:first :left] nil)   {:first {:left "L", :right "R"}, :second {:left "L", :right "R"}}
+            (assoc-in-if-not-nil {:first {:left "L" :right "R"} :second {:left "L" :right "R"}} [:first :right] nil)  {:first {:left "L", :right "R"}, :second {:left "L", :right "R"}}
+            (assoc-in-if-not-nil {:first {:left "L" :right "R"} :second {:left "L" :right "R"}} [:second :left] nil)  {:first {:left "L", :right "R"}, :second {:left "L", :right "R"}}
+            (assoc-in-if-not-nil {:first {:left "L" :right "R"} :second {:left "L" :right "R"}} [:second :right] nil) {:first {:left "L", :right "R"}, :second {:left "L", :right "R"}})))
+
 (deftest test-print-configuration
     "Check the behaviour of function emender-jenkins.config/print-configuration."
         ; use mock instead of clojure.pprint/pprint
