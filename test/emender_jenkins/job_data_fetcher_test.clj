@@ -60,3 +60,20 @@
         (is (callable? 'emender-jenkins.job-data_fetcher/get-formatted-time))))
 
 
+(deftest test-run-fetcher-in-a-loop-existence
+    "Check that the emender-jenkins.job-data_fetcher/run-fetcher-in-a-loop definition exists."
+    (testing "if the emender-jenkins.job-data_fetcher/run-fetcher-in-a-loop definition exists."
+        (is (callable? 'emender-jenkins.job-data_fetcher/run-fetcher-in-a-loop))))
+
+
+(deftest test-run-fetcher-existence
+    "Check that the emender-jenkins.job-data_fetcher/run-fetcher definition exists."
+    (testing "if the emender-jenkins.job-data_fetcher/run-fetcher definition exists."
+        (is (callable? 'emender-jenkins.job-data_fetcher/run-fetcher))))
+
+
+(deftest test-run-fetcher-in-thread-existence
+    "Check that the emender-jenkins.job-data_fetcher/run-fetcher-in-thread definition exists."
+    (testing "if the emender-jenkins.job-data_fetcher/run-fetcher-in-thread definition exists."
+        (is (callable? 'emender-jenkins.job-data_fetcher/run-fetcher-in-thread))))
+
