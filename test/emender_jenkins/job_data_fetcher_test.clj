@@ -42,3 +42,21 @@
         (is (callable? 'emender-jenkins.job-data_fetcher/compute-sleep-amount))))
 
 
+(deftest test-fetch-data-existence
+    "Check that the emender-jenkins.job-data_fetcher/fetch-data definition exists."
+    (testing "if the emender-jenkins.job-data_fetcher/fetch-data definition exists."
+        (is (callable? 'emender-jenkins.job-data_fetcher/fetch-data))))
+
+
+(deftest test-try-to-fetch-data-existence
+    "Check that the emender-jenkins.job-data_fetcher/try-to-fetch-data definition exists."
+    (testing "if the emender-jenkins.job-data_fetcher/try-to-fetch-data definition exists."
+        (is (callable? 'emender-jenkins.job-data_fetcher/try-to-fetch-data))))
+
+
+(deftest test-get-formatted-time-existence
+    "Check that the emender-jenkins.job-data_fetcher/get-formatted-time definition exists."
+    (testing "if the emender-jenkins.job-data_fetcher/get-formatted-time definition exists."
+        (is (callable? 'emender-jenkins.job-data_fetcher/get-formatted-time))))
+
+
