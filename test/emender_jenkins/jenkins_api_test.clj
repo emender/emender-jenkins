@@ -120,3 +120,26 @@
         (is (callable? 'emender-jenkins.jenkins-api/delete-job))))
 
 
+(deftest test-log-operation-existence
+    "Check that the emender-jenkins.jenkins-api/log-operation definition exists."
+    (testing "if the emender-jenkins.jenkins-api/log-operation definition exists."
+        (is (callable? 'emender-jenkins.jenkins-api/log-operation))))
+
+
+(deftest test-send-configuration-xml-to-jenkins-existence
+    "Check that the emender-jenkins.jenkins-api/send-configuration-xml-to-jenkins definition exists."
+    (testing "if the emender-jenkins.jenkins-api/send-configuration-xml-to-jenkins definition exists."
+        (is (callable? 'emender-jenkins.jenkins-api/send-configuration-xml-to-jenkins))))
+
+
+(deftest test-create-job-existence
+    "Check that the emender-jenkins.jenkins-api/create-job definition exists."
+    (testing "if the emender-jenkins.jenkins-api/create-job definition exists."
+        (is (callable? 'emender-jenkins.jenkins-api/create-job))))
+
+
+(deftest test-update-job-existence
+    "Check that the emender-jenkins.jenkins-api/update-job definition exists."
+    (testing "if the emender-jenkins.jenkins-api/update-job definition exists."
+        (is (callable? 'emender-jenkins.jenkins-api/update-job))))
+
