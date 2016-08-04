@@ -92,3 +92,18 @@
     (testing "if the emender-jenkins.config/pretty-print? definition exists."
         (is (callable? 'emender-jenkins.config/pretty-print?))))
 
+;
+; Test for function behaviours
+;
+
+(deftest test-assoc-in-if-not-nil-1
+    "Check the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+    (testing "the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+        (are [x y] (= x y)
+            (assoc-in-if-not-nil {:first 1 :second 2} [:third] 3)        {:first 1 :second 2 :third 3}
+            (assoc-in-if-not-nil {:first 1 :second 2} [:third] "string") {:first 1 :second 2 :third "string"}
+            (assoc-in-if-not-nil {:first 1 :second 2} [:third] '())      {:first 1 :second 2 :third ()}
+            (assoc-in-if-not-nil {:first 1 :second 2} [:third] [])       {:first 1 :second 2 :third []}
+            (assoc-in-if-not-nil {:first 1 :second 2} [:third] '(1 2 3)) {:first 1 :second 2 :third '(1 2 3)}
+            (assoc-in-if-not-nil {:first 1 :second 2} [:third] [1 2 3])  {:first 1 :second 2 :third [1 2 3]})))
+
