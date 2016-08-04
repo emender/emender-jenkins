@@ -137,3 +137,12 @@
             (assoc-in-if-not-nil {:first 1 :second 2} [:second] '(1 2 3)) {:first 1 :second '(1 2 3)}
             (assoc-in-if-not-nil {:first 1 :second 2} [:second] [1 2 3])  {:first 1 :second [1 2 3]})))
 
+(deftest test-assoc-in-if-not-nil-5
+    "Check the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+    (testing "the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+        (are [x y] (= x y)
+            (assoc-in-if-not-nil {:first {:left "L" :right "R"} :second {:left "L" :right "R"}} [:first :left] "***")   {:first {:left "***", :right "R"},   :second {:left "L",   :right "R"}}
+            (assoc-in-if-not-nil {:first {:left "L" :right "R"} :second {:left "L" :right "R"}} [:first :right] "***")  {:first {:left "L",   :right "***"}, :second {:left "L",   :right "R"}}
+            (assoc-in-if-not-nil {:first {:left "L" :right "R"} :second {:left "L" :right "R"}} [:second :left] "***")  {:first {:left "L",   :right "R"},   :second {:left "***", :right "R"}}
+            (assoc-in-if-not-nil {:first {:left "L" :right "R"} :second {:left "L" :right "R"}} [:second :right] "***") {:first {:left "L",   :right "R"},   :second {:left "L",   :right "***"}})))
+
