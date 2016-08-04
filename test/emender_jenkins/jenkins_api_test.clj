@@ -84,6 +84,18 @@
         (is (callable? 'emender-jenkins.jenkins-api/error-response-structure))))
 
 
+(deftest test-job-related-command-existence
+    "Check that the emender-jenkins.jenkins-api/job-related-command definition exists."
+    (testing "if the emender-jenkins.jenkins-api/job-related-command definition exists."
+        (is (callable? 'emender-jenkins.jenkins-api/job-related-command))))
+
+
+(deftest test-update-template-existence
+    "Check that the emender-jenkins.jenkins-api/update-template definition exists."
+    (testing "if the emender-jenkins.jenkins-api/update-template definition exists."
+        (is (callable? 'emender-jenkins.jenkins-api/update-template))))
+
+
 (deftest test-start-job-existence
     "Check that the emender-jenkins.jenkins-api/start-job definition exists."
     (testing "if the emender-jenkins.jenkins-api/start-job definition exists."
