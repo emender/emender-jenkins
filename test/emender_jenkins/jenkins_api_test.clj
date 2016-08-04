@@ -84,3 +84,27 @@
         (is (callable? 'emender-jenkins.jenkins-api/error-response-structure))))
 
 
+(deftest test-start-job-existence
+    "Check that the emender-jenkins.jenkins-api/start-job definition exists."
+    (testing "if the emender-jenkins.jenkins-api/start-job definition exists."
+        (is (callable? 'emender-jenkins.jenkins-api/start-job))))
+
+
+(deftest test-enable-job-existence
+    "Check that the emender-jenkins.jenkins-api/enable-job definition exists."
+    (testing "if the emender-jenkins.jenkins-api/enable-job definition exists."
+        (is (callable? 'emender-jenkins.jenkins-api/enable-job))))
+
+
+(deftest test-disable-job-existence
+    "Check that the emender-jenkins.jenkins-api/disable-job definition exists."
+    (testing "if the emender-jenkins.jenkins-api/disable-job definition exists."
+        (is (callable? 'emender-jenkins.jenkins-api/disable-job))))
+
+
+(deftest test-delete-job-existence
+    "Check that the emender-jenkins.jenkins-api/delete-job definition exists."
+    (testing "if the emender-jenkins.jenkins-api/delete-job definition exists."
+        (is (callable? 'emender-jenkins.jenkins-api/delete-job))))
+
+
