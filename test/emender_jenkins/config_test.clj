@@ -107,3 +107,11 @@
             (assoc-in-if-not-nil {:first 1 :second 2} [:third] '(1 2 3)) {:first 1 :second 2 :third '(1 2 3)}
             (assoc-in-if-not-nil {:first 1 :second 2} [:third] [1 2 3])  {:first 1 :second 2 :third [1 2 3]})))
 
+(deftest test-assoc-in-if-not-nil-2
+    "Check the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+    (testing "the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+        (are [x y] (= x y)
+            (assoc-in-if-not-nil {:first 1 :second 2} [:third] nil)   {:first 1 :second 2}
+            (assoc-in-if-not-nil {:first 1 :second 2} [:third] false) {:first 1 :second 2}
+            (assoc-in-if-not-nil {:first 1 :second 2} [:third] true)  {:first 1 :second 2 :third true})))
+
