@@ -25,55 +25,55 @@
 
 
 (deftest test-minutes-to-seconds-existence
-    "Check that the emender-jenkins.job-data_fetcher/minutes-to-seconds definition exists."
-    (testing "if the emender-jenkins.job-data_fetcher/minutes-to-seconds definition exists."
-        (is (callable? 'emender-jenkins.job-data_fetcher/minutes-to-seconds))))
+    "Check that the emender-jenkins.job-data-fetcher/minutes-to-seconds definition exists."
+    (testing "if the emender-jenkins.job-data-fetcher/minutes-to-seconds definition exists."
+        (is (callable? 'emender-jenkins.job-data-fetcher/minutes-to-seconds))))
 
 
 (deftest test-seconds-to-ms-existence
-    "Check that the emender-jenkins.job-data_fetcher/seconds-to-ms definition exists."
-    (testing "if the emender-jenkins.job-data_fetcher/seconds-to-ms definition exists."
-        (is (callable? 'emender-jenkins.job-data_fetcher/seconds-to-ms))))
+    "Check that the emender-jenkins.job-data-fetcher/seconds-to-ms definition exists."
+    (testing "if the emender-jenkins.job-data-fetcher/seconds-to-ms definition exists."
+        (is (callable? 'emender-jenkins.job-data-fetcher/seconds-to-ms))))
 
 
 (deftest test-compute-sleep-amount-existence
-    "Check that the emender-jenkins.job-data_fetcher/compute-sleep-amount definition exists."
-    (testing "if the emender-jenkins.job-data_fetcher/compute-sleep-amount definition exists."
-        (is (callable? 'emender-jenkins.job-data_fetcher/compute-sleep-amount))))
+    "Check that the emender-jenkins.job-data-fetcher/compute-sleep-amount definition exists."
+    (testing "if the emender-jenkins.job-data-fetcher/compute-sleep-amount definition exists."
+        (is (callable? 'emender-jenkins.job-data-fetcher/compute-sleep-amount))))
 
 
 (deftest test-fetch-data-existence
-    "Check that the emender-jenkins.job-data_fetcher/fetch-data definition exists."
-    (testing "if the emender-jenkins.job-data_fetcher/fetch-data definition exists."
-        (is (callable? 'emender-jenkins.job-data_fetcher/fetch-data))))
+    "Check that the emender-jenkins.job-data-fetcher/fetch-data definition exists."
+    (testing "if the emender-jenkins.job-data-fetcher/fetch-data definition exists."
+        (is (callable? 'emender-jenkins.job-data-fetcher/fetch-data))))
 
 
 (deftest test-try-to-fetch-data-existence
-    "Check that the emender-jenkins.job-data_fetcher/try-to-fetch-data definition exists."
-    (testing "if the emender-jenkins.job-data_fetcher/try-to-fetch-data definition exists."
-        (is (callable? 'emender-jenkins.job-data_fetcher/try-to-fetch-data))))
+    "Check that the emender-jenkins.job-data-fetcher/try-to-fetch-data definition exists."
+    (testing "if the emender-jenkins.job-data-fetcher/try-to-fetch-data definition exists."
+        (is (callable? 'emender-jenkins.job-data-fetcher/try-to-fetch-data))))
 
 
 (deftest test-get-formatted-time-existence
-    "Check that the emender-jenkins.job-data_fetcher/get-formatted-time definition exists."
-    (testing "if the emender-jenkins.job-data_fetcher/get-formatted-time definition exists."
-        (is (callable? 'emender-jenkins.job-data_fetcher/get-formatted-time))))
+    "Check that the emender-jenkins.job-data-fetcher/get-formatted-time definition exists."
+    (testing "if the emender-jenkins.job-data-fetcher/get-formatted-time definition exists."
+        (is (callable? 'emender-jenkins.job-data-fetcher/get-formatted-time))))
 
 
 (deftest test-run-fetcher-in-a-loop-existence
-    "Check that the emender-jenkins.job-data_fetcher/run-fetcher-in-a-loop definition exists."
-    (testing "if the emender-jenkins.job-data_fetcher/run-fetcher-in-a-loop definition exists."
-        (is (callable? 'emender-jenkins.job-data_fetcher/run-fetcher-in-a-loop))))
+    "Check that the emender-jenkins.job-data-fetcher/run-fetcher-in-a-loop definition exists."
+    (testing "if the emender-jenkins.job-data-fetcher/run-fetcher-in-a-loop definition exists."
+        (is (callable? 'emender-jenkins.job-data-fetcher/run-fetcher-in-a-loop))))
 
 
 (deftest test-run-fetcher-existence
-    "Check that the emender-jenkins.job-data_fetcher/run-fetcher definition exists."
-    (testing "if the emender-jenkins.job-data_fetcher/run-fetcher definition exists."
-        (is (callable? 'emender-jenkins.job-data_fetcher/run-fetcher))))
+    "Check that the emender-jenkins.job-data-fetcher/run-fetcher definition exists."
+    (testing "if the emender-jenkins.job-data-fetcher/run-fetcher definition exists."
+        (is (callable? 'emender-jenkins.job-data-fetcher/run-fetcher))))
 
 
 (deftest test-run-fetcher-in-thread-existence
-    "Check that the emender-jenkins.job-data_fetcher/run-fetcher-in-thread definition exists."
-    (testing "if the emender-jenkins.job-data_fetcher/run-fetcher-in-thread definition exists."
-        (is (callable? 'emender-jenkins.job-data_fetcher/run-fetcher-in-thread))))
+    "Check that the emender-jenkins.job-data-fetcher/run-fetcher-in-thread definition exists."
+    (testing "if the emender-jenkins.job-data-fetcher/run-fetcher-in-thread definition exists."
+        (is (callable? 'emender-jenkins.job-data-fetcher/run-fetcher-in-thread))))
 
