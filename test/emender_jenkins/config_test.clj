@@ -163,3 +163,8 @@
             (is (not (nil? (print-configuration {:first 1 :second 2}))))
             (is (= (type (print-configuration   {:first 1 :second 2})) java.lang.String))))
 
+(deftest test-load-configuration-from-ini-1
+    "Check the behaviour of function emender-jenkins.config/load-configuration-from-ini-1."
+    (let [cfg (load-configuration-from-ini "test/test1.ini")]
+        (is (not (nil? cfg)))))
+
