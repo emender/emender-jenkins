@@ -54,3 +54,33 @@
         (is (callable? 'emender-jenkins.jenkins-api/read-list-of-all-jobs))))
 
 
+(deftest test-filter-test-jobs-existence
+    "Check that the emender-jenkins.jenkins-api/filter-test-jobs definition exists."
+    (testing "if the emender-jenkins.jenkins-api/filter-test-jobs definition exists."
+        (is (callable? 'emender-jenkins.jenkins-api/filter-test-jobs))))
+
+
+(deftest test-read-list-of-test-jobs-existence
+    "Check that the emender-jenkins.jenkins-api/read-list-of-test-jobs definition exists."
+    (testing "if the emender-jenkins.jenkins-api/read-list-of-test-jobs definition exists."
+        (is (callable? 'emender-jenkins.jenkins-api/read-list-of-test-jobs))))
+
+
+(deftest test-read-job-results-existence
+    "Check that the emender-jenkins.jenkins-api/read-job-results definition exists."
+    (testing "if the emender-jenkins.jenkins-api/read-job-results definition exists."
+        (is (callable? 'emender-jenkins.jenkins-api/read-job-results))))
+
+
+(deftest test-ok-response-structure-existence
+    "Check that the emender-jenkins.jenkins-api/ok-response-structure definition exists."
+    (testing "if the emender-jenkins.jenkins-api/ok-response-structure definition exists."
+        (is (callable? 'emender-jenkins.jenkins-api/ok-response-structure))))
+
+
+(deftest test-error-response-structure-existence
+    "Check that the emender-jenkins.jenkins-api/error-response-structure definition exists."
+    (testing "if the emender-jenkins.jenkins-api/error-response-structure definition exists."
+        (is (callable? 'emender-jenkins.jenkins-api/error-response-structure))))
+
+
