@@ -11,7 +11,8 @@
 ;
 
 (ns emender-jenkins.config-test
-  (:require [clojure.test :refer :all]
+  (:require [clojure.test   :refer :all]
+            [clojure.pprint :as     pprint]
             [emender-jenkins.config :refer :all]))
 
 ;
@@ -145,4 +146,11 @@
             (assoc-in-if-not-nil {:first {:left "L" :right "R"} :second {:left "L" :right "R"}} [:first :right] "***")  {:first {:left "L",   :right "***"}, :second {:left "L",   :right "R"}}
             (assoc-in-if-not-nil {:first {:left "L" :right "R"} :second {:left "L" :right "R"}} [:second :left] "***")  {:first {:left "L",   :right "R"},   :second {:left "***", :right "R"}}
             (assoc-in-if-not-nil {:first {:left "L" :right "R"} :second {:left "L" :right "R"}} [:second :right] "***") {:first {:left "L",   :right "R"},   :second {:left "L",   :right "***"}})))
+
+(deftest test-print-configuration
+    "Check the behaviour of function emender-jenkins.config/print-configuration."
+        ; use mock instead of clojure.pprint/pprint
+        (with-redefs [pprint/pprint (fn [configuration] (str configuration))]
+            (is (not (nil? (print-configuration {:first 1 :second 2}))))
+            (is (= (type (print-configuration   {:first 1 :second 2})) java.lang.String))))
 
