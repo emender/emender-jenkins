@@ -179,3 +179,13 @@
         (is (not (nil? (:fetcher cfg))))
         (is (nil? (:other cfg)))))
 
+(deftest test-load-configuration-from-ini-3
+    "Check the behaviour of function emender-jenkins.config/load-configuration-from-ini."
+    (let [cfg (load-configuration-from-ini "test/test1.ini")]
+        (are [x y] (= x y)
+            (-> cfg :info  :version)                   "0.1.0"
+            (-> cfg :jenkins :jenkins-url)             "http://10.34.3.139:8080/"
+            (-> cfg :jenkins :jenkins-job-prefix-url)  "job/"
+            (-> cfg :jenkins :jenkins-job-list-url)    "api/json?tree=jobs[name,url,color,scm[userRemoteConfigs[url]],buildable,lastSuccessfulBuild[description]]"
+            (-> cfg :jenkins :jenkins-auth)            "")))
+
