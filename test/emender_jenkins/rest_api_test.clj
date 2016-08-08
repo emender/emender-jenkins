@@ -114,3 +114,86 @@
         (is (callable? 'emender-jenkins.rest-api/job-already-exist-response))))
 
 
+(deftest test-start-job-existence
+    "Check that the emender-jenkins.rest-api/start-job definition exists."
+    (testing "if the emender-jenkins.rest-api/start-job definition exists."
+        (is (callable? 'emender-jenkins.rest-api/start-job))))
+
+
+(deftest test-enable-job-existence
+    "Check that the emender-jenkins.rest-api/enable-job definition exists."
+    (testing "if the emender-jenkins.rest-api/enable-job definition exists."
+        (is (callable? 'emender-jenkins.rest-api/enable-job))))
+
+
+(deftest test-disable-job-existence
+    "Check that the emender-jenkins.rest-api/disable-job definition exists."
+    (testing "if the emender-jenkins.rest-api/disable-job definition exists."
+        (is (callable? 'emender-jenkins.rest-api/disable-job))))
+
+
+(deftest test-delete-job-existence
+    "Check that the emender-jenkins.rest-api/delete-job definition exists."
+    (testing "if the emender-jenkins.rest-api/delete-job definition exists."
+        (is (callable? 'emender-jenkins.rest-api/delete-job))))
+
+
+(deftest test-create-job-existence
+    "Check that the emender-jenkins.rest-api/create-job definition exists."
+    (testing "if the emender-jenkins.rest-api/create-job definition exists."
+        (is (callable? 'emender-jenkins.rest-api/create-job))))
+
+
+(deftest test-uri->job-name-existence
+    "Check that the emender-jenkins.rest-api/uri->job-name definition exists."
+    (testing "if the emender-jenkins.rest-api/uri->job-name definition exists."
+        (is (callable? 'emender-jenkins.rest-api/uri->job-name))))
+
+
+(deftest test-get-job-existence
+    "Check that the emender-jenkins.rest-api/get-job definition exists."
+    (testing "if the emender-jenkins.rest-api/get-job definition exists."
+        (is (callable? 'emender-jenkins.rest-api/get-job))))
+
+
+(deftest test-update-job-existence
+    "Check that the emender-jenkins.rest-api/update-job definition exists."
+    (testing "if the emender-jenkins.rest-api/update-job definition exists."
+        (is (callable? 'emender-jenkins.rest-api/update-job))))
+
+
+(deftest test-get-jobs-existence
+    "Check that the emender-jenkins.rest-api/get-jobs definition exists."
+    (testing "if the emender-jenkins.rest-api/get-jobs definition exists."
+        (is (callable? 'emender-jenkins.rest-api/get-jobs))))
+
+
+(deftest test-get-job-results-existence
+    "Check that the emender-jenkins.rest-api/get-job-results definition exists."
+    (testing "if the emender-jenkins.rest-api/get-job-results definition exists."
+        (is (callable? 'emender-jenkins.rest-api/get-job-results))))
+
+
+(deftest test-job-started-handler-existence
+    "Check that the emender-jenkins.rest-api/job-started-handler definition exists."
+    (testing "if the emender-jenkins.rest-api/job-started-handler definition exists."
+        (is (callable? 'emender-jenkins.rest-api/job-started-handler))))
+
+
+(deftest test-job-finished-handler-existence
+    "Check that the emender-jenkins.rest-api/job-finished-handler definition exists."
+    (testing "if the emender-jenkins.rest-api/job-finished-handler definition exists."
+        (is (callable? 'emender-jenkins.rest-api/job-finished-handler))))
+
+
+(deftest test-job-results-existence
+    "Check that the emender-jenkins.rest-api/job-results definition exists."
+    (testing "if the emender-jenkins.rest-api/job-results definition exists."
+        (is (callable? 'emender-jenkins.rest-api/job-results))))
+
+
+(deftest test-unknown-call-handler-existence
+    "Check that the emender-jenkins.rest-api/unknown-call-handler definition exists."
+    (testing "if the emender-jenkins.rest-api/unknown-call-handler definition exists."
+        (is (callable? 'emender-jenkins.rest-api/unknown-call-handler))))
+
