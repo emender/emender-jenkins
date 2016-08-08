@@ -65,6 +65,25 @@
         (is (callable? 'emender-jenkins.server/get-hostname))))
 
 
+
+(deftest test-get-hostname-existence
+    "Check that the emender-jenkins.server/get-hostname definition exists."
+    (testing "if the emender-jenkins.server/get-hostname definition exists."
+        (is (callable? 'emender-jenkins.server/get-hostname))))
+
+
+(deftest test-get-api-command-existence
+    "Check that the emender-jenkins.server/get-api-command definition exists."
+    (testing "if the emender-jenkins.server/get-api-command definition exists."
+        (is (callable? 'emender-jenkins.server/get-api-command))))
+
+
+(deftest test-api-call-handler-existence
+    "Check that the emender-jenkins.server/api-call-handler definition exists."
+    (testing "if the emender-jenkins.server/api-call-handler definition exists."
+        (is (callable? 'emender-jenkins.server/api-call-handler))))
+
+
 ;(get-api-command nil "/api")
 
 ;(get-api-command "/" "/api")
