@@ -78,3 +78,21 @@
         (is (callable? 'emender-jenkins.rest-api/configuration-handler))))
 
 
+(deftest test-system-banners-existence
+    "Check that the emender-jenkins.rest-api/system-banners definition exists."
+    (testing "if the emender-jenkins.rest-api/system-banners definition exists."
+        (is (callable? 'emender-jenkins.rest-api/system-banners))))
+
+
+(deftest test-reload-job-list-existence
+    "Check that the emender-jenkins.rest-api/reload-job-list definition exists."
+    (testing "if the emender-jenkins.rest-api/reload-job-list definition exists."
+        (is (callable? 'emender-jenkins.rest-api/reload-job-list))))
+
+
+(deftest test-reload-all-results-existence
+    "Check that the emender-jenkins.rest-api/reload-all-results definition exists."
+    (testing "if the emender-jenkins.rest-api/reload-all-results definition exists."
+        (is (callable? 'emender-jenkins.rest-api/reload-all-results))))
+
+
