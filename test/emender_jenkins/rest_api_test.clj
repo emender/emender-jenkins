@@ -42,3 +42,21 @@
         (is (callable? 'emender-jenkins.rest-api/body->job-info))))
 
 
+(deftest test-get-job-name-existence
+    "Check that the emender-jenkins.rest-api/get-job-name definition exists."
+    (testing "if the emender-jenkins.rest-api/get-job-name definition exists."
+        (is (callable? 'emender-jenkins.rest-api/get-job-name))))
+
+
+(deftest test-get-job-name-from-body-existence
+    "Check that the emender-jenkins.rest-api/get-job-name-from-body definition exists."
+    (testing "if the emender-jenkins.rest-api/get-job-name-from-body definition exists."
+        (is (callable? 'emender-jenkins.rest-api/get-job-name-from-body))))
+
+
+(deftest test-send-response-existence
+    "Check that the emender-jenkins.rest-api/send-response definition exists."
+    (testing "if the emender-jenkins.rest-api/send-response definition exists."
+        (is (callable? 'emender-jenkins.rest-api/send-response))))
+
+
