@@ -47,6 +47,24 @@
 
 
 
+(deftest test-render-front-page-existence
+    "Check that the emender-jenkins.server/render-front-page definition exists."
+    (testing "if the emender-jenkins.server/render-front-page definition exists."
+        (is (callable? 'emender-jenkins.server/render-front-page))))
+
+
+(deftest test-render-error-page-existence
+    "Check that the emender-jenkins.server/render-error-page definition exists."
+    (testing "if the emender-jenkins.server/render-error-page definition exists."
+        (is (callable? 'emender-jenkins.server/render-error-page))))
+
+
+(deftest test-get-hostname-existence
+    "Check that the emender-jenkins.server/get-hostname definition exists."
+    (testing "if the emender-jenkins.server/get-hostname definition exists."
+        (is (callable? 'emender-jenkins.server/get-hostname))))
+
+
 ;(get-api-command nil "/api")
 
 ;(get-api-command "/" "/api")
