@@ -60,3 +60,21 @@
         (is (callable? 'emender-jenkins.rest-api/send-response))))
 
 
+(deftest test-send-plain-response-existence
+    "Check that the emender-jenkins.rest-api/send-plain-response definition exists."
+    (testing "if the emender-jenkins.rest-api/send-plain-response definition exists."
+        (is (callable? 'emender-jenkins.rest-api/send-plain-response))))
+
+
+(deftest test-info-handler-existence
+    "Check that the emender-jenkins.rest-api/info-handler definition exists."
+    (testing "if the emender-jenkins.rest-api/info-handler definition exists."
+        (is (callable? 'emender-jenkins.rest-api/info-handler))))
+
+
+(deftest test-configuration-handler-existence
+    "Check that the emender-jenkins.rest-api/configuration-handler definition exists."
+    (testing "if the emender-jenkins.rest-api/configuration-handler definition exists."
+        (is (callable? 'emender-jenkins.rest-api/configuration-handler))))
+
+
