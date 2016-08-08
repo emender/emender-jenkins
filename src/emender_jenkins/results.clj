@@ -10,7 +10,8 @@
 ;      Pavel Tisnovsky
 ;
 
-(ns emender-jenkins.results)
+(ns emender-jenkins.results
+    "Module with functions to handle and manipulate test results.")
 
 (require '[clojure.pprint :as pprint])
 

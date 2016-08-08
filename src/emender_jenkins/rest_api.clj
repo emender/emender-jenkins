@@ -10,7 +10,8 @@
 ;      Pavel Tisnovsky
 ;
 
-(ns emender-jenkins.rest-api)
+(ns emender-jenkins.rest-api
+    "Handler for all REST API calls.")
 
 (require '[ring.util.response           :as http-response])
 (require '[clojure.pprint               :as pprint])
