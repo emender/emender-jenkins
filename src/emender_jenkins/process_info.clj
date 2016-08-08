@@ -10,7 +10,8 @@
 ;      Pavel Tisnovsky
 ;
 
-(ns emender-jenkins.process-info)
+(ns emender-jenkins.process-info
+    "Functions that retrieve basic information about the service process.")
 
 (defn get-current-pid
     []

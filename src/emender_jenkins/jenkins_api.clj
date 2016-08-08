@@ -10,7 +10,8 @@
 ;      Pavel Tisnovsky
 ;
 
-(ns emender-jenkins.jenkins-api)
+(ns emender-jenkins.jenkins-api
+    "Module with functions implementing Jenkins API.")
 
 (require '[clojure.xml       :as xml])
 (require '[clojure.zip       :as zip])

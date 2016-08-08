@@ -10,7 +10,8 @@
 ;      Pavel Tisnovsky
 ;
 
-(ns emender-jenkins.irc-bot)
+(ns emender-jenkins.irc-bot
+    "Module containing IRC bot used to inform users about test results.")
 
 (require '[irclj.core :as irc])
 
