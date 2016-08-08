@@ -96,3 +96,21 @@
         (is (callable? 'emender-jenkins.rest-api/reload-all-results))))
 
 
+(deftest test-error-response-existence
+    "Check that the emender-jenkins.rest-api/error-response definition exists."
+    (testing "if the emender-jenkins.rest-api/error-response definition exists."
+        (is (callable? 'emender-jenkins.rest-api/error-response))))
+
+
+(deftest test-job-does-not-exist-response-existence
+    "Check that the emender-jenkins.rest-api/job-does-not-exist-response definition exists."
+    (testing "if the emender-jenkins.rest-api/job-does-not-exist-response definition exists."
+        (is (callable? 'emender-jenkins.rest-api/job-does-not-exist-response))))
+
+
+(deftest test-job-already-exist-response-existence
+    "Check that the emender-jenkins.rest-api/job-already-exist-response definition exists."
+    (testing "if the emender-jenkins.rest-api/job-already-exist-response definition exists."
+        (is (callable? 'emender-jenkins.rest-api/job-already-exist-response))))
+
+
