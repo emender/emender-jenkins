@@ -157,10 +157,17 @@
         (println)))
 
 (defn fetch-jobs-only
-    "Dummy function that will be used just to fetch job data and exports them."
+    "Function that is used just to fetch job data and exports them."
     [options]
-    (println "Generating data2.edn")
-    ;(job-data-fetcher/try-to-fetch-and-export-data)
+    (println "Generating data.edn")
+    (let [jenkins-url         (options :jenkins-url)
+          test-jobs-suffix    (options :test-jobs-suffix)
+          configuration (->
+             (config/load-configuration-from-ini "config.ini")
+             (config/override-options-by-cli jenkins-url test-jobs-suffix))]
+             (results/reload-all-results configuration))
+    ; export loaded data into the 'data.edn' file
+    (spit "data.edn" (with-out-str (clojure.pprint/pprint @results/results)))
     (println "Done"))
 
 (defn show-config
