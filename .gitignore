@@ -10,3 +10,4 @@ pom.xml.asc
 scripts/devel-start-headless_pavel.sh
 scripts/start-headless_pavel.sh
 test/api/vm62*.sh
+data.edn
