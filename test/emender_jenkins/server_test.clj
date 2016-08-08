@@ -28,6 +28,24 @@
 ;
 
 
+(deftest test-return-file-existence
+    "Check that the emender-jenkins.server/return-file definition exists."
+    (testing "if the emender-jenkins.server/return-file definition exists."
+        (is (callable? 'emender-jenkins.server/return-file))))
+
+
+(deftest test-render-front-page-existence
+    "Check that the emender-jenkins.server/render-front-page definition exists."
+    (testing "if the emender-jenkins.server/render-front-page definition exists."
+        (is (callable? 'emender-jenkins.server/render-front-page))))
+
+
+(deftest test-render-error-page-existence
+    "Check that the emender-jenkins.server/render-error-page definition exists."
+    (testing "if the emender-jenkins.server/render-error-page definition exists."
+        (is (callable? 'emender-jenkins.server/render-error-page))))
+
+
 
 ;(get-api-command nil "/api")
 
