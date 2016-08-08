@@ -93,11 +93,13 @@
         ;cors-handler))
 
 (defn start-server-on-regular-machine
+    "Start the service on regular machine."
     [ring-app port]
     (println "Starting the server at the port: " port)
     (jetty/run-jetty ring-app {:port (read-string port)}))
 
 (defn start-server-on-openshift
+    "Start the service on OpenShift machine."
     [ring-app port host]
     (println "Starting the server on openshift at the port: " port " and host: " host)
     (jetty/run-jetty ring-app {:port (read-string port) :host host}))
@@ -132,11 +134,13 @@
         (get-and-check-port specified-port)))
 
 (defn show-help
+    "Show help and all supported CLI flags."
     [summary]
     (println "Usage:")
     (println summary))
 
 (defn print-environment-configuration
+    "Print environment confuguration to the standard output."
     []
     (let [properties (process-info/read-properties)]
         (println "Environment configuration")
@@ -153,12 +157,14 @@
         (println)))
 
 (defn fetch-jobs-only
+    "Dummy function that will be used just to fetch job data and exports them."
     [options]
     (println "Generating data2.edn")
     ;(job-data-fetcher/try-to-fetch-and-export-data)
     (println "Done"))
 
 (defn show-config
+    "Show the current configuration on the standard output."
     [options]
     (let [port                (options :port)
           jenkins-url         (options :jenkins-url)
@@ -173,6 +179,7 @@
         (println "Finished")))
 
 (defn run-app
+    "Starts application on any supported configuration: regular machine or OpenStack VM."
     [options]
     (let [port                (options :port)
           jenkins-url         (options :jenkins-url)
