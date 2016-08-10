@@ -120,3 +120,56 @@
         (is (callable? 'emender-jenkins.results/all-products))))
 
 
+(deftest test-versions-per-products-existence
+    "Check that the emender-jenkins.results/versions-per-products definition exists."
+    (testing "if the emender-jenkins.results/versions-per-products definition exists."
+        (is (callable? 'emender-jenkins.results/versions-per-products))))
+
+
+(deftest test-books-for-product-version-existence
+    "Check that the emender-jenkins.results/books-for-product-version definition exists."
+    (testing "if the emender-jenkins.results/books-for-product-version definition exists."
+        (is (callable? 'emender-jenkins.results/books-for-product-version))))
+
+
+(deftest test-job-for-environment-existence
+    "Check that the emender-jenkins.results/job-for-environment definition exists."
+    (testing "if the emender-jenkins.results/job-for-environment definition exists."
+        (is (callable? 'emender-jenkins.results/job-for-environment))))
+
+
+(deftest test-select-results-for-book-existence
+    "Check that the emender-jenkins.results/select-results-for-book definition exists."
+    (testing "if the emender-jenkins.results/select-results-for-book definition exists."
+        (is (callable? 'emender-jenkins.results/select-results-for-book))))
+
+
+(deftest test-select-results-for-product-version-existence
+    "Check that the emender-jenkins.results/select-results-for-product-version definition exists."
+    (testing "if the emender-jenkins.results/select-results-for-product-version definition exists."
+        (is (callable? 'emender-jenkins.results/select-results-for-product-version))))
+
+
+(deftest test-select-results-for-product-existence
+    "Check that the emender-jenkins.results/select-results-for-product definition exists."
+    (testing "if the emender-jenkins.results/select-results-for-product definition exists."
+        (is (callable? 'emender-jenkins.results/select-results-for-product))))
+
+
+(deftest test-get-job-results-existence
+    "Check that the emender-jenkins.results/get-job-results definition exists."
+    (testing "if the emender-jenkins.results/get-job-results definition exists."
+        (is (callable? 'emender-jenkins.results/get-job-results))))
+
+
+(deftest test-find-job-with-name-existence
+    "Check that the emender-jenkins.results/find-job-with-name definition exists."
+    (testing "if the emender-jenkins.results/find-job-with-name definition exists."
+        (is (callable? 'emender-jenkins.results/find-job-with-name))))
+
+
+(deftest test-job-exists?-existence
+    "Check that the emender-jenkins.results/job-exists? definition exists."
+    (testing "if the emender-jenkins.results/job-exists? definition exists."
+        (is (callable? 'emender-jenkins.results/job-exists?))))
+
