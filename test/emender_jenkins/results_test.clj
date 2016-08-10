@@ -90,3 +90,33 @@
         (is (callable? 'emender-jenkins.results/parse-test-results))))
 
 
+(deftest test-read-update-job-info-existence
+    "Check that the emender-jenkins.results/read-update-job-info definition exists."
+    (testing "if the emender-jenkins.results/read-update-job-info definition exists."
+        (is (callable? 'emender-jenkins.results/read-update-job-info))))
+
+
+(deftest test-reload-all-results-existence
+    "Check that the emender-jenkins.results/reload-all-results definition exists."
+    (testing "if the emender-jenkins.results/reload-all-results definition exists."
+        (is (callable? 'emender-jenkins.results/reload-all-results))))
+
+
+(deftest test-select-jobs-existence
+    "Check that the emender-jenkins.results/select-jobs definition exists."
+    (testing "if the emender-jenkins.results/select-jobs definition exists."
+        (is (callable? 'emender-jenkins.results/select-jobs))))
+
+
+(deftest test-read-job-results-existence
+    "Check that the emender-jenkins.results/read-job-results definition exists."
+    (testing "if the emender-jenkins.results/read-job-results definition exists."
+        (is (callable? 'emender-jenkins.results/read-job-results))))
+
+
+(deftest test-all-products-existence
+    "Check that the emender-jenkins.results/all-products definition exists."
+    (testing "if the emender-jenkins.results/all-products definition exists."
+        (is (callable? 'emender-jenkins.results/all-products))))
+
+
