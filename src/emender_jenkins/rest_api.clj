@@ -205,22 +205,26 @@
 
 (defn update-job
     [request]
-    (let [input-data (-> (read-request-body request)
-                         body->job-info)
-          job-name   (get input-data :name)
-          git-repo   (get input-data :url_to_repo)
-          branch     (get input-data :branch)]
-        (if (results/job-exists? job-name)
-            (if (and job-name git-repo branch)
-                (-> (jenkins-api/update-job (config/get-jenkins-url request)
-                                            (config/get-jenkins-auth request)
-                                            job-name git-repo branch)
-                    ;(reload-job-list request)
-                    (send-response request))
-                (-> (error-response (or job-name "not set!") "update" "invalid input")
-                    (send-error-response request)))
-            (-> (job-does-not-exist-response job-name "update")
-                (send-error-response request)))))
+    (try
+        (let [input-data (-> (read-request-body request)
+                             body->job-info)
+              job-name   (get input-data :name)
+              git-repo   (get input-data :url_to_repo)
+              branch     (get input-data :branch)]
+            (if (results/job-exists? job-name)
+                (if (and job-name git-repo branch)
+                    (-> (jenkins-api/update-job (config/get-jenkins-url request)
+                                                (config/get-jenkins-auth request)
+                                                job-name git-repo branch)
+                        ;(reload-job-list request)
+                        (send-response request))
+                    (-> (error-response (or job-name "not set!") "update" "invalid input")
+                        (send-error-response request)))
+                (-> (job-does-not-exist-response job-name "update")
+                    (send-error-response request))))
+        (catch Exception e
+                (-> (error-response "not set!" "update" "invalid input")
+                    (send-error-response request)))))
 
 (defn get-jobs
     [request]
