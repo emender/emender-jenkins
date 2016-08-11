@@ -167,22 +167,26 @@
 
 (defn create-job
     [request]
-    (let [input-data (-> (read-request-body request)
-                         body->job-info)
-          job-name   (get input-data :name)
-          git-repo   (get input-data :url_to_repo)
-          branch     (get input-data :branch)]
-        (if (results/job-exists? job-name)
-            (-> (job-already-exist-response job-name "create")
-                (send-response request))
-            (if (and job-name git-repo branch)
-                (-> (jenkins-api/create-job (config/get-jenkins-url request)
-                                            (config/get-jenkins-auth request)
-                                            job-name git-repo branch)
-                    (reload-job-list request)
-                    (send-response request))
-                (-> (error-response (or job-name "not set!") "create" "invalid input")
-                    (send-error-response request))))))
+    (try
+        (let [input-data (-> (read-request-body request)
+                             body->job-info)
+              job-name   (get input-data :name)
+              git-repo   (get input-data :url_to_repo)
+              branch     (get input-data :branch)]
+            (if (results/job-exists? job-name)
+                (-> (job-already-exist-response job-name "create")
+                    (send-error-response request))
+                (if (and job-name git-repo branch)
+                    (-> (jenkins-api/create-job (config/get-jenkins-url request)
+                                                (config/get-jenkins-auth request)
+                                                job-name git-repo branch)
+                        (reload-job-list request)
+                        (send-response request))
+                    (-> (error-response (or job-name "not set!") "create" "invalid input")
+                        (send-error-response request)))))
+        (catch Exception e
+                (-> (error-response "not set!" "create" "invalid input")
+                    (send-error-response request)))))
 
 (defn uri->job-name
     [uri prefix]
