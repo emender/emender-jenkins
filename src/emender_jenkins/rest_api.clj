@@ -205,7 +205,12 @@
     (let [job-name (uri->job-name uri "/api/get_job/")]
         (if job-name
             (let [job-metadata (results/find-job-with-name job-name)]
-                 (send-response job-metadata request)))))
+                 (if job-metadata
+                     (send-response job-metadata request))
+                     (-> (job-does-not-exist-response job-name "get-job")
+                         (send-error-response request)))
+            (-> (job-does-not-exist-response job-name "get-job")
+                (send-error-response request)))))
 
 (defn update-job
     [request]
