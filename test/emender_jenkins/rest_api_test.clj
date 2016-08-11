@@ -60,6 +60,12 @@
         (is (callable? 'emender-jenkins.rest-api/send-response))))
 
 
+(deftest test-send-error-response-existence
+    "Check that the emender-jenkins.rest-api/send-error-response definition exists."
+    (testing "if the emender-jenkins.rest-api/send-error-response definition exists."
+        (is (callable? 'emender-jenkins.rest-api/send-error-response))))
+
+
 (deftest test-send-plain-response-existence
     "Check that the emender-jenkins.rest-api/send-plain-response definition exists."
     (testing "if the emender-jenkins.rest-api/send-plain-response definition exists."
