@@ -41,9 +41,12 @@
 
 (defn get-job-name-from-body
     [request]
-    (-> (read-request-body request)
-        body->job-info
-        get-job-name))
+    (try
+        (-> (read-request-body request)
+            body->job-info
+            get-job-name)
+        (catch Exception e
+            nil)))
 
 (defn send-response
     [response request]
