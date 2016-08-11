@@ -53,6 +53,16 @@
         (-> (http-response/response (json/write-str response))
             (http-response/content-type "application/json"))))
 
+(defn send-error-response
+    [response request]
+    (if (config/pretty-print? request)
+        (-> (http-response/response (with-out-str (json/pprint response)))
+            (http-response/content-type "application/json")
+            (http-response/status 400))
+        (-> (http-response/response (json/write-str response))
+            (http-response/content-type "application/json")
+            (http-response/status 400))))
+
 (defn send-plain-response
     [response]
     (-> (http-response/response response)
@@ -114,7 +124,7 @@
                 (reload-job-list request)
                 (send-response request))
             (-> (job-does-not-exist-response job-name "start")
-                (send-response request)))))
+                (send-error-response request)))))
 
 (defn enable-job
     [request]
@@ -126,7 +136,7 @@
                 (reload-job-list request)
                 (send-response request))
             (-> (job-does-not-exist-response job-name "enable")
-                (send-response request)))))
+                (send-error-response request)))))
 
 (defn disable-job
     [request]
@@ -138,7 +148,7 @@
                 (reload-job-list request)
                 (send-response request))
             (-> (job-does-not-exist-response job-name "enable")
-                (send-response request)))))
+                (send-error-response request)))))
 
 (defn delete-job
     [request]
@@ -150,7 +160,7 @@
                 (reload-job-list request)
                 (send-response request))
             (-> (job-does-not-exist-response job-name "delete")
-                (send-response request)))))
+                (send-error-response request)))))
 
 (defn create-job
     [request]
@@ -169,7 +179,7 @@
                     (reload-job-list request)
                     (send-response request))
                 (-> (error-response (or job-name "not set!") "create" "invalid input")
-                    (send-response request))))))
+                    (send-error-response request))))))
 
 (defn uri->job-name
     [uri prefix]
@@ -205,9 +215,9 @@
                     ;(reload-job-list request)
                     (send-response request))
                 (-> (error-response (or job-name "not set!") "update" "invalid input")
-                    (send-response request)))
+                    (send-error-response request)))
             (-> (job-does-not-exist-response job-name "update")
-                (send-response request)))))
+                (send-error-response request)))))
 
 (defn get-jobs
     [request]
@@ -227,7 +237,7 @@
                      (-> (error-response job-name "get_job_results" "can not read test results")
                          (send-response request))))
             (-> (job-does-not-exist-response job-name "get_job_results")
-                (send-response request)))))
+                (send-error-response request)))))
 
 (defn job-started-handler
     [request]
