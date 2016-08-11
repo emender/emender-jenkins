@@ -1,3 +1,3 @@
 #!/bin/env bash
-curl -X GET -v localhost:3000/api/get_job/
+curl -X GET -v localhost:3000/api/get_job/unknown-job
 
