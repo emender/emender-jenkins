@@ -102,7 +102,7 @@
     (let [response @results/results]
         (send-response response request)))
 
-(defn error-response
+(defn create-error-response
     [job-name command message]
     {:status "error"
      :job-name job-name
@@ -111,11 +111,11 @@
 
 (defn job-does-not-exist-response
     [job-name command]
-    (error-response job-name command "Job does not exist"))
+    (create-error-response job-name command "Job does not exist"))
 
 (defn job-already-exist-response
     [job-name command]
-    (error-response job-name command "Job already exist"))
+    (create-error-response job-name command "Job already exist"))
 
 (defn start-job
     [request]
@@ -182,10 +182,10 @@
                                                 job-name git-repo branch)
                         (reload-job-list request)
                         (send-response request))
-                    (-> (error-response (or job-name "not set!") "create" "invalid input")
+                    (-> (create-error-response (or job-name "not set!") "create" "invalid input")
                         (send-error-response request)))))
         (catch Exception e
-                (-> (error-response "not set!" "create" "invalid input")
+                (-> (create-error-response "not set!" "create" "invalid input")
                     (send-error-response request)))))
 
 (defn uri->job-name
@@ -222,12 +222,12 @@
                                                 job-name git-repo branch)
                         ;(reload-job-list request)
                         (send-response request))
-                    (-> (error-response (or job-name "not set!") "update" "invalid input")
+                    (-> (create-error-response (or job-name "not set!") "update" "invalid input")
                         (send-error-response request)))
                 (-> (job-does-not-exist-response job-name "update")
                     (send-error-response request))))
         (catch Exception e
-                (-> (error-response "not set!" "update" "invalid input")
+                (-> (create-error-response "not set!" "update" "invalid input")
                     (send-error-response request)))))
 
 (defn get-jobs
@@ -245,7 +245,7 @@
             (let [job-results   (jenkins-api/read-job-results (config/get-jenkins-url request) job-name)]
                  (if job-results
                      (send-plain-response job-results)
-                     (-> (error-response job-name "get_job_results" "can not read test results")
+                     (-> (create-error-response job-name "get_job_results" "can not read test results")
                          (send-response request))))
             (-> (job-does-not-exist-response job-name "get_job_results")
                 (send-error-response request)))))
