@@ -113,19 +113,19 @@
         (clojure.string/replace "<placeholder id=\"git-branch\" />" (str "*/" branch))))
 
 (defn start-job
-    [jenkins-url jenkins-auth job-name]
+    [jenkins-url jenkins-auth include-jenkins-reply? job-name]
     (job-related-command jenkins-url jenkins-auth job-name "build"))
 
 (defn enable-job
-    [jenkins-url jenkins-auth job-name]
+    [jenkins-url jenkins-auth include-jenkins-reply? job-name]
     (job-related-command jenkins-url jenkins-auth job-name "enable"))
 
 (defn disable-job
-    [jenkins-url jenkins-auth job-name]
+    [jenkins-url jenkins-auth include-jenkins-reply? job-name]
     (job-related-command jenkins-url jenkins-auth job-name "disable"))
 
 (defn delete-job
-    [jenkins-url jenkins-auth job-name]
+    [jenkins-url jenkins-auth include-jenkins-reply? job-name]
     (job-related-command jenkins-url jenkins-auth job-name "doDelete"))
 
 (defn log-operation
@@ -146,7 +146,7 @@
         :trust-store-pass "changeit"}))
 
 (defn create-job
-    [jenkins-url jenkins-auth job-name git-repo branch]
+    [jenkins-url jenkins-auth job-name include-jenkins-reply? git-repo branch]
     (log-operation job-name git-repo branch "create")
     (let [template (slurp "data/template.xml")
           config   (update-template template git-repo branch)
@@ -160,7 +160,7 @@
                   (error-response-structure job-name "create" e)))))
 
 (defn update-job
-    [jenkins-url jenkins-auth job-name git-repo branch]
+    [jenkins-url jenkins-auth job-name include-jenkins-reply? git-repo branch]
     (log-operation job-name git-repo branch "update")
     (let [template (slurp "data/template.xml")
           config   (update-template template git-repo branch)
