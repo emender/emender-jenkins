@@ -177,6 +177,14 @@
             (-> (job-does-not-exist-response job-name "delete")
                 (send-error-response request)))))
 
+(defn create-job-invalid-input
+    [job-name git-repo branch]
+    (cond
+        (nil? job-name) "invalid input: job name not specified"
+        (nil? git-repo) "invalid input: git repo not specified"
+        (nil? branch)   "invalid input: branch not specified"
+        :else           "other error"))
+
 (defn create-job
     [request]
     (try
@@ -186,7 +194,7 @@
               git-repo   (get input-data :ssh_url_to_repo)
               branch     (get input-data :branch)]
             (if (results/job-exists? job-name)
-                (-> (job-already-exist-response job-name "create")
+                (-> (job-already-exist-response job-name "create_job")
                     (send-error-response request))
                 (if (and job-name git-repo branch)
                     (-> (jenkins-api/create-job (config/get-jenkins-url request)
@@ -195,10 +203,11 @@
                                                 job-name git-repo branch)
                         (reload-job-list request)
                         (send-response request))
-                    (-> (create-error-response (or job-name "not set!") "create" "invalid input")
+                    (-> (create-error-response (or job-name "not set!") "create_job"
+                                               (create-job-invalid-input job-name git-repo branch))
                         (send-error-response request)))))
         (catch Exception e
-                (-> (create-error-response "not set!" "create" "invalid input")
+                (-> (create-error-response "not set!" "create_job" "invalid input")
                     (send-error-response request)))))
 
 (defn uri->job-name
