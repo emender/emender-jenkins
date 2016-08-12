@@ -100,18 +100,22 @@
     (results/reload-all-results (:configuration request))
     previous-response)
 
-(defn reload-all-results
-    [request]
-    (results/reload-all-results (:configuration request))
-    (let [response @results/results]
-        (send-response response request)))
-
 (defn create-error-response
     [job-name command message]
     {:status "error"
      :job-name job-name
      :command command
      :message message})
+
+(defn reload-all-results
+    [request]
+    (try
+        (results/reload-all-results (:configuration request))
+        (let [response @results/results]
+            (send-response response request))
+        (catch Exception e
+                (-> (create-error-response "(not needed)" "reload-all-results" (.getMessage e))
+                    (send-error-response request)))))
 
 (defn job-does-not-exist-response
     [job-name command]
