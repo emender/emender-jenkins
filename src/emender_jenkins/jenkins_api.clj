@@ -83,11 +83,15 @@
                  nil))))
 
 (defn ok-response-structure
-    [job-name command jenkins-response]
-    {:status   "ok"
-     :job-name job-name
-     :command  command
-     :jenkins-response jenkins-response})
+    [job-name command include-jenkins-reply? jenkins-response]
+    (if include-jenkins-reply?
+        {:status   "ok"
+         :job-name job-name
+         :command  command
+         :jenkins-response jenkins-response}
+        {:status   "ok"
+         :job-name job-name
+         :command  command}))
 
 (defn error-response-structure
     [job-name command exception]
@@ -98,10 +102,10 @@
     })
 
 (defn job-related-command
-    [jenkins-url jenkins-auth job-name command]
+    [jenkins-url jenkins-auth include-jenkins-reply? job-name command]
     (try
         (let [response (post-command jenkins-url jenkins-auth job-name command)]
-            (ok-response-structure job-name command response))
+            (ok-response-structure job-name command include-jenkins-reply? response))
         (catch Exception e
             (.printStackTrace e)
             (error-response-structure job-name command e))))
@@ -114,19 +118,19 @@
 
 (defn start-job
     [jenkins-url jenkins-auth include-jenkins-reply? job-name]
-    (job-related-command jenkins-url jenkins-auth job-name "build"))
+    (job-related-command jenkins-url jenkins-auth include-jenkins-reply? job-name "build"))
 
 (defn enable-job
     [jenkins-url jenkins-auth include-jenkins-reply? job-name]
-    (job-related-command jenkins-url jenkins-auth job-name "enable"))
+    (job-related-command jenkins-url jenkins-auth include-jenkins-reply? job-name "enable"))
 
 (defn disable-job
     [jenkins-url jenkins-auth include-jenkins-reply? job-name]
-    (job-related-command jenkins-url jenkins-auth job-name "disable"))
+    (job-related-command jenkins-url jenkins-auth include-jenkins-reply? job-name "disable"))
 
 (defn delete-job
     [jenkins-url jenkins-auth include-jenkins-reply? job-name]
-    (job-related-command jenkins-url jenkins-auth job-name "doDelete"))
+    (job-related-command jenkins-url jenkins-auth include-jenkins-reply? job-name "doDelete"))
 
 (defn log-operation
     [job-name git-repo branch operation]
@@ -146,7 +150,7 @@
         :trust-store-pass "changeit"}))
 
 (defn create-job
-    [jenkins-url jenkins-auth job-name include-jenkins-reply? git-repo branch]
+    [jenkins-url jenkins-auth include-jenkins-reply? job-name git-repo branch]
     (log-operation job-name git-repo branch "create")
     (let [template (slurp "data/template.xml")
           config   (update-template template git-repo branch)
@@ -154,7 +158,7 @@
           (println "URL to use: " url)
           (try
               (->> (send-configuration-xml-to-jenkins url config)
-                   (ok-response-structure job-name "create"))
+                   (ok-response-structure job-name "create" include-jenkins-reply?))
               (catch Exception e
                   (.printStackTrace e)
                   (error-response-structure job-name "create" e)))))
@@ -168,7 +172,7 @@
           (println "URL to use: " url)
           (try
               (->> (send-configuration-xml-to-jenkins url config)
-                   (ok-response-structure job-name "update"))
+                   (ok-response-structure job-name "update" include-jenkins-reply?))
               (catch Exception e
                   (.printStackTrace e)
                   (error-response-structure job-name "update" e)))))
