@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 #
 #  (C) Copyright 2016  Pavel Tisnovsky
