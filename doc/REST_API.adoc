@@ -162,9 +162,9 @@ Post Data (minimal version):
 [source,json]
 ----
 {
-    "url_to_repo": "git@some:repo.git",
-    "name": "jobName (test)",
-    "branch": "preview"
+    "ssh_url_to_repo" : "git@some:repo.git",
+    "name"            : "jobName (test)",
+    "branch"          : "preview"
 } 
 ----
 
@@ -173,9 +173,9 @@ Post Data (max. version):
 [source,json]
 ----
 {
-    "url_to_repo": "git@some:repo.git",
-    "name": "jobName (test)",
-    "branch": "preview",
+    "ssh_url_to_repo" : "git@some:repo.git",
+    "name"            : "jobName (test)",
+    "branch"          : "preview",
     "metadata": {
         "product": "product name",
         "version": "product version",
@@ -345,9 +345,9 @@ Post Data (minimal version):
 [source,json]
 ----
 {
-    "name"        : "doc-${PRODUCT}-${VERSION}-${BOOK-NAME}-${LANGUAGE} (test)",
-    "url_to_repo" : "git@some:repo.git",
-    "branch"      : "preview"
+    "name"            : "doc-${PRODUCT}-${VERSION}-${BOOK-NAME}-${LANGUAGE} (test)",
+    "ssh_url_to_repo" : "git@some:repo.git",
+    "branch"          : "preview"
 } 
 ----
 
@@ -356,9 +356,9 @@ Post Data (max. version):
 [source,json]
 ----
 {
-    "name"        : "doc-${PRODUCT}-${VERSION}-${BOOK-NAME}-${LANGUAGE} (test)",
-    "url_to_repo" : "git@some:repo.git",
-    "branch"      : "preview"
+    "name"            : "doc-${PRODUCT}-${VERSION}-${BOOK-NAME}-${LANGUAGE} (test)",
+    "ssh_url_to_repo" : "git@some:repo.git",
+    "branch"          : "preview"
     "metadata": {
         "product": "product name",
         "version": "product version",

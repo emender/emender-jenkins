@@ -171,7 +171,7 @@
         (let [input-data (-> (read-request-body request)
                              body->job-info)
               job-name   (get input-data :name)
-              git-repo   (get input-data :url_to_repo)
+              git-repo   (get input-data :ssh_url_to_repo)
               branch     (get input-data :branch)]
             (if (results/job-exists? job-name)
                 (-> (job-already-exist-response job-name "create")
@@ -218,7 +218,7 @@
         (let [input-data (-> (read-request-body request)
                              body->job-info)
               job-name   (get input-data :name)
-              git-repo   (get input-data :url_to_repo)
+              git-repo   (get input-data :ssh_url_to_repo)
               branch     (get input-data :branch)]
             (if (results/job-exists? job-name)
                 (if (and job-name git-repo branch)
