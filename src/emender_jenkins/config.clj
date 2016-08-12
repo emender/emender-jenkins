@@ -86,3 +86,13 @@
     [request]
     (-> request :configuration :config :pretty-print))
 
+(defn verbose-show-configuration?
+    "Read the verbose-show-configuration settings."
+    [request]
+    (-> request :configuration :config :verbose-show-configuration))
+
+(defn include-jenkins-reply?
+    "Read the include-jenkins-reply settings."
+    [request]
+    (-> request :configuration :config :include-jenkins-reply))
+
