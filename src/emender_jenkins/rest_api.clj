@@ -81,8 +81,12 @@
 
 (defn configuration-handler
     [request]
-    (let [response (-> request :configuration)]
-        (send-response response request)))
+    (if (config/verbose-show-configuration? request)
+        (let [response (-> request :configuration)]
+            (send-response response request))
+        (let [response (-> request :configuration
+                           (assoc-in [:jenkins :jenkins-auth] "********"))]
+            (send-response response request))))
 
 (defn system-banners
     [request uri]
