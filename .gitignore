@@ -10,4 +10,5 @@ pom.xml.asc
 scripts/devel-start-headless_pavel.sh
 scripts/start-headless_pavel.sh
 test/api/vm62*.sh
+test/api/openshift*.sh
 data.edn
