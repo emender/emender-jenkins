@@ -25,9 +25,11 @@
     "Update selected items in the configuration structure."
     [configuration]
     (-> configuration
-        (update-in [:config :verbose]      config-loader/parse-boolean)
-        (update-in [:config :pretty-print] config-loader/parse-boolean)
-        (update-in [:fetcher :delay]       config-loader/parse-int)))
+        (update-in [:config :verbose]                    config-loader/parse-boolean)
+        (update-in [:config :pretty-print]               config-loader/parse-boolean)
+        (update-in [:config :include-jenkins-reply]      config-loader/parse-boolean)
+        (update-in [:config :verbose-show-configuration] config-loader/parse-boolean)
+        (update-in [:fetcher :delay]                     config-loader/parse-int)))
 
 (defn load-configuration-from-ini
     "Load configuration from the provided INI file and perform conversions on numeric and Boolean values."
