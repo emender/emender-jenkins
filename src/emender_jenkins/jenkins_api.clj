@@ -164,7 +164,7 @@
                   (error-response-structure job-name "create" e)))))
 
 (defn update-job
-    [jenkins-url jenkins-auth job-name include-jenkins-reply? git-repo branch]
+    [jenkins-url jenkins-auth include-jenkins-reply? job-name git-repo branch]
     (log-operation job-name git-repo branch "update")
     (let [template (slurp "data/template.xml")
           config   (update-template template git-repo branch)
