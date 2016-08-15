@@ -133,10 +133,10 @@
     [request]
     (let [job-name (get-job-name-from-body request)]
         (if (results/job-exists? job-name)
-            (-> (jenkins-api/start-job (config/get-jenkins-url request)
-                                       (config/get-jenkins-auth request)
-                                       (config/include-jenkins-reply? request)
-                                       job-name)
+            (-> (clj-jenkins-api/start-job (config/get-jenkins-url request)
+                                           (config/get-jenkins-auth request)
+                                           (config/include-jenkins-reply? request)
+                                           job-name)
                 (reload-job-list request)
                 (send-response request))
             (-> (job-does-not-exist-response job-name "start")
@@ -146,10 +146,10 @@
     [request]
     (let [job-name (get-job-name-from-body request)]
         (if (results/job-exists? job-name)
-            (-> (jenkins-api/enable-job (config/get-jenkins-url request)
-                                        (config/get-jenkins-auth request)
-                                        (config/include-jenkins-reply? request)
-                                        job-name)
+            (-> (clj-jenkins-api/enable-job (config/get-jenkins-url request)
+                                            (config/get-jenkins-auth request)
+                                            (config/include-jenkins-reply? request)
+                                            job-name)
                 (reload-job-list request)
                 (send-response request))
             (-> (job-does-not-exist-response job-name "enable")
@@ -159,10 +159,10 @@
     [request]
     (let [job-name (get-job-name-from-body request)]
         (if (results/job-exists? job-name)
-            (-> (jenkins-api/disable-job (config/get-jenkins-url request)
-                                         (config/get-jenkins-auth request)
-                                         (config/include-jenkins-reply? request)
-                                         job-name)
+            (-> (clj-jenkins-api/disable-job (config/get-jenkins-url request)
+                                             (config/get-jenkins-auth request)
+                                             (config/include-jenkins-reply? request)
+                                             job-name)
                 (reload-job-list request)
                 (send-response request))
             (-> (job-does-not-exist-response job-name "enable")
@@ -172,10 +172,10 @@
     [request]
     (let [job-name (get-job-name-from-body request)]
         (if (results/job-exists? job-name)
-            (-> (jenkins-api/delete-job (config/get-jenkins-url request)
-                                        (config/get-jenkins-auth request)
-                                        (config/include-jenkins-reply? request)
-                                        job-name)
+            (-> (clj-jenkins-api/delete-job (config/get-jenkins-url request)
+                                            (config/get-jenkins-auth request)
+                                            (config/include-jenkins-reply? request)
+                                            job-name)
                 (reload-job-list request)
                 (send-response request))
             (-> (job-does-not-exist-response job-name "delete")

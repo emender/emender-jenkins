@@ -102,6 +102,7 @@
     })
 
 (defn job-related-command
+    ""
     [jenkins-url jenkins-auth include-jenkins-reply? job-name command]
     (try
         (let [response (post-command jenkins-url jenkins-auth job-name command)]
@@ -125,22 +126,6 @@
         (replace-placeholder "metadata-environment"       (get metadata :environment))
         (replace-placeholder "metadata-content-directory" (get metadata :content_directory))
         (replace-placeholder "metadata-content-type"      (get metadata :content_type))))
-
-(defn start-job
-    [jenkins-url jenkins-auth include-jenkins-reply? job-name]
-    (job-related-command jenkins-url jenkins-auth include-jenkins-reply? job-name "build"))
-
-(defn enable-job
-    [jenkins-url jenkins-auth include-jenkins-reply? job-name]
-    (job-related-command jenkins-url jenkins-auth include-jenkins-reply? job-name "enable"))
-
-(defn disable-job
-    [jenkins-url jenkins-auth include-jenkins-reply? job-name]
-    (job-related-command jenkins-url jenkins-auth include-jenkins-reply? job-name "disable"))
-
-(defn delete-job
-    [jenkins-url jenkins-auth include-jenkins-reply? job-name]
-    (job-related-command jenkins-url jenkins-auth include-jenkins-reply? job-name "doDelete"))
 
 (defn log-operation
     [job-name git-repo branch operation metadata]
