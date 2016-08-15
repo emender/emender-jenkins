@@ -16,6 +16,7 @@
 (require '[ring.util.response           :as http-response])
 (require '[clojure.pprint               :as pprint])
 (require '[clojure.data.json            :as json])
+(require '[clj-jenkins-api.jenkins-api  :as clj-jenkins-api])
 
 (require '[emender-jenkins.file-utils   :as file-utils])
 (require '[emender-jenkins.results      :as results])
