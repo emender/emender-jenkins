@@ -110,11 +110,21 @@
             (.printStackTrace e)
             (error-response-structure job-name command e))))
 
+(defn replace-placeholder
+    [string placeholder-name value]
+    (if value
+        (clojure.string/replace string (str "<placeholder id=\"" placeholder-name "\" />") value)
+        string))
+
 (defn update-template
-    [template git-repo branch]
+    [template git-repo branch metadata]
     (-> template
-        (clojure.string/replace "<placeholder id=\"git-repo\" />" git-repo)
-        (clojure.string/replace "<placeholder id=\"git-branch\" />" (str "*/" branch))))
+        (replace-placeholder "git-repo"                   git-repo)
+        (replace-placeholder "git-branch"                 (str "*/" branch))
+        (replace-placeholder "metadata-language"          (get metadata :language))
+        (replace-placeholder "metadata-environment"       (get metadata :environment))
+        (replace-placeholder "metadata-content-directory" (get metadata :content_directory))
+        (replace-placeholder "metadata-content-type"      (get metadata :content_type))))
 
 (defn start-job
     [jenkins-url jenkins-auth include-jenkins-reply? job-name]
@@ -133,11 +143,12 @@
     (job-related-command jenkins-url jenkins-auth include-jenkins-reply? job-name "doDelete"))
 
 (defn log-operation
-    [job-name git-repo branch operation]
+    [job-name git-repo branch operation metadata]
     (println "***" operation "***")
     (println "job-name" job-name)
     (println "git-repo" git-repo)
-    (println "branch"   branch))
+    (println "branch"   branch)
+    (println "metadata" metadata))
 
 (defn send-configuration-xml-to-jenkins
     [url config]
@@ -151,14 +162,15 @@
 
 (defn get-template
     [metadata]
-    (slurp (if metadata "data/template.xml" "data/template_with_metadata.xml")))
+    (slurp (if metadata "data/template_with_metadata.xml" "data/template.xml")))
 
 (defn create-job
     [jenkins-url jenkins-auth include-jenkins-reply? job-name git-repo branch metadata]
-    (log-operation job-name git-repo branch "create")
+    (log-operation job-name git-repo branch "create" metadata)
     (let [template (get-template metadata)
           config   (update-template template git-repo branch metadata)
           url      (str (update-jenkins-url jenkins-url jenkins-auth) "createItem?name=" (.replaceAll job-name " " "%20"))]
+          (spit "x.xml" config)
           (println "URL to use: " url)
           (try
               (->> (send-configuration-xml-to-jenkins url config)
@@ -169,7 +181,7 @@
 
 (defn update-job
     [jenkins-url jenkins-auth include-jenkins-reply? job-name git-repo branch metadata]
-    (log-operation job-name git-repo branch "update")
+    (log-operation job-name git-repo branch "update" metadata)
     (let [template (get-template metadata)
           config   (update-template template git-repo branch metadata)
           url      (str (job-name->url (update-jenkins-url jenkins-url jenkins-auth) job-name) "/config.xml")]
