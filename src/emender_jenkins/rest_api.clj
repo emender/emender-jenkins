@@ -195,7 +195,8 @@
                              body->job-info)
               job-name   (get input-data :name)
               git-repo   (get input-data :ssh_url_to_repo)
-              branch     (get input-data :branch)]
+              branch     (get input-data :branch)
+              metadata   (get input-data :metadata)]
             (if (results/job-exists? job-name)
                 (-> (job-already-exist-response job-name create-job-command)
                     (send-error-response request))
@@ -203,7 +204,7 @@
                     (-> (jenkins-api/create-job (config/get-jenkins-url request)
                                                 (config/get-jenkins-auth request)
                                                 (config/include-jenkins-reply? request)
-                                                job-name git-repo branch)
+                                                job-name git-repo branch metadata)
                         (reload-job-list request)
                         (send-response request))
                     (-> (create-error-response (or job-name "not set!") create-job-command
@@ -244,13 +245,14 @@
                              body->job-info)
               job-name   (get input-data :name)
               git-repo   (get input-data :ssh_url_to_repo)
-              branch     (get input-data :branch)]
+              branch     (get input-data :branch)
+              metadata   (get input-data :metadata)]
             (if (results/job-exists? job-name)
                 (if (and job-name git-repo branch)
                     (-> (jenkins-api/update-job (config/get-jenkins-url request)
                                                 (config/get-jenkins-auth request)
                                                 (config/include-jenkins-reply? request)
-                                                job-name git-repo branch)
+                                                job-name git-repo branch metadata)
                         ;(reload-job-list request)
                         (send-response request))
                     (-> (create-error-response (or job-name "not set!") update-job-command
