@@ -101,16 +101,6 @@
      :message  (.getMessage exception)
     })
 
-(defn job-related-command
-    ""
-    [jenkins-url jenkins-auth include-jenkins-reply? job-name command]
-    (try
-        (let [response (post-command jenkins-url jenkins-auth job-name command)]
-            (ok-response-structure job-name command include-jenkins-reply? response))
-        (catch Exception e
-            (.printStackTrace e)
-            (error-response-structure job-name command e))))
-
 (defn replace-placeholder
     [string placeholder-name value]
     (if value
