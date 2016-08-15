@@ -149,11 +149,15 @@
         :trust-store      "keystore"
         :trust-store-pass "changeit"}))
 
+(defn get-template
+    [metadata]
+    (slurp (if metadata "data/template.xml" "data/template_with_metadata.xml")))
+
 (defn create-job
-    [jenkins-url jenkins-auth include-jenkins-reply? job-name git-repo branch]
+    [jenkins-url jenkins-auth include-jenkins-reply? job-name git-repo branch metadata]
     (log-operation job-name git-repo branch "create")
-    (let [template (slurp "data/template.xml")
-          config   (update-template template git-repo branch)
+    (let [template (get-template metadata)
+          config   (update-template template git-repo branch metadata)
           url      (str (update-jenkins-url jenkins-url jenkins-auth) "createItem?name=" (.replaceAll job-name " " "%20"))]
           (println "URL to use: " url)
           (try
@@ -164,10 +168,10 @@
                   (error-response-structure job-name "create" e)))))
 
 (defn update-job
-    [jenkins-url jenkins-auth include-jenkins-reply? job-name git-repo branch]
+    [jenkins-url jenkins-auth include-jenkins-reply? job-name git-repo branch metadata]
     (log-operation job-name git-repo branch "update")
-    (let [template (slurp "data/template.xml")
-          config   (update-template template git-repo branch)
+    (let [template (get-template metadata)
+          config   (update-template template git-repo branch metadata)
           url      (str (job-name->url (update-jenkins-url jenkins-url jenkins-auth) job-name) "/config.xml")]
           (println "URL to use: " url)
           (try
