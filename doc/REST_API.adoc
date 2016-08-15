@@ -176,10 +176,11 @@ Post Data (max. version):
     "ssh_url_to_repo" : "git@some:repo.git",
     "name"            : "jobName (test)",
     "branch"          : "preview",
+    "additional_content_dirs" : ["dir1", "dir2"],
     "metadata": {
         "product": "product name",
         "version": "product version",
-        "language": "en­US",
+        "language": "en-US",
         "environment": "preview",
         "content_directory": "Book directory",
         "content_type": "book"
@@ -359,10 +360,11 @@ Post Data (max. version):
     "name"            : "doc-${PRODUCT}-${VERSION}-${BOOK-NAME}-${LANGUAGE} (test)",
     "ssh_url_to_repo" : "git@some:repo.git",
     "branch"          : "preview"
+    "additional_content_dirs" : ["dir1", "dir2"],
     "metadata": {
         "product": "product name",
         "version": "product version",
-        "language": "en­US",
+        "language": "en-US",
         "environment": "preview",
         "content_directory": "Book directory",
         "content_type": "book"
