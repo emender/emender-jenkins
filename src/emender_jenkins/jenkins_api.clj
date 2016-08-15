@@ -170,7 +170,6 @@
     (let [template (get-template metadata)
           config   (update-template template git-repo branch metadata)
           url      (str (update-jenkins-url jenkins-url jenkins-auth) "createItem?name=" (.replaceAll job-name " " "%20"))]
-          (spit "x.xml" config)
           (println "URL to use: " url)
           (try
               (->> (send-configuration-xml-to-jenkins url config)
