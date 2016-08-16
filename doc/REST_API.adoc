@@ -298,7 +298,7 @@ Response:
     "status"   : "ok",
     "job-name" : "doc-Test_Product-1.0-Test_Book-en-US (test)",
     "command"  : "delete_job",
-    "jenkins-response":{"status":302...}
+    "jenkins-response":{"status":302 /* deep data structure */}
 }
 ----
 
@@ -350,11 +350,11 @@ Response:
 [source,json]
 ----
 {
-    "job-name:     "doc-${PRODUCT}-${VERSION}-${BOOK-NAME}-${LANGUAGE} (test)",
-    "product":     "${PRODUCT}
-    "version":     "${VERSION}
+    "job-name:     "doc-Product_Name-Product_Version-Book_Name-Language (test)",
+    "product":     "Product_Name
+    "version":     "Product_Version
     "environment": "prod",
-    "book-name":   "${BOOK-NAME}",
+    "book-name":   "Book_Name",
     "job-status":  "ok/unstable/failure/disabled",
     "disabled" :   "true/false",
     "test-summary": {
@@ -370,11 +370,11 @@ HTTP Status Code:
 [source,json]
 ----
 {
-    "job-name:     "doc-${PRODUCT}-${VERSION}-${BOOK-NAME}-${LANGUAGE} (test)",
-    "product":     "${PRODUCT}
-    "version":     "${VERSION}
+    "job-name:     "doc-Product_Name-Product_Version-Book_Name-Language (test)",
+    "product":     "Product_Name
+    "version":     "Product_Version
     "environment": "prod",
-    "book-name":   "${BOOK-NAME}",
+    "book-name":   "Book_Name",
     "job-status":  "failure",
     "disabled" :   "true/false",
     "test-summary": {
@@ -448,7 +448,7 @@ Post Data (minimal version):
 [source,json]
 ----
 {
-    "name"            : "doc-${PRODUCT}-${VERSION}-${BOOK-NAME}-${LANGUAGE} (test)",
+    "name"            : "doc-Product_Name-Product_Version-Book_Name-Language (test)",
     "ssh_url_to_repo" : "git@some:repo.git",
     "branch"          : "preview"
 } 
@@ -459,9 +459,9 @@ Post Data (max. version):
 [source,json]
 ----
 {
-    "name"            : "doc-${PRODUCT}-${VERSION}-${BOOK-NAME}-${LANGUAGE} (test)",
+    "name"            : "doc-Product_Name-Product_Version-Book_Name-Language (test)",
     "ssh_url_to_repo" : "git@some:repo.git",
-    "branch"          : "preview"
+    "branch"          : "preview",
     "additional_content_dirs" : ["dir1", "dir2"],
     "metadata": {
         "product": "product name",
@@ -770,7 +770,7 @@ Response:
     "status"   : "ok",
     "job-name" : "doc-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US (test)",
     "command"  : "start_job",
-    "jenkins-response":{"status":302...}}
+    "jenkins-response":{"status":302 /* deep data structure */}
 }
 ----
 
@@ -836,7 +836,7 @@ Response:
     "status"   : "ok",
     "job-name" : "doc-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US (test)",
     "command"  : "enable",
-    "jenkins-response":{"status":302...}
+    "jenkins-response":{"status":302 /* deep data structure */}
 }
 ----
 
@@ -902,7 +902,7 @@ Response:
     "status"   : "ok",
     "job-name" : "doc-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US (test)",
     "command"  : "disable",
-    "jenkins-response":{"status":302...}}
+    "jenkins-response":{"status":302 /* deep data structure */}
 }
 ----
 
