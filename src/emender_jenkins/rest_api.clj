@@ -26,6 +26,14 @@
 (def create-job-command "create_job")
 (def update-job-command "update_job")
 
+; HTTP codes used by several REST API responses
+(def http-codes {
+    :ok                    200
+    :bad-request           400
+    :not-found             404
+    :internal-server-error 500
+    :not-implemented       501})
+
 (defn read-request-body
     [request]
     (file-utils/slurp- (:body request)))
@@ -61,14 +69,14 @@
             (http-response/content-type "application/json"))))
 
 (defn send-error-response
-    [response request]
+    [response request http-code]
     (if (config/pretty-print? request)
         (-> (http-response/response (with-out-str (json/pprint response)))
             (http-response/content-type "application/json")
-            (http-response/status 400))
+            (http-response/status (get http-codes http-code)))
         (-> (http-response/response (json/write-str response))
             (http-response/content-type "application/json")
-            (http-response/status 400))))
+            (http-response/status (get http-codes http-code)))))
 
 (defn send-plain-response
     [response]
