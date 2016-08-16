@@ -152,7 +152,7 @@
 
 (defn send-job-not-specified-response
     [request command]
-    (-> (create-bad-request-response command "job name is not specified")
+    (-> (create-bad-request-response (get commands command) "job name is not specified")
         (send-error-response request :bad-request)))
 
 (defn reload-all-results
@@ -165,61 +165,35 @@
                 (-> (create-error-response "(not needed)" "reload-all-results" (.getMessage e))
                     (send-error-response request :internal-server-error)))))
 
-(defn start-job
-    [request]
+(defn perform-job-command
+    [request function command]
     (let [job-name (get-job-name-from-body request)]
         (if job-name
             (if (results/job-exists? job-name)
-                (-> (clj-jenkins-api/start-job (config/get-jenkins-url request)
-                                               (config/get-jenkins-auth request)
-                                               (config/include-jenkins-reply? request)
-                                               job-name)
+                (-> (function (config/get-jenkins-url request)
+                              (config/get-jenkins-auth request)
+                              (config/include-jenkins-reply? request)
+                              job-name)
                     (reload-job-list request)
                     (send-response request))
                 (send-job-does-not-exist-response request job-name :start-job))
             (send-job-not-specified-response request :start-job))))
 
+(defn start-job
+    [request]
+    (perform-job-command request clj-jenkins-api/start-job :start-job))
+
 (defn enable-job
     [request]
-    (let [job-name (get-job-name-from-body request)]
-        (if job-name
-            (if (results/job-exists? job-name)
-                (-> (clj-jenkins-api/enable-job (config/get-jenkins-url request)
-                                                (config/get-jenkins-auth request)
-                                                (config/include-jenkins-reply? request)
-                                                job-name)
-                    (reload-job-list request)
-                    (send-response request))
-                (send-job-does-not-exist-response request job-name :enable-job))
-            (send-job-not-specified-response request :enable-job))))
+    (perform-job-command request clj-jenkins-api/enable-job :enable-job))
 
 (defn disable-job
     [request]
-    (let [job-name (get-job-name-from-body request)]
-        (if job-name
-            (if (results/job-exists? job-name)
-                (-> (clj-jenkins-api/disable-job (config/get-jenkins-url request)
-                                                 (config/get-jenkins-auth request)
-                                                 (config/include-jenkins-reply? request)
-                                                 job-name)
-                    (reload-job-list request)
-                    (send-response request))
-                (send-job-does-not-exist-response request job-name :disable-job))
-            (send-job-not-specified-response request :disable-job))))
+    (perform-job-command request clj-jenkins-api/disable-job :disable-job))
 
 (defn delete-job
     [request]
-    (let [job-name (get-job-name-from-body request)]
-        (if job-name
-            (if (results/job-exists? job-name)
-                (-> (clj-jenkins-api/delete-job (config/get-jenkins-url request)
-                                                (config/get-jenkins-auth request)
-                                                (config/include-jenkins-reply? request)
-                                                job-name)
-                    (reload-job-list request)
-                    (send-response request))
-                (send-job-does-not-exist-response request job-name :delete-job))
-            (send-job-not-specified-response request :delete-job))))
+    (perform-job-command request clj-jenkins-api/delete-job :delete-job))
 
 (defn job-invalid-input
     [job-name git-repo branch]
