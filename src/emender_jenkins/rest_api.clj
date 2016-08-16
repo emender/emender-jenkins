@@ -173,7 +173,7 @@
                 (reload-job-list request)
                 (send-response request))
             (-> (job-does-not-exist-response job-name "enable")
-                (send-error-response request)))))
+                (send-error-response request :not-found)))))
 
 (defn disable-job
     [request]
@@ -186,7 +186,7 @@
                 (reload-job-list request)
                 (send-response request))
             (-> (job-does-not-exist-response job-name "enable")
-                (send-error-response request)))))
+                (send-error-response request :not-found)))))
 
 (defn delete-job
     [request]
@@ -199,7 +199,7 @@
                 (reload-job-list request)
                 (send-response request))
             (-> (job-does-not-exist-response job-name "delete")
-                (send-error-response request)))))
+                (send-error-response request :not-found)))))
 
 (defn job-invalid-input
     [job-name git-repo branch]
@@ -220,7 +220,7 @@
               metadata   (get input-data :metadata)]
             (if (results/job-exists? job-name)
                 (-> (job-already-exist-response job-name create-job-command)
-                    (send-error-response request))
+                    (send-error-response request :bad-request))
                 (if (and job-name git-repo branch)
                     (-> (jenkins-api/create-job (config/get-jenkins-url request)
                                                 (config/get-jenkins-auth request)
@@ -230,10 +230,10 @@
                         (send-response request))
                     (-> (create-error-response (or job-name "not set!") create-job-command
                                                (job-invalid-input job-name git-repo branch))
-                        (send-error-response request)))))
+                        (send-error-response request :bad-request)))))
         (catch Exception e
                 (-> (create-error-response "not set!" create-job-command "invalid input")
-                    (send-error-response request)))))
+                    (send-error-response request :bad-request)))))
 
 (defn uri->job-name
     [uri prefix]
@@ -255,9 +255,9 @@
                  (if job-metadata
                      (send-response job-metadata request))
                      (-> (job-does-not-exist-response job-name "get-job")
-                         (send-error-response request)))
+                         (send-error-response request :not-found)))
             (-> (job-does-not-exist-response job-name "get-job")
-                (send-error-response request)))))
+                (send-error-response request :bad-request)))))
 
 (defn update-job
     [request]
@@ -278,12 +278,12 @@
                         (send-response request))
                     (-> (create-error-response (or job-name "not set!") update-job-command
                                                (job-invalid-input job-name git-repo branch))
-                        (send-error-response request)))
+                        (send-error-response request :bad-request)))
                 (-> (job-does-not-exist-response job-name update-job-command)
-                    (send-error-response request))))
+                    (send-error-response request :not-found))))
         (catch Exception e
                 (-> (create-error-response "not set!" update-job-command "invalid input")
-                    (send-error-response request)))))
+                    (send-error-response request :bad-request)))))
 
 (defn get-jobs
     [request]
@@ -303,7 +303,7 @@
                      (-> (create-error-response job-name "get_job_results" "can not read test results")
                          (send-response request))))
             (-> (job-does-not-exist-response job-name "get_job_results")
-                (send-error-response request)))))
+                (send-error-response request :not-found)))))
 
 (defn job-started-handler
     [request]
@@ -326,5 +326,5 @@
                     :error "Unknown API call"
                     :uri uri
                     :method method}]
-        (send-response response request)))
+        (send-error-response response request)))
 
