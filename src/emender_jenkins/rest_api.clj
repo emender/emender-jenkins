@@ -34,7 +34,8 @@
     :create-job            "create_job"
     :delete-job            "delete_job"
     :update-job            "update_job"
-    :get-job               "get_job"})
+    :get-job               "get_job"
+    :get-job-results       "get_job_results"})
 
 ; HTTP codes used by several REST API responses
 (def http-codes {
@@ -182,8 +183,8 @@
                               job-name)
                     (reload-job-list request)
                     (send-response request))
-                (send-job-does-not-exist-response request job-name :start-job))
-            (send-job-not-specified-response request :start-job))))
+                (send-job-does-not-exist-response request job-name command))
+            (send-job-not-specified-response request command))))
 
 (defn start-job
     [request]
@@ -274,11 +275,13 @@
     [request uri]
     (let [job-name (uri->job-name uri "/api/get_job/")]
         (if job-name
-            (let [job-metadata (results/find-job-with-name job-name)]
-                 (if job-metadata
-                     (send-response job-metadata request)
-                     (-> (create-error-response job-name :get-job "Test results does not exist")
-                         (send-error-response request :not-found))))
+            (if (results/job-exists? job-name)
+                (let [job-metadata (results/find-job-with-name job-name)]
+                     (if job-metadata
+                         (send-response job-metadata request)
+                         (-> (create-error-response job-name (get commands :get-job) "Test results does not exist")
+                             (send-error-response request :not-found))))
+                (send-job-does-not-exist-response request job-name :get-job))
             (send-job-not-specified-response request :get-job))))
 
 (defn get-jobs
