@@ -121,8 +121,9 @@
              :book-name   (job-name->book-name job-name)
              :job-status  (compute-job-status job-color buildable?)
              :disabled    (compute-job-disabled job-color buildable?)
-             :message     message
-             :results     (parse-test-results message)
+             :test-summary {
+                 :message     message
+                 :results     (parse-test-results message)}
             })))
 
 (defn reload-all-results
