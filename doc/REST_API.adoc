@@ -350,7 +350,7 @@ Response:
 [source,json]
 ----
 {
-    "job-name:     "doc-Product_Name-Product_Version-Book_Name-Language (test)",
+    "job-name":    "doc-Product_Name-Product_Version-Book_Name-Language (test)",
     "product":     "Product_Name",
     "version":     "Product_Version",
     "environment": "prod",
@@ -370,7 +370,7 @@ HTTP Status Code:
 [source,json]
 ----
 {
-    "job-name:     "doc-Product_Name-Product_Version-Book_Name-Language (test)",
+    "job-name":    "doc-Product_Name-Product_Version-Book_Name-Language (test)",
     "product":     "Product_Name",
     "version":     "Product_Version",
     "environment": "prod",
