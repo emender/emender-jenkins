@@ -162,8 +162,8 @@ Post Data (minimal version):
 [source,json]
 ----
 {
-    "ssh_url_to_repo" : "git@some:repo.git",
     "name"            : "jobName (test)",
+    "ssh_url_to_repo" : "git@some:repo.git",
     "branch"          : "preview"
 } 
 ----
@@ -173,15 +173,15 @@ Post Data (max. version):
 [source,json]
 ----
 {
-    "ssh_url_to_repo" : "git@some:repo.git",
     "name"            : "jobName (test)",
+    "ssh_url_to_repo" : "git@some:repo.git",
     "branch"          : "preview",
     "additional_content_dirs" : ["dir1", "dir2"],
     "metadata": {
-        "product": "product name",
-        "version": "product version",
-        "language": "en-US",
-        "environment": "preview",
+        "product"     : "product name",
+        "version"     : "product version",
+        "language"    : "en-US",
+        "environment" : "preview",
         "content_directory": "Book directory",
         "content_type": "book"
     } 
@@ -203,7 +203,7 @@ Response:
 HTTP Status Code:
 +HTTP/1.1 200 OK+
 
-Response when error occurs:
+Response when job already exists:
 
 [source,json]
 ----
@@ -218,13 +218,50 @@ Response when error occurs:
 HTTP Status Code:
 +HTTP/1.1 400 Bad Request+
 
+Response when the provided input is invalid:
+
 [source,json]
 ----
 {
     "status"   : "error",
-    "job-name" : "doc-Test_Product-1.0-Test_Book-en-US (test)",
     "command"  : "create",
-    "message"  : "invalid input"}
+    "message"  : "invalid input or missing input"}
+}
+----
+
+HTTP Status Code:
++HTTP/1.1 400 Bad Request+
+
+[source,json]
+----
+{
+    "status"   : "error",
+    "command"  : "create",
+    "message"  : "invalid input: branch not specified"}
+}
+----
+
+HTTP Status Code:
++HTTP/1.1 400 Bad Request+
+
+[source,json]
+----
+{
+    "status"   : "error",
+    "command"  : "create",
+    "message"  : "invalid input: git repo not specified"}
+}
+----
+
+HTTP Status Code:
++HTTP/1.1 400 Bad Request+
+
+[source,json]
+----
+{
+    "status"   : "error",
+    "command"  : "create",
+    "message"  : "invalid input: job name not specified"}
 }
 ----
 
@@ -260,23 +297,37 @@ Response:
 {
     "status"   : "ok",
     "job-name" : "doc-Test_Product-1.0-Test_Book-en-US (test)",
-    "command"  : "doDelete",
-    "jenkins-response":{"status":302...}}
+    "command"  : "delete_job",
+    "jenkins-response":{"status":302...}
 }
 ----
 
 HTTP Status Code:
 +HTTP/1.1 200 OK+
 
-Response when error occurs:
+Response when job does not exist:
 
 [source,json]
 ----
 {
     "status"   : "error",
     "job-name" : "doc-Test_Product-1.0-Test_Book-en-US (test)",
-    "command"  : "delete",
-    "message"  : "Job does not exist"}
+    "command"  : "delete_job",
+    "message"  : "Job does not exist"
+}
+----
+
+HTTP Status Code:
++HTTP/1.1 404 Not Found+
+
+Response in case of invalid input:
+
+[source,json]
+----
+{
+    "status"   : "error",
+    "command"  : "delete_job",
+    "message"  : "job name is not specified"
 }
 ----
 
@@ -299,11 +350,13 @@ Response:
 [source,json]
 ----
 {
-    "job-name:    "doc-${PRODUCT}-${VERSION}-${BOOK-NAME}-${LANGUAGE} (test)",
-    "product":    "${PRODUCT}
-    "version":    "${VERSION}
-    "book-name":  "${BOOK-NAME}",
-    "job-status": "ok/unstable/failure/disabled",
+    "job-name:     "doc-${PRODUCT}-${VERSION}-${BOOK-NAME}-${LANGUAGE} (test)",
+    "product":     "${PRODUCT}
+    "version":     "${VERSION}
+    "environment": "prod",
+    "book-name":   "${BOOK-NAME}",
+    "job-status":  "ok/unstable/failure/disabled",
+    "disabled" :   "true/false",
     "test-summary": {
         "message:": "Total: 7  Passed: 5  Failed: 2",
         "results": {"total":7,"passed":5,"failed":2}
@@ -314,15 +367,64 @@ Response:
 HTTP Status Code:
 +HTTP/1.1 200 OK+
 
-Response when error occurs:
+[source,json]
+----
+{
+    "job-name:     "doc-${PRODUCT}-${VERSION}-${BOOK-NAME}-${LANGUAGE} (test)",
+    "product":     "${PRODUCT}
+    "version":     "${VERSION}
+    "environment": "prod",
+    "book-name":   "${BOOK-NAME}",
+    "job-status":  "failure",
+    "disabled" :   "true/false",
+    "test-summary": {
+        "message:": "Total: 7  Passed: 5  Failed: 2",
+        "results": {"total":7,"passed":5,"failed":2}
+    }
+}
+----
+
+HTTP Status Code:
++HTTP/1.1 200 OK+
+
+Response when test results does not exist:
+
+[source,json]
+----
+{
+    "status"   : "error",
+    "job-name" : "known-job",
+    "command"  : "get_job",
+    "message"  : "Test results does not exist"
+}
+----
+
+HTTP Status Code:
++HTTP/1.1 404 Not Found+
+
+Response when job does not exist:
 
 [source,json]
 ----
 {
     "status"   : "error",
     "job-name" : "unknown-job",
-    "command"  : "get-job",
-    "message"  : "Job does not exis"}
+    "command"  : "get_job",
+    "message"  : "Job does not exist"
+}
+----
+
+HTTP Status Code:
++HTTP/1.1 404 Not Found+
+
+Response when the input is not valid:
+
+[source,json]
+----
+{
+    "status"   : "error",
+    "command"  : "get_job",
+    "message"  : "job name is not specified"
 }
 ----
 
@@ -401,15 +503,53 @@ Response:
 HTTP Status Code:
 +HTTP/1.1 200 OK+
 
-Response when error occurs:
+Response when job does not exist:
 
 [source,json]
 ----
 {
     "status"   : "error",
-    "job-name" : "not set!",
-    "command"  : "update",
-    "message"  : "invalid input"}
+    "job-name" : "doc-Test_Product-1.0-Test_Book-en-US (test)",
+    "command"  : "update_job",
+    "message"  : "Job does not exist"
+}
+----
+
+HTTP Status Code:
++HTTP/1.1 404 Not Found+
+
+Response when input is not valid:
+
+[source,json]
+----
+{
+    "status"   : "error",
+    "command"  : "update_job",
+    "message"  : "invalid or missing input"
+}
+----
+
+HTTP Status Code:
++HTTP/1.1 400 Bad Request+
+
+[source,json]
+----
+{
+    "status"   : "error",
+    "command"  : "update_job",
+    "message"  : "invalid input: git repo not specified"
+}
+----
+
+HTTP Status Code:
++HTTP/1.1 400 Bad Request+
+
+[source,json]
+----
+{
+    "status"   : "error",
+    "command"  : "update_job",
+    "message"  : "invalid input: branch not specified"
 }
 ----
 
@@ -425,7 +565,8 @@ Get jobs
     /api/get_jobs?product=PRODUCT-NAME
     /api/get_jobs?product=PRODCUT-NAME&version=VERSION
 
-Get list of job statuses. This list can be filtered for given product or product+version.
+Get list of job statuses. This list can be filtered for given product or product+version. The list should be
+empty when no jobs exist or if the given combination of product name and product version gives empty list.
 
 Method: +GET+
 
@@ -454,8 +595,9 @@ Response:
                         "product":"Red Hat Enterprise Linux",
                         "environment":"preview",
                         "version":"7",
-                        "message":null,
-                        "results":null},
+                        "test-summary": {
+                            "message":null,
+                            "results":null}},
                        "stage":
                        {"job-name":
                         "doc-Red_Hat_Enterprise_Linux-7-Developer_Guide-en-US (test-stage)",
@@ -465,8 +607,9 @@ Response:
                         "product":"Red Hat Enterprise Linux",
                         "environment":"stage",
                         "version":"7",
-                        "message":null,
-                        "results":null},
+                        "test-summary": {
+                             "message":"Total: 7  Passed: 5  Failed: 2",
+                             "results":{"total":7, "passed":5, "failed":2}}},
                        "prod":null}
                       }
                      }
@@ -484,8 +627,9 @@ Response:
                         "product":"Red Hat Enterprise Linux",
                         "environment":"preview",
                         "version":"6",
-                        "message":null,
-                        "results":null},
+                        "test-summary": {
+                            "message":null,
+                            "results":null},
                        "stage":
                        {"job-name":
                         "doc-Red_Hat_Enterprise_Linux-6-Security_Guide-en-US (test-stage)",
@@ -495,8 +639,9 @@ Response:
                         "product":"Red Hat Enterprise Linux",
                         "environment":"stage",
                         "version":"6",
-                        "message":null,
-                        "results":null},
+                        "test-summary": {
+                            "message":null,
+                            "results":null},
                        "prod":
                        {"job-name":
                         "doc-Red_Hat_Enterprise_Linux-6-Security_Guide-en-US (test-prod)",
@@ -506,8 +651,9 @@ Response:
                         "product":"Red Hat Enterprise Linux",
                         "environment":"prod",
                         "version":"6",
-                        "message":null,
-                        "results":null}
+                        "test-summary": {
+                            "message":null,
+                            "results":null},
                        }
                       }
                      }
@@ -623,7 +769,7 @@ Response:
 {
     "status"   : "ok",
     "job-name" : "doc-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US (test)",
-    "command"  : "build",
+    "command"  : "start_job",
     "jenkins-response":{"status":302...}}
 }
 ----
@@ -637,8 +783,8 @@ Response when job does not exist:
 ----
 {
     "status"   : "error",
-    "job-name" : "doc-Test_Product-1.0-Test_Book-en-US (test)",
-    "command"  : "start",
+    "job-name" : "wrong-job",
+    "command"  : "start_job",
     "message"  : "Job does not exist"}
 }
 ----
@@ -690,22 +836,36 @@ Response:
     "status"   : "ok",
     "job-name" : "doc-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US (test)",
     "command"  : "enable",
-    "jenkins-response":{"status":302...}}
+    "jenkins-response":{"status":302...}
 }
 ----
 
 HTTP Status Code:
 +HTTP/1.1 200 OK+
 
-Response when error occurs:
+Response when job does not exist:
 
 [source,json]
 ----
 {
     "status"   : "error",
-    "job-name" : "doc-Test_Product-1.0-Test_Book-en-US (test)",
-    "command"  : "enable",
-    "message"  : "Job does not exist"}
+    "job-name" : "wrong-job",
+    "command"  : "enable_job",
+    "message"  : "Job does not exist"
+}
+----
+
+HTTP Status Code:
++HTTP/1.1 404 Not Found+
+
+Response when job name is missing in the request:
+
+[source,json]
+----
+{
+    "status"   : "error",
+    "command"  : "enable_job",
+    "message"  : "Job name is not specified"
 }
 ----
 
@@ -749,15 +909,29 @@ Response:
 HTTP Status Code:
 +HTTP/1.1 200 OK+
 
-Response when error occurs:
+Response when job does not exist:
 
 [source,json]
 ----
 {
     "status"   : "error",
-    "job-name" : "doc-Test_Product-1.0-Test_Book-en-US (test)",
-    "command"  : "disable",
-    "message"  : "Job does not exist"}
+    "job-name" : "wrong-job",
+    "command"  : "disable_job",
+    "message"  : "Job does not exist"
+}
+----
+
+HTTP Status Code:
++HTTP/1.1 404 Not Found+
+
+Response when job name is missing in the request:
+
+[source,json]
+----
+{
+    "status"   : "error",
+    "command"  : "disable_job",
+    "message"  : "job name is not specified"
 }
 ----
 
