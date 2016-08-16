@@ -196,7 +196,7 @@ Response:
     "status"   : "ok",
     "job-name" : "doc-Test_Product-1.0-Test_Book-en-US (test)",
     "command"  : "create",
-    "jenkins-response":{ "status":200, ...}
+    "jenkins-response":{ "status":200 }
 }
 ----
 
@@ -298,7 +298,7 @@ Response:
     "status"   : "ok",
     "job-name" : "doc-Test_Product-1.0-Test_Book-en-US (test)",
     "command"  : "delete_job",
-    "jenkins-response":{"status":302 /* deep data structure */}
+    "jenkins-response":{"status":302, "other_key" : "deep and not much important data structure"}
 }
 ----
 
@@ -351,8 +351,8 @@ Response:
 ----
 {
     "job-name:     "doc-Product_Name-Product_Version-Book_Name-Language (test)",
-    "product":     "Product_Name
-    "version":     "Product_Version
+    "product":     "Product_Name",
+    "version":     "Product_Version",
     "environment": "prod",
     "book-name":   "Book_Name",
     "job-status":  "ok/unstable/failure/disabled",
@@ -371,8 +371,8 @@ HTTP Status Code:
 ----
 {
     "job-name:     "doc-Product_Name-Product_Version-Book_Name-Language (test)",
-    "product":     "Product_Name
-    "version":     "Product_Version
+    "product":     "Product_Name",
+    "version":     "Product_Version",
     "environment": "prod",
     "book-name":   "Book_Name",
     "job-status":  "failure",
@@ -770,7 +770,7 @@ Response:
     "status"   : "ok",
     "job-name" : "doc-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US (test)",
     "command"  : "start_job",
-    "jenkins-response":{"status":302 /* deep data structure */}
+    "jenkins-response":{"status":302, "other_key" : "deep and not much important data structure"}
 }
 ----
 
@@ -836,7 +836,7 @@ Response:
     "status"   : "ok",
     "job-name" : "doc-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US (test)",
     "command"  : "enable",
-    "jenkins-response":{"status":302 /* deep data structure */}
+    "jenkins-response":{"status":302, "other_key" : "deep and not much important data structure"}
 }
 ----
 
@@ -902,7 +902,7 @@ Response:
     "status"   : "ok",
     "job-name" : "doc-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US (test)",
     "command"  : "disable",
-    "jenkins-response":{"status":302 /* deep data structure */}
+    "jenkins-response":{"status":302, "other_key" : "deep and not much important data structure"}
 }
 ----
 
