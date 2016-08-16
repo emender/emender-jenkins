@@ -631,7 +631,7 @@ Response:
 HTTP Status Code:
 +HTTP/1.1 200 OK+
 
-Response when error occurs:
+Response when job does not exist:
 
 [source,json]
 ----
@@ -640,6 +640,20 @@ Response when error occurs:
     "job-name" : "doc-Test_Product-1.0-Test_Book-en-US (test)",
     "command"  : "start",
     "message"  : "Job does not exist"}
+}
+----
+
+HTTP Status Code:
++HTTP/1.1 404 Not Found+
+
+Response when job name is missing in the request:
+
+[source,json]
+----
+{
+    "status"   : "error",
+    "command"  : "start",
+    "message"  : "job name is not specified"
 }
 ----
 

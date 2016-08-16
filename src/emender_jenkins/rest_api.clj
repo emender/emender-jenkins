@@ -119,6 +119,15 @@
      :command command
      :message message})
 
+(defn create-bad-request-response
+    ([command message]
+        {:status "error"
+         :command command
+         :message message})
+    ([command]
+        {:status "error"
+         :command command}))
+
 (defn reload-all-results
     [request]
     (try
@@ -127,7 +136,7 @@
             (send-response response request))
         (catch Exception e
                 (-> (create-error-response "(not needed)" "reload-all-results" (.getMessage e))
-                    (send-error-response request)))))
+                    (send-error-response request :internal-server-error)))))
 
 (defn job-does-not-exist-response
     [job-name command]
@@ -140,15 +149,18 @@
 (defn start-job
     [request]
     (let [job-name (get-job-name-from-body request)]
-        (if (results/job-exists? job-name)
-            (-> (clj-jenkins-api/start-job (config/get-jenkins-url request)
-                                           (config/get-jenkins-auth request)
-                                           (config/include-jenkins-reply? request)
-                                           job-name)
-                (reload-job-list request)
-                (send-response request))
-            (-> (job-does-not-exist-response job-name "start")
-                (send-error-response request)))))
+        (if job-name
+            (if (results/job-exists? job-name)
+                (-> (clj-jenkins-api/start-job (config/get-jenkins-url request)
+                                               (config/get-jenkins-auth request)
+                                               (config/include-jenkins-reply? request)
+                                               job-name)
+                    (reload-job-list request)
+                    (send-response request))
+                (-> (job-does-not-exist-response job-name "start")
+                    (send-error-response request :not-found)))
+            (-> (create-bad-request-response "start" "job name is not specified")
+                (send-error-response request :bad-request)))))
 
 (defn enable-job
     [request]
