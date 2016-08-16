@@ -39,3 +39,26 @@
     (testing "if the emender-jenkins.process-info/read-properties definition exists."
         (is (callable? 'emender-jenkins.process-info/read-properties))))
 
+(deftest test-get-current-pid
+    "Check the behaviour of function emender-jenkins.process-info/get-current-pid."
+    (testing "the behaviour of function emender-jenkins.process-info/get-current-pid."
+        (let [pid (get-current-pid)]
+            (is (not (nil? pid)))
+            (is (re-matches #"[0-9]+" pid)))))
+
+(deftest test-read-properties
+    "Check the behaviour of function emender-jenkins.process-info/read-properties."
+    (testing "the behaviour of function emender-jenkins.process-info/read-properties."
+        (let [props (read-properties)]
+            (are [x] (not (nil? x))
+                (:java-version    props)
+                (:java-class-path props)
+                (:java-home       props)
+                (:java-vendor     props)
+                (:os-arch         props)
+                (:os-name         props)
+                (:os-version      props)
+                (:user-dir        props)
+                (:user-home       props)
+                (:user-name       props)))))
+
