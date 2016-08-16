@@ -302,8 +302,7 @@
                          (send-plain-response job-results)
                          (-> (create-error-response job-name "get_job_results" "can not read test results")
                              (send-error-response request :not-found))))
-                (-> (job-does-not-exist-response job-name "get_job_results")
-                    (send-error-response request :not-found)))
+                (send-job-does-not-exist-response request job-name :get-job-results))
             (send-job-not-specified-response request :get-job-results))))
 
 (defn job-started-handler
