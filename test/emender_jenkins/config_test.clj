@@ -189,3 +189,143 @@
             (-> cfg :jenkins :jenkins-job-list-url)    "api/json?tree=jobs[name,url,color,scm[userRemoteConfigs[url]],buildable,lastSuccessfulBuild[description]]"
             (-> cfg :jenkins :jenkins-auth)            "")))
 
+(deftest test-get-api-prefix-1
+    "Check the behaviour of function emender-jenkins.config/get-api-prefix."
+    (testing "the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+        (are [x y] (= x y)
+            (get-api-prefix {:configuration {:api {:prefix nil}}}) nil
+            (get-api-prefix {:configuration {:api {:prefix "xyzzy"}}}) "xyzzy")))
+
+(deftest test-get-api-prefix-2
+    "Check the behaviour of function emender-jenkins.config/get-api-prefix."
+    (testing "the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+        (are [x y] (= x y)
+            (get-api-prefix {:configuration {:api nil}}) nil
+            (get-api-prefix {:configuration nil}) nil
+            (get-api-prefix nil) nil)))
+
+(deftest test-get-version-1
+    "Check the behaviour of function emender-jenkins.config/get-version."
+    (testing "the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+        (are [x y] (= x y)
+            (get-version {:configuration {:info {:version nil}}}) nil
+            (get-version {:configuration {:info {:version "1.0"}}}) "1.0")))
+
+(deftest test-get-version-2
+    "Check the behaviour of function emender-jenkins.config/get-version."
+    (testing "the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+        (are [x y] (= x y)
+            (get-version {:configuration {:info nil}}) nil
+            (get-version {:configuration nil}) nil
+            (get-version nil) nil)))
+
+(deftest test-get-jenkins-url-1
+    "Check the behaviour of function emender-jenkins.config/get-jenkins-url."
+    (testing "the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+        (are [x y] (= x y)
+            (get-jenkins-url {:configuration {:jenkins {:jenkins-url nil}}}) nil
+            (get-jenkins-url {:configuration {:jenkins {:jenkins-url "http://10.20.30.40:8080"}}}) "http://10.20.30.40:8080")))
+
+(deftest test-get-jenkins-url-2
+    "Check the behaviour of function emender-jenkins.config/get-jenkins-url."
+    (testing "the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+        (are [x y] (= x y)
+            (get-jenkins-url {:configuration {:jenkins nil}}) nil
+            (get-jenkins-url {:configuration nil}) nil
+            (get-jenkins-url nil) nil)))
+
+(deftest test-get-jenkins-auth-1
+    "Check the behaviour of function emender-jenkins.config/get-jenkins-auth."
+    (testing "the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+        (are [x y] (= x y)
+            (get-jenkins-auth {:configuration {:jenkins {:jenkins-auth nil}}}) nil
+            (get-jenkins-auth {:configuration {:jenkins {:jenkins-auth "user:password"}}}) "user:password")))
+
+(deftest test-get-jenkins-auth-2
+    "Check the behaviour of function emender-jenkins.config/get-jenkins-auth."
+    (testing "the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+        (are [x y] (= x y)
+            (get-jenkins-auth {:configuration {:jenkins nil}}) nil
+            (get-jenkins-auth {:configuration nil}) nil
+            (get-jenkins-auth nil) nil)))
+
+(deftest test-verbose?-1
+    "Check the behaviour of function emender-jenkins.config/verbose?."
+    (testing "the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+        (are [x y] (= x y)
+            (verbose? {:configuration {:config {:verbose nil}}})   nil
+            (verbose? {:configuration {:config {:verbose false}}}) false
+            (verbose? {:configuration {:config {:verbose true}}})  true
+            (verbose? {:configuration {:config {:verbose "xyzzy"}}}) "xyzzy")))
+
+(deftest test-verbose?-2
+    "Check the behaviour of function emender-jenkins.config/verbose?."
+    (testing "the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+        (are [x y] (= x y)
+            (verbose? {:configuration {:config nil}}) nil
+            (verbose? {:configuration nil}) nil
+            (verbose? nil) nil)))
+
+(deftest test-pretty-print?-1
+    "Check the behaviour of function emender-jenkins.config/pretty-print?."
+    (testing "the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+        (are [x y] (= x y)
+            (pretty-print? {:configuration {:config {:pretty-print nil}}})   nil
+            (pretty-print? {:configuration {:config {:pretty-print false}}}) false
+            (pretty-print? {:configuration {:config {:pretty-print true}}})  true
+            (pretty-print? {:configuration {:config {:pretty-print "xyzzy"}}}) "xyzzy")))
+
+(deftest test-pretty-print?-2
+    "Check the behaviour of function emender-jenkins.config/pretty-print?."
+    (testing "the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+        (are [x y] (= x y)
+            (pretty-print? {:configuration {:config nil}}) nil
+            (pretty-print? {:configuration nil}) nil
+            (pretty-print? nil) nil)))
+
+(deftest test-verbose-show-configuration?-1
+    "Check the behaviour of function emender-jenkins.config/verbose-show-configuration?."
+    (testing "the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+        (are [x y] (= x y)
+            (verbose-show-configuration? {:configuration {:config {:verbose-show-configuration nil}}})   nil
+            (verbose-show-configuration? {:configuration {:config {:verbose-show-configuration false}}}) false
+            (verbose-show-configuration? {:configuration {:config {:verbose-show-configuration true}}})  true
+            (verbose-show-configuration? {:configuration {:config {:verbose-show-configuration "xyzzy"}}}) "xyzzy")))
+
+(deftest test-verbose-show-configuration?-2
+    "Check the behaviour of function emender-jenkins.config/verbose-show-configuration?."
+    (testing "the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+        (are [x y] (= x y)
+            (verbose-show-configuration? {:configuration {:config nil}}) nil
+            (verbose-show-configuration? {:configuration nil}) nil
+            (verbose-show-configuration? nil) nil)))
+
+(deftest test-include-jenkins-reply?-1
+    "Check the behaviour of function emender-jenkins.config/include-jenkins-reply?."
+    (testing "the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+        (are [x y] (= x y)
+            (include-jenkins-reply? {:configuration {:config {:include-jenkins-reply nil}}})   nil
+            (include-jenkins-reply? {:configuration {:config {:include-jenkins-reply false}}}) false
+            (include-jenkins-reply? {:configuration {:config {:include-jenkins-reply true}}})  true
+            (include-jenkins-reply? {:configuration {:config {:include-jenkins-reply "xyzzy"}}}) "xyzzy")))
+
+(deftest test-include-jenkins-reply?-2
+    "Check the behaviour of function emender-jenkins.config/include-jenkins-reply?."
+    (testing "the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+        (are [x y] (= x y)
+            (include-jenkins-reply? {:configuration {:config nil}}) nil
+            (include-jenkins-reply? {:configuration nil}) nil
+            (include-jenkins-reply? nil) nil)))
+
+(deftest test-override-options-by-cli-1
+    "Check the behaviour of function emender-jenkins.config/override-options-by-cli."
+    (testing "the behaviour of function emender-jenkins.config/override-options-by-cli."
+    (let [cfg (-> (load-configuration-from-ini "test/test1.ini")
+                  (override-options-by-cli nil nil))]
+        (are [x y] (= x y)
+            (-> cfg :info  :version)                   "0.1.0"
+            (-> cfg :jenkins :jenkins-url)             "http://10.20.30.40:8080/"
+            (-> cfg :jenkins :jenkins-job-prefix-url)  "job/"
+            (-> cfg :jenkins :jenkins-job-list-url)    "api/json?tree=jobs[name,url,color,scm[userRemoteConfigs[url]],buildable,lastSuccessfulBuild[description]]"
+            (-> cfg :jenkins :jenkins-auth)            ""))))
+
