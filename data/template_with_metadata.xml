@@ -101,7 +101,7 @@
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
         <url><placeholder id="git-repo" /></url>
-        <credentialsId>a3ca092a-f12f-4b3c-982a-307dc0aaefc8</credentialsId>
+        <credentialsId>32ed5b58-1290-4d87-80a0-3b1990020567</credentialsId>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
