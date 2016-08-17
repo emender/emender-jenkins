@@ -203,6 +203,10 @@
                    [version (select-results-for-product-version product version results)]))})
 
 (defn get-job-results
+    []
+    @results)
+
+(defn get-job-results-as-tree
     [product version]
     (let [results  (read-job-results product version)
           products (all-products results)] ; set of all products read from test results
