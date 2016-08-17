@@ -24,6 +24,12 @@
     (clojure.test/function? function-name))
 
 
+(deftest test-log-existence
+    "Check that the emender-jenkins.jenkins-api/log definition exists."
+    (testing "if the emender-jenkins.jenkins-api/log definition exists."
+        (is (callable? 'emender-jenkins.jenkins-api/log))))
+
+
 (deftest test-get-command-existence
     "Check that the emender-jenkins.jenkins-api/get-command definition exists."
     (testing "if the emender-jenkins.jenkins-api/get-command definition exists."
@@ -72,6 +78,12 @@
         (is (callable? 'emender-jenkins.jenkins-api/read-job-results))))
 
 
+(deftest test-read-file-from-artifact-existence
+    "Check that the emender-jenkins.jenkins-api/read-file-from-artifact definition exists."
+    (testing "if the emender-jenkins.jenkins-api/read-file-from-artifact definition exists."
+        (is (callable? 'emender-jenkins.jenkins-api/read-file-from-artifact))))
+
+
 (deftest test-ok-response-structure-existence
     "Check that the emender-jenkins.jenkins-api/ok-response-structure definition exists."
     (testing "if the emender-jenkins.jenkins-api/ok-response-structure definition exists."
@@ -82,6 +94,12 @@
     "Check that the emender-jenkins.jenkins-api/error-response-structure definition exists."
     (testing "if the emender-jenkins.jenkins-api/error-response-structure definition exists."
         (is (callable? 'emender-jenkins.jenkins-api/error-response-structure))))
+
+
+(deftest test-replace-placeholder-existence
+    "Check that the emender-jenkins.jenkins-api/replace-placeholder definition exists."
+    (testing "if the emender-jenkins.jenkins-api/replace-placeholder definition exists."
+        (is (callable? 'emender-jenkins.jenkins-api/replace-placeholder))))
 
 
 (deftest test-update-template-existence
@@ -100,6 +118,12 @@
     "Check that the emender-jenkins.jenkins-api/send-configuration-xml-to-jenkins definition exists."
     (testing "if the emender-jenkins.jenkins-api/send-configuration-xml-to-jenkins definition exists."
         (is (callable? 'emender-jenkins.jenkins-api/send-configuration-xml-to-jenkins))))
+
+
+(deftest test-get-template-existence
+    "Check that the emender-jenkins.jenkins-api/get-template definition exists."
+    (testing "if the emender-jenkins.jenkins-api/get-template definition exists."
+        (is (callable? 'emender-jenkins.jenkins-api/get-template))))
 
 
 (deftest test-create-job-existence
