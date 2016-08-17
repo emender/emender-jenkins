@@ -82,6 +82,16 @@
                  (.printStackTrace e)
                  nil))))
 
+(defn read-file-from-artifact
+    [jenkins-url job-name file-name]
+    (let [url (str (job-name->url jenkins-url job-name) "/lastSuccessfulBuild/artifact/" file-name)]
+        (println "Using the following URL to retrieve file from artifact: " url)
+        (try
+            (slurp url)
+            (catch Exception e
+                 (.printStackTrace e)
+                 nil))))
+
 (defn ok-response-structure
     [job-name command include-jenkins-reply? jenkins-response]
     (if include-jenkins-reply?
