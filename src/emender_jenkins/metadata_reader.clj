@@ -29,9 +29,11 @@
     :xincludes-count                  "results.GuideStatistic.XiIncludes.cnt"
     :zpage-count                      "results.GuideStatistic.ZPageCount.cn"})
 
+(def metadata (atom nil))
+
 (defn read-and-parse-list-of-commiters
     [jenkins-url job-name]
-    (let [raw-data (jenkins-api/read-file-from-artifact jenkins-url job-name (:commiters-list GuideStatisticResultNames))]
+    (let [raw-data (jenkins-api/read-file-from-artifact jenkins-url job-name (:commiters-list GuideStatisticResultNames) nil)]
         (count raw-data)))
 
 (defn job-results->job-names
@@ -47,14 +49,14 @@
 
 (defn reload-tests-metadata
     [configuration job-results]
-    (let [jenkins-url   (-> configuration :jenkins :jenkins-url)
-          metadata      (->> (job-results->job-names job-results)
-                             (load-and-parse-metadata jenkins-url))]
-    (println metadata)
+    (let [jenkins-url     (-> configuration :jenkins :jenkins-url)
+          parsed-metadata (->> (job-results->job-names job-results)
+                               (load-and-parse-metadata jenkins-url))]
+    (reset! metadata parsed-metadata)
     nil))
 
 (defn metadata-count
     []
-    42)
+    @metadata)
 
 
