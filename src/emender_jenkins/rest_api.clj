@@ -13,18 +13,16 @@
 (ns emender-jenkins.rest-api
     "Handler for all REST API calls.")
 
-(require '[ring.util.response           :as http-response])
-(require '[clojure.pprint               :as pprint])
-(require '[clojure.data.json            :as json])
-(require '[clj-jenkins-api.jenkins-api  :as clj-jenkins-api])
+(require '[ring.util.response               :as http-response])
+(require '[clojure.pprint                   :as pprint])
+(require '[clojure.data.json                :as json])
+(require '[clj-jenkins-api.jenkins-api      :as clj-jenkins-api])
 
-(require '[emender-jenkins.file-utils   :as file-utils])
-(require '[emender-jenkins.results      :as results])
-(require '[emender-jenkins.config       :as config])
-(require '[emender-jenkins.jenkins-api  :as jenkins-api])
-
-(def create-job-command "create_job")
-(def update-job-command "update_job")
+(require '[emender-jenkins.file-utils       :as file-utils])
+(require '[emender-jenkins.results          :as results])
+(require '[emender-jenkins.config           :as config])
+(require '[emender-jenkins.jenkins-api      :as jenkins-api])
+(require '[emender-jenkins.metadata-reader  :as metadata-reader])
 
 ; command names used by various REST API responses
 (def commands {
@@ -172,6 +170,17 @@
                 (-> (create-error-response "(not needed)" "reload-all-results" (.getMessage e))
                     (send-error-response request :internal-server-error)))))
 
+(defn reload-tests-metadata
+    [request]
+    (try
+        (results/reload-all-results (:configuration request))
+        (metadata-reader/reload-tests-metadata (:configuration request) (results/get-job-results))
+        (let [response (metadata-reader/metadata-count)]
+            (send-response response request))
+        (catch Exception e
+                (-> (create-error-response "(not needed)" "reload-tests-metadata" (.getMessage e))
+                    (send-error-response request :internal-server-error)))))
+
 (defn perform-job-command
     [request function command]
     (let [job-name (get-job-name-from-body request)]
@@ -224,7 +233,7 @@
               branch     (get input-data :branch)
               metadata   (get input-data :metadata)]
             (if (results/job-exists? job-name)
-                (-> (job-already-exist-response job-name create-job-command)
+                (-> (job-already-exist-response job-name :create-job)
                     (send-error-response request :bad-request))
                 (if (job-metadata-ok? job-name git-repo branch)
                     (-> (jenkins-api/create-job (config/get-jenkins-url request)
@@ -289,7 +298,7 @@
     (let [params  (:params request)
           product (get params "product")
           version (get params "version")
-          results (results/get-job-results product version)]
+          results (results/get-job-results-as-tree product version)]
         (send-response results request)))
 
 (defn get-job-results
@@ -326,5 +335,5 @@
                     :error "Unknown API call"
                     :uri uri
                     :method method}]
-        (send-error-response response request)))
+        (send-error-response response request :bad-request)))
 
