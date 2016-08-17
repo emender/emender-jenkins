@@ -27,3 +27,32 @@
 ; Tests for various function definitions
 ;
 
+(deftest test-read-and-parse-list-of-commiters-existence
+    "Check that the emender-jenkins.metadata-reader/read-and-parse-list-of-commiters definition exists."
+    (testing "if the emender-jenkins.metadata-reader/read-and-parse-list-of-commiters definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/read-and-parse-list-of-commiters))))
+
+
+(deftest test-job-results->job-names-existence
+    "Check that the emender-jenkins.metadata-reader/job-results->job-names definition exists."
+    (testing "if the emender-jenkins.metadata-reader/job-results->job-names definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/job-results->job-names))))
+
+
+(deftest test-load-and-parse-metadata-existence
+    "Check that the emender-jenkins.metadata-reader/load-and-parse-metadata definition exists."
+    (testing "if the emender-jenkins.metadata-reader/load-and-parse-metadata definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/load-and-parse-metadata))))
+
+
+(deftest test-reload-tests-metadata-existence
+    "Check that the emender-jenkins.metadata-reader/reload-tests-metadata definition exists."
+    (testing "if the emender-jenkins.metadata-reader/reload-tests-metadata definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/reload-tests-metadata))))
+
+
+(deftest test-metadata-count-existence
+    "Check that the emender-jenkins.metadata-reader/metadata-count definition exists."
+    (testing "if the emender-jenkins.metadata-reader/metadata-count definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/metadata-count))))
+
