@@ -18,7 +18,6 @@
 (require '[clojure.data.json                :as json])
 (require '[clj-jenkins-api.jenkins-api      :as clj-jenkins-api])
 
-(require '[emender-jenkins.file-utils       :as file-utils])
 (require '[emender-jenkins.results          :as results])
 (require '[emender-jenkins.config           :as config])
 (require '[emender-jenkins.jenkins-api      :as jenkins-api])
