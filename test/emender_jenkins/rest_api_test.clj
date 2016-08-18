@@ -108,6 +108,12 @@
         (is (callable? 'emender-jenkins.rest-api/create-error-response))))
 
 
+(deftest test-create-bad-request-response-existence
+    "Check that the emender-jenkins.rest-api/create-bad-request-response definition exists."
+    (testing "if the emender-jenkins.rest-api/create-bad-request-response definition exists."
+        (is (callable? 'emender-jenkins.rest-api/create-bad-request-response))))
+
+
 (deftest test-job-does-not-exist-response-existence
     "Check that the emender-jenkins.rest-api/job-does-not-exist-response definition exists."
     (testing "if the emender-jenkins.rest-api/job-does-not-exist-response definition exists."
@@ -118,6 +124,36 @@
     "Check that the emender-jenkins.rest-api/job-already-exist-response definition exists."
     (testing "if the emender-jenkins.rest-api/job-already-exist-response definition exists."
         (is (callable? 'emender-jenkins.rest-api/job-already-exist-response))))
+
+
+(deftest test-send-job-does-not-exist-response-existence
+    "Check that the emender-jenkins.rest-api/send-job-does-not-exist-response definition exists."
+    (testing "if the emender-jenkins.rest-api/send-job-does-not-exist-response definition exists."
+        (is (callable? 'emender-jenkins.rest-api/send-job-does-not-exist-response))))
+
+
+(deftest test-send-job-not-specified-response-existence
+    "Check that the emender-jenkins.rest-api/send-job-not-specified-response definition exists."
+    (testing "if the emender-jenkins.rest-api/send-job-not-specified-response definition exists."
+        (is (callable? 'emender-jenkins.rest-api/send-job-not-specified-response))))
+
+
+(deftest test-send-job-invalid-metadata-response-existence
+    "Check that the emender-jenkins.rest-api/send-job-invalid-metadata-response definition exists."
+    (testing "if the emender-jenkins.rest-api/send-job-invalid-metadata-response definition exists."
+        (is (callable? 'emender-jenkins.rest-api/send-job-invalid-metadata-response))))
+
+
+(deftest test-reload-tests-metadata-existence
+    "Check that the emender-jenkins.rest-api/reload-tests-metadata definition exists."
+    (testing "if the emender-jenkins.rest-api/reload-tests-metadata definition exists."
+        (is (callable? 'emender-jenkins.rest-api/reload-tests-metadata))))
+
+
+(deftest test-perform-job-command-existence
+    "Check that the emender-jenkins.rest-api/perform-job-command definition exists."
+    (testing "if the emender-jenkins.rest-api/perform-job-command definition exists."
+        (is (callable? 'emender-jenkins.rest-api/perform-job-command))))
 
 
 (deftest test-start-job-existence
@@ -142,6 +178,18 @@
     "Check that the emender-jenkins.rest-api/delete-job definition exists."
     (testing "if the emender-jenkins.rest-api/delete-job definition exists."
         (is (callable? 'emender-jenkins.rest-api/delete-job))))
+
+
+(deftest test-job-invalid-input-existence
+    "Check that the emender-jenkins.rest-api/job-invalid-input definition exists."
+    (testing "if the emender-jenkins.rest-api/job-invalid-input definition exists."
+        (is (callable? 'emender-jenkins.rest-api/job-invalid-input))))
+
+
+(deftest test-job-metadata-ok?-existence
+    "Check that the emender-jenkins.rest-api/job-metadata-ok? definition exists."
+    (testing "if the emender-jenkins.rest-api/job-metadata-ok? definition exists."
+        (is (callable? 'emender-jenkins.rest-api/job-metadata-ok?))))
 
 
 (deftest test-create-job-existence
