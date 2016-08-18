@@ -13,11 +13,6 @@
 (ns emender-jenkins.jenkins-api
     "Module with functions implementing Jenkins API.")
 
-(require '[clojure.xml       :as xml])
-(require '[clojure.zip       :as zip])
-
-(require '[clj-http.client   :as http-client])
-
 (require '[clojure.data.json :as json])
 (require '[clj-http.client   :as http-client])
 
