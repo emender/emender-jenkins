@@ -22,6 +22,7 @@
 (require '[emender-jenkins.config           :as config])
 (require '[emender-jenkins.jenkins-api      :as jenkins-api])
 (require '[emender-jenkins.metadata-reader  :as metadata-reader])
+(require '[emender-jenkins.file-utils       :as file-utils])
 
 ; command names used by various REST API responses
 (def commands {
@@ -43,23 +44,28 @@
     :not-implemented       501})
 
 (defn read-request-body
+    "Read all informations from the request body."
     [request]
     (file-utils/slurp- (:body request)))
 
 (defn body->results
+    "Try to parse the request body as JSON format."
     [body]
     (json/read-str body))
 
 (defn body->job-info
+    "Try to parse the request body as JSON format and keywordize keys."
     [body]
     (json/read-str body :key-fn clojure.core/keyword))
 
 (defn get-job-name
+    "Common function to retrieve job name from given data structure."
     [json]
     (if json
         (get json :name)))
 
 (defn get-job-name-from-body
+    "Returns job name from request body or nil if any exception happens."
     [request]
     (try
         (-> (read-request-body request)
@@ -329,6 +335,7 @@
     (send-response {:status "ok"} request))
 
 (defn unknown-call-handler
+    "Function called for all unknown API calls."
     [request uri method]
     (let [response {:status :error
                     :error "Unknown API call"
