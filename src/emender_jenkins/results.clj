@@ -106,35 +106,41 @@
                  :passed (parse-int (get parsed 2))
                  :failed (parse-int (get parsed 3))}))))
 
+(defn test-summary
+    [jenkins-url job-name message]
+    (if message
+        {:url         (str jenkins-url "job/" (clojure.string/replace job-name " " "%20") "/lastSuccessfulBuild/artifact/results.html")
+         :results     (parse-test-results message)}))
+
 (defn read-update-job-info
-    [job-list preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix]
+    [jenkins-url job-list preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix]
     (for [job job-list]
-        (let [job-name (get job "name")
+        (let [job-name   (get job "name")
               job-color  (get job "color")
               buildable? (get job "buildable")
               message    (-> (get job "lastSuccessfulBuild")
                              (get "description"))]
-            {:job-name    job-name
+            {:jobName     job-name
              :product     (job-name->product-name job-name)
              :version     (job-name->version job-name)
              :environment (job-name->environment job-name preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix)
-             :book-name   (job-name->book-name job-name)
-             :job-status  (compute-job-status job-color buildable?)
+             :title       (job-name->book-name job-name)
+             :jobStatus   (compute-job-status job-color buildable?)
              :disabled    (compute-job-disabled job-color buildable?)
-             :test-summary {
-                 :message     message
-                 :results     (parse-test-results message)}
+             :testSummary (test-summary jenkins-url job-name message)
             })))
 
 (defn reload-all-results
     [configuration]
-    (let [preview-jobs-suffix (-> configuration :jobs    :preview-test-jobs-suffix)
-          stage-jobs-suffix   (-> configuration :jobs    :stage-test-jobs-suffix)
-          prod-jobs-suffix    (-> configuration :jobs    :prod-test-jobs-suffix)
+    (let [test-jobs-prefix    (-> configuration :jobs :test-jobs-prefix)
+          preview-jobs-suffix (-> configuration :jobs :preview-test-jobs-suffix)
+          stage-jobs-suffix   (-> configuration :jobs :stage-test-jobs-suffix)
+          prod-jobs-suffix    (-> configuration :jobs :prod-test-jobs-suffix)
           job-list (jenkins-api/read-list-of-test-jobs (-> configuration :jenkins :jenkins-url)
                                                        (-> configuration :jenkins :jenkins-job-list-url)
+                                                       test-jobs-prefix
                                                        preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix)
-          job-results (read-update-job-info job-list   preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix)]
+          job-results (read-update-job-info (-> configuration :jenkins :jenkins-url) job-list   preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix)]
           (clojure.pprint/pprint job-results)
           ;(spit "test.edn" (with-out-str (clojure.pprint/pprint job-results)))
           ;job-results (read-all-test-results configuration job-list)]
@@ -168,13 +174,13 @@
     [results product version]
     (into #{}
     (for [job (select-jobs results #(and (= product (:product %)) (= version (:version %))))]
-        (:book-name job))))
+        (:title job))))
 
 (defn job-for-environment
     [product version book-name environment results]
     (-> (select-jobs results #(and (= product (:product %))
                                    (= version (:version %))
-                                   (= book-name (:book-name %))
+                                   (= book-name (:title %))
                                    (= environment (:environment %))))
         first))
 
@@ -217,12 +223,12 @@
 
 (defn find-job-with-name
     [job-name]
-    (some #(if (= job-name (:job-name %)) %) @results))
+    (some #(if (= job-name (:jobName %)) %) @results))
 
 (defn job-exists?
     [job-name]
     (if job-name
-        (some #(= job-name (:job-name %)) @results)))
+        (some #(= job-name (:jobName %)) @results)))
 
 ; REPL testing
 ; (require '[clojure.pprint :as pprint])
