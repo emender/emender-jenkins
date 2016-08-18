@@ -90,6 +90,12 @@
         (is (callable? 'emender-jenkins.results/parse-test-results))))
 
 
+(deftest test-test-summary-existence
+    "Check that the emender-jenkins.results/test-summary definition exists."
+    (testing "if the emender-jenkins.results/test-summary definition exists."
+        (is (callable? 'emender-jenkins.results/test-summary))))
+
+
 (deftest test-read-update-job-info-existence
     "Check that the emender-jenkins.results/read-update-job-info definition exists."
     (testing "if the emender-jenkins.results/read-update-job-info definition exists."
@@ -160,6 +166,12 @@
     "Check that the emender-jenkins.results/get-job-results definition exists."
     (testing "if the emender-jenkins.results/get-job-results definition exists."
         (is (callable? 'emender-jenkins.results/get-job-results))))
+
+
+(deftest test-get-job-results-as-tree-existence
+    "Check that the emender-jenkins.results/get-job-results-as-tree definition exists."
+    (testing "if the emender-jenkins.results/get-job-results-as-tree definition exists."
+        (is (callable? 'emender-jenkins.results/get-job-results-as-tree))))
 
 
 (deftest test-find-job-with-name-existence
