@@ -65,16 +65,17 @@
                 nil))))
 
 (defn filter-test-jobs
-    [all-jobs preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix]
-    (filter #(or (.endsWith (get %1 "name") preview-jobs-suffix)
-                 (.endsWith (get %1 "name") stage-jobs-suffix)
-                 (.endsWith (get %1 "name") prod-jobs-suffix))
+    [all-jobs jobs-prefix preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix]
+    (filter #(and (.startsWith (get %1 "name") jobs-prefix)
+                  (or (.endsWith (get %1 "name") preview-jobs-suffix)
+                      (.endsWith (get %1 "name") stage-jobs-suffix)
+                      (.endsWith (get %1 "name") prod-jobs-suffix)))
             all-jobs))
 
 (defn read-list-of-test-jobs
-    [jenkins-url job-list-part preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix]
+    [jenkins-url job-list-part jobs-prefix preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix]
     (-> (read-list-of-all-jobs jenkins-url job-list-part)
-        (filter-test-jobs preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix)))
+        (filter-test-jobs jobs-prefix preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix)))
 
 (defn read-job-results
     [jenkins-url job-name]
