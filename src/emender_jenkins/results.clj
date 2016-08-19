@@ -14,8 +14,8 @@
     "Module with functions to handle and manipulate test results.")
 
 (require '[clojure.pprint :as pprint])
+(require '[clj-fileutils.fileutils     :as file-utils])
 
-(require '[emender-jenkins.file-utils  :as file-utils])
 (require '[emender-jenkins.jenkins-api :as jenkins-api])
 (require '[emender-jenkins.config      :as config])
 
@@ -130,16 +130,29 @@
              :testSummary (test-summary jenkins-url job-name message)
             })))
 
+(defn filter-test-jobs
+    [all-jobs jobs-prefix preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix]
+    (filter #(and (.startsWith (get %1 "name") jobs-prefix)
+                  (or (.endsWith (get %1 "name") preview-jobs-suffix)
+                      (.endsWith (get %1 "name") stage-jobs-suffix)
+                      (.endsWith (get %1 "name") prod-jobs-suffix)))
+            all-jobs))
+
+(defn read-list-of-test-jobs
+    [jenkins-url job-list-part jobs-prefix preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix]
+    (-> (jenkins-api/read-list-of-all-jobs jenkins-url job-list-part)
+        (filter-test-jobs jobs-prefix preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix)))
+
 (defn reload-all-results
     [configuration]
     (let [test-jobs-prefix    (-> configuration :jobs :test-jobs-prefix)
           preview-jobs-suffix (-> configuration :jobs :preview-test-jobs-suffix)
           stage-jobs-suffix   (-> configuration :jobs :stage-test-jobs-suffix)
           prod-jobs-suffix    (-> configuration :jobs :prod-test-jobs-suffix)
-          job-list (jenkins-api/read-list-of-test-jobs (-> configuration :jenkins :jenkins-url)
-                                                       (-> configuration :jenkins :jenkins-job-list-url)
-                                                       test-jobs-prefix
-                                                       preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix)
+          job-list (read-list-of-test-jobs (-> configuration :jenkins :jenkins-url)
+                                           (-> configuration :jenkins :jenkins-job-list-url)
+                                           test-jobs-prefix
+                                           preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix)
           job-results (read-update-job-info (-> configuration :jenkins :jenkins-url) job-list   preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix)]
           (clojure.pprint/pprint job-results)
           ;(spit "test.edn" (with-out-str (clojure.pprint/pprint job-results)))
