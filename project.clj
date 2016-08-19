@@ -12,7 +12,7 @@
 
 (defproject emender-jenkins "0.1.0-SNAPSHOT"
     :description "FIXME: write description"
-    :url "http://example.com/FIXME"
+    :url "http://github.com/emender/emender-jenkins"
     :license {:name "Eclipse Public License"
               :url "http://www.eclipse.org/legal/epl-v10.html"}
     :dependencies [[org.clojure/clojure "1.7.0"]
@@ -25,7 +25,8 @@
                    [clj-rm-rf "1.0.0-SNAPSHOT"]
                    [clojure-ini "0.0.1"]
                    [irclj "0.5.0-alpha4"]
-                   [org.clojars.tisnik/clj-jenkins-api "0.2.0-SNAPSHOT"]]
+                   [org.clojars.tisnik/clj-jenkins-api "0.4.0-SNAPSHOT"]
+                   [org.clojars.tisnik/clj-fileutils "0.2.0-SNAPSHOT"]]
     :dev-dependencies [[lein-ring "0.8.10"]]
     :plugins [[lein-ring "0.8.10"]
               [codox "0.8.11"]

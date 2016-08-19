@@ -51,10 +51,10 @@ Response:
 [source,json]
 ----
 {
-    "name" : "Emender Jenkins Service",
-    "version" : "0.1.0",
+    "name" :       "Emender Jenkins Service",
+    "version" :    "0.1.0",
     "api_prefix" : "/api",
-    "hostname" : "hostname"
+    "hostname" :   "hostname"
 }
 ----
 
@@ -136,7 +136,7 @@ Response:
 [ 
     { 
         "message": "Alpha version",
-        "type": "warning" 
+        "type":    "warning" 
     } 
 ] 
 ----
@@ -173,17 +173,17 @@ Post Data (max. version):
 [source,json]
 ----
 {
-    "name"            : "jobName (test)",
-    "ssh_url_to_repo" : "git@some:repo.git",
-    "branch"          : "preview",
+    "name"                    : "jobName (test)",
+    "ssh_url_to_repo"         : "git@some:repo.git",
+    "branch"                  : "preview",
     "additional_content_dirs" : ["dir1", "dir2"],
     "metadata": {
-        "product"     : "product name",
-        "version"     : "product version",
-        "language"    : "en-US",
-        "environment" : "preview",
+        "product"          : "product name",
+        "version"          : "product version",
+        "language"         : "en-US",
+        "environment"      : "preview",
         "content_directory": "Book directory",
-        "content_type": "book"
+        "content_type"     : "book"
     } 
 } 
 ----
@@ -194,9 +194,9 @@ Response:
 ----
 {
     "status"   : "ok",
-    "job-name" : "doc-Test_Product-1.0-Test_Book-en-US (test)",
+    "jobName"  : "test-Test_Product-1.0-Test_Book-en-US (test)",
     "command"  : "create",
-    "jenkins-response":{ "status":200 }
+    "jenkinsResponse":{ "status":200 }
 }
 ----
 
@@ -208,10 +208,10 @@ Response when job already exists:
 [source,json]
 ----
 {
-    "status"   : "error",
-    "job-name" : "doc-Test_Product-1.0-Test_Book-en-US (test)",
-    "command"  : "create",
-    "message"  : "Job already exist"}
+    "status"  : "error",
+    "jobName" : "test-Test_Product-1.0-Test_Book-en-US (test)",
+    "command" : "create",
+    "message" : "Job already exist"}
 }
 ----
 
@@ -295,10 +295,10 @@ Response:
 [source,json]
 ----
 {
-    "status"   : "ok",
-    "job-name" : "doc-Test_Product-1.0-Test_Book-en-US (test)",
-    "command"  : "delete_job",
-    "jenkins-response":{"status":302, "other_key" : "deep and not much important data structure"}
+    "status"  : "ok",
+    "jobName" : "test-Test_Product-1.0-Test_Book-en-US (test)",
+    "command" : "delete_job",
+    "jenkinsResponse":{"status":302, "other_key" : "deep and not much important data structure"}
 }
 ----
 
@@ -310,10 +310,10 @@ Response when job does not exist:
 [source,json]
 ----
 {
-    "status"   : "error",
-    "job-name" : "doc-Test_Product-1.0-Test_Book-en-US (test)",
-    "command"  : "delete_job",
-    "message"  : "Job does not exist"
+    "status"  : "error",
+    "jobName" : "test-Test_Product-1.0-Test_Book-en-US (test)",
+    "command" : "delete_job",
+    "message" : "Job does not exist"
 }
 ----
 
@@ -325,9 +325,9 @@ Response in case of invalid input:
 [source,json]
 ----
 {
-    "status"   : "error",
-    "command"  : "delete_job",
-    "message"  : "job name is not specified"
+    "status"  : "error",
+    "command" : "delete_job",
+    "message" : "job name is not specified"
 }
 ----
 
@@ -350,15 +350,15 @@ Response:
 [source,json]
 ----
 {
-    "job-name":    "doc-Product_Name-Product_Version-Book_Name-Language (test)",
+    "jobName":     "test-Product_Name-Product_Version-Book_Name-Language (test)",
     "product":     "Product_Name",
     "version":     "Product_Version",
     "environment": "prod",
-    "book-name":   "Book_Name",
-    "job-status":  "ok/unstable/failure/disabled",
+    "title":       "Book_Name",
+    "jobStatus":   "ok/unstable/failure/disabled",
     "disabled" :   "true/false",
-    "test-summary": {
-        "message:": "Total: 7  Passed: 5  Failed: 2",
+    "testSummary": {
+        "url"    : "url to generated results",
         "results": {"total":7,"passed":5,"failed":2}
     }
 }
@@ -370,15 +370,15 @@ HTTP Status Code:
 [source,json]
 ----
 {
-    "job-name":    "doc-Product_Name-Product_Version-Book_Name-Language (test)",
+    "jobName":     "test-Product_Name-Product_Version-Book_Name-Language (test)",
     "product":     "Product_Name",
     "version":     "Product_Version",
     "environment": "prod",
-    "book-name":   "Book_Name",
-    "job-status":  "failure",
+    "title":       "Book_Name",
+    "jobStatus":   "failure",
     "disabled" :   "true/false",
-    "test-summary": {
-        "message:": "Total: 7  Passed: 5  Failed: 2",
+    "testSummary": {
+        "url"    : "url to generated results",
         "results": {"total":7,"passed":5,"failed":2}
     }
 }
@@ -392,10 +392,10 @@ Response when test results does not exist:
 [source,json]
 ----
 {
-    "status"   : "error",
-    "job-name" : "known-job",
-    "command"  : "get_job",
-    "message"  : "Test results does not exist"
+    "status"  : "error",
+    "jobName" : "known-job",
+    "command" : "get_job",
+    "message" : "Test results does not exist"
 }
 ----
 
@@ -407,10 +407,10 @@ Response when job does not exist:
 [source,json]
 ----
 {
-    "status"   : "error",
-    "job-name" : "unknown-job",
-    "command"  : "get_job",
-    "message"  : "Job does not exist"
+    "status"  : "error",
+    "jobName" : "unknown-job",
+    "command" : "get_job",
+    "message" : "Job does not exist"
 }
 ----
 
@@ -422,9 +422,9 @@ Response when the input is not valid:
 [source,json]
 ----
 {
-    "status"   : "error",
-    "command"  : "get_job",
-    "message"  : "job name is not specified"
+    "status"  : "error",
+    "command" : "get_job",
+    "message" : "job name is not specified"
 }
 ----
 
@@ -448,7 +448,7 @@ Post Data (minimal version):
 [source,json]
 ----
 {
-    "name"            : "doc-Product_Name-Product_Version-Book_Name-Language (test)",
+    "name"            : "test-Product_Name-Product_Version-Book_Name-Language (test)",
     "ssh_url_to_repo" : "git@some:repo.git",
     "branch"          : "preview"
 } 
@@ -459,7 +459,7 @@ Post Data (max. version):
 [source,json]
 ----
 {
-    "name"            : "doc-Product_Name-Product_Version-Book_Name-Language (test)",
+    "name"            : "test-Product_Name-Product_Version-Book_Name-Language (test)",
     "ssh_url_to_repo" : "git@some:repo.git",
     "branch"          : "preview",
     "additional_content_dirs" : ["dir1", "dir2"],
@@ -480,9 +480,9 @@ Response:
 ----
 {
     "status":"ok",
-    "job-name":"doc-Test_Product-1.0-Test_Book-en-US (test-preview)",
+    "jobName":"test-Test_Product-1.0-Test_Book-en-US (preview)",
     "command":"update",
-    "jenkins-response":
+    "jenkinsResponse":
     {
         "status":200,
         "headers":
@@ -494,7 +494,7 @@ Response:
         },
         "body":"",
         "request-time":86,
-        "trace-redirects": ["http:\/\/10.34.3.139:8080\/job\/doc-Test_Product-1.0-Test_Book-en-US%20(test-preview)\/config.xml"],
+        "trace-redirects": ["http:\/\/10.34.3.139:8080\/job\/test-Test_Product-1.0-Test_Book-en-US%20(preview)\/config.xml"],
         "orig-content-encoding":null
     }
 }
@@ -509,7 +509,7 @@ Response when job does not exist:
 ----
 {
     "status"   : "error",
-    "job-name" : "doc-Test_Product-1.0-Test_Book-en-US (test)",
+    "jobName"  : "test-Test_Product-1.0-Test_Book-en-US (test)",
     "command"  : "update_job",
     "message"  : "Job does not exist"
 }
@@ -587,28 +587,26 @@ Response:
                     {"Developer Guide":
                      {"tests":
                       {"preview":
-                       {"job-name":
-                        "doc-Red_Hat_Enterprise_Linux-7-Developer_Guide-en-US (test-preview)",
-                        "disabled":false,
-                        "book-name":"Developer Guide",
-                        "job-status":"failure",
-                        "product":"Red Hat Enterprise Linux",
-                        "environment":"preview",
-                        "version":"7",
-                        "test-summary": {
-                            "message":null,
-                            "results":null}},
+                       {"jobName":     "test-Red_Hat_Enterprise_Linux-7-Developer_Guide-en-US (preview)",
+                        "disabled":    false,
+                        "title":       "Developer Guide",
+                        "jobStatus":   "failure",
+                        "product":     "Red Hat Enterprise Linux",
+                        "environment": "preview",
+                        "version":     "7",
+                        "testSummary": {
+                            "url"    : "url to generated results",
+                             "results":{"total":7, "passed":5, "failed":2}}},
                        "stage":
-                       {"job-name":
-                        "doc-Red_Hat_Enterprise_Linux-7-Developer_Guide-en-US (test-stage)",
+                       {"jobName": "test-Red_Hat_Enterprise_Linux-7-Developer_Guide-en-US (stage)",
                         "disabled":false,
-                        "book-name":"Developer Guide",
-                        "job-status":"failure",
+                        "title":"Developer Guide",
+                        "jobStatus":"failure",
                         "product":"Red Hat Enterprise Linux",
                         "environment":"stage",
                         "version":"7",
-                        "test-summary": {
-                             "message":"Total: 7  Passed: 5  Failed: 2",
+                        "testSummary": {
+                             "url"    : "url to generated results",
                              "results":{"total":7, "passed":5, "failed":2}}},
                        "prod":null}
                       }
@@ -619,41 +617,35 @@ Response:
                     {"Security Guide":
                      {"tests":
                       {"preview":
-                       {"job-name":
-                        "doc-Red_Hat_Enterprise_Linux-6-Security_Guide-en-US (test-preview)",
+                       {"jobName": "test-Red_Hat_Enterprise_Linux-6-Security_Guide-en-US (preview)",
                         "disabled":false,
-                        "book-name":"Security Guide",
-                        "job-status":"unstable",
+                        "title":"Security Guide",
+                        "jobStatus":"unstable",
                         "product":"Red Hat Enterprise Linux",
                         "environment":"preview",
                         "version":"6",
-                        "test-summary": {
+                        "testSummary": {
                             "message":null,
                             "results":null},
                        "stage":
-                       {"job-name":
-                        "doc-Red_Hat_Enterprise_Linux-6-Security_Guide-en-US (test-stage)",
+                       {"jobName": "test-Red_Hat_Enterprise_Linux-6-Security_Guide-en-US (stage)",
                         "disabled":false,
-                        "book-name":"Security Guide",
-                        "job-status":"unstable",
+                        "title":"Security Guide",
+                        "jobStatus":"unstable",
                         "product":"Red Hat Enterprise Linux",
                         "environment":"stage",
                         "version":"6",
-                        "test-summary": {
-                            "message":null,
-                            "results":null},
+                        "testSummary": null,
+                       }
                        "prod":
-                       {"job-name":
-                        "doc-Red_Hat_Enterprise_Linux-6-Security_Guide-en-US (test-prod)",
+                       {"jobName": "test-Red_Hat_Enterprise_Linux-6-Security_Guide-en-US (prod)",
                         "disabled":false,
-                        "book-name":"Security Guide",
-                        "job-status":"unstable",
+                        "title":"Security Guide",
+                        "jobStatus":"unstable",
                         "product":"Red Hat Enterprise Linux",
                         "environment":"prod",
                         "version":"6",
-                        "test-summary": {
-                            "message":null,
-                            "results":null},
+                        "testSummary": null,
                        }
                       }
                      }
@@ -684,7 +676,7 @@ Response:
 ----
 {
     "metadata" : {
-        "name":"doc-book-name (test)"
+        "name":"test-book-name (test)"
     },
     "results" : {
         "FirstTest": {
@@ -718,7 +710,7 @@ Response when error occurs:
 ----
 {
     "status"   : "error",
-    "job-name" : "doc-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US (test)",
+    "jobName" : "test-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US (test)",
     "command"  : "get_job_results",
     "message"  : "Job does not exist"
 }
@@ -731,7 +723,7 @@ HTTP Status Code:
 ----
 {
     "status"   : "error",
-    "job-name" : "doc-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US (test)",
+    "jobName" : "test-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US (test)",
     "command"  : "get_job_results",
     "message"  : "can not read test results"
 }
@@ -758,7 +750,7 @@ Post Data:
 [source,json]
 ----
 {
-    "name": "job-name"
+    "name": "jobName"
 }
 ----
 
@@ -768,7 +760,7 @@ Response:
 ----
 {
     "status"   : "ok",
-    "job-name" : "doc-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US (test)",
+    "jobName" : "test-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US (test)",
     "command"  : "start_job",
     "jenkins-response":{"status":302, "other_key" : "deep and not much important data structure"}
 }
@@ -783,7 +775,7 @@ Response when job does not exist:
 ----
 {
     "status"   : "error",
-    "job-name" : "wrong-job",
+    "jobName" : "wrong-job",
     "command"  : "start_job",
     "message"  : "Job does not exist"}
 }
@@ -824,7 +816,7 @@ Post Data:
 [source,json]
 ----
 {
-    "name": "job-name"
+    "name": "jobName"
 }
 ----
 
@@ -834,7 +826,7 @@ Response:
 ----
 {
     "status"   : "ok",
-    "job-name" : "doc-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US (test)",
+    "jobName" : "test-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US (test)",
     "command"  : "enable",
     "jenkins-response":{"status":302, "other_key" : "deep and not much important data structure"}
 }
@@ -849,7 +841,7 @@ Response when job does not exist:
 ----
 {
     "status"   : "error",
-    "job-name" : "wrong-job",
+    "jobName" : "wrong-job",
     "command"  : "enable_job",
     "message"  : "Job does not exist"
 }
@@ -890,7 +882,7 @@ Post Data:
 [source,json]
 ----
 {
-    "name": "job-name"
+    "name": "jobName"
 }
 ----
 
@@ -900,7 +892,7 @@ Response:
 ----
 {
     "status"   : "ok",
-    "job-name" : "doc-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US (test)",
+    "jobName" : "test-Red_Hat_Certificate_System-10.0-Administration_Guide-en-US (test)",
     "command"  : "disable",
     "jenkins-response":{"status":302, "other_key" : "deep and not much important data structure"}
 }
@@ -915,7 +907,7 @@ Response when job does not exist:
 ----
 {
     "status"   : "error",
-    "job-name" : "wrong-job",
+    "jobName"  : "wrong-job",
     "command"  : "disable_job",
     "message"  : "Job does not exist"
 }
@@ -956,7 +948,7 @@ Post Data:
 [source,json]
 ----
 {
-    "name": "job-name"
+    "name": "jobName"
 }
 ----
 
@@ -981,7 +973,7 @@ Post Data:
 [source,json]
 ----
 {
-    "name": "job-name"
+    "name": "jobName"
 }
 ----
 
@@ -1006,7 +998,7 @@ Post Data:
 ----
 {
     "metadata" : {
-        "name":"doc-Red_Hat_Enterprise_Linux-6-Deployment_Guide (test)"
+        "name":"test-Red_Hat_Enterprise_Linux-6-Deployment_Guide (test)"
     },
     "results" : {
         "Test1": {
