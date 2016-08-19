@@ -12,7 +12,7 @@
 
 (ns emender-jenkins.metadata-reader)
 
-(require '[emender-jenkins.jenkins-api :as jenkins-api])
+(require '[clj-jenkins-api.jenkins-api :as jenkins-api])
 
 (def GuideStatisticResultNames {
     :commiters-list                   "results.GuideStatistic.Commiters.freq"
