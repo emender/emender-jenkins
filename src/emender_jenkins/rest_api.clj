@@ -17,12 +17,12 @@
 (require '[clojure.pprint                   :as pprint])
 (require '[clojure.data.json                :as json])
 (require '[clj-jenkins-api.jenkins-api      :as clj-jenkins-api])
+(require '[clj-fileutils.fileutils          :as file-utils])
 
 (require '[emender-jenkins.results          :as results])
 (require '[emender-jenkins.config           :as config])
 (require '[emender-jenkins.jenkins-api      :as jenkins-api])
 (require '[emender-jenkins.metadata-reader  :as metadata-reader])
-(require '[emender-jenkins.file-utils       :as file-utils])
 
 ; command names used by various REST API responses
 (def commands {
@@ -285,9 +285,14 @@
         (catch IndexOutOfBoundsException e
              nil)))
 
+(defn get-job-name-from-uri-or-params
+    [request uri-prefix uri]
+    (or (uri->job-name uri uri-prefix)
+        (get (:params request) "name")))
+
 (defn get-job
     [request uri]
-    (let [job-name (uri->job-name uri "/api/get_job/")]
+    (let [job-name (get-job-name-from-uri-or-params request "/api/get_job/" uri)]
         (if job-name
             (if (results/job-exists? job-name)
                 (let [job-metadata (results/find-job-with-name job-name)]
@@ -308,7 +313,7 @@
 
 (defn get-job-results
     [request uri]
-    (let [job-name (uri->job-name uri "/api/get_job_results/")]
+    (let [job-name (get-job-name-from-uri-or-params request "/api/get_job_results/" uri)]
         (if job-name
             (if (results/job-exists? job-name)
                 (let [job-results   (jenkins-api/read-job-results (config/get-jenkins-url request) job-name)]
