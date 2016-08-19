@@ -16,12 +16,11 @@
 (require '[ring.util.response               :as http-response])
 (require '[clojure.pprint                   :as pprint])
 (require '[clojure.data.json                :as json])
-(require '[clj-jenkins-api.jenkins-api      :as clj-jenkins-api])
+(require '[clj-jenkins-api.jenkins-api      :as jenkins-api])
 (require '[clj-fileutils.fileutils          :as file-utils])
 
 (require '[emender-jenkins.results          :as results])
 (require '[emender-jenkins.config           :as config])
-(require '[emender-jenkins.jenkins-api      :as jenkins-api])
 (require '[emender-jenkins.metadata-reader  :as metadata-reader])
 
 ; command names used by various REST API responses
@@ -42,6 +41,8 @@
     :not-found             404
     :internal-server-error 500
     :not-implemented       501})
+
+(def metadata-directory "data")
 
 (defn read-request-body
     "Read all informations from the request body."
@@ -202,19 +203,19 @@
 
 (defn start-job
     [request]
-    (perform-job-command request clj-jenkins-api/start-job :start-job))
+    (perform-job-command request jenkins-api/start-job :start-job))
 
 (defn enable-job
     [request]
-    (perform-job-command request clj-jenkins-api/enable-job :enable-job))
+    (perform-job-command request jenkins-api/enable-job :enable-job))
 
 (defn disable-job
     [request]
-    (perform-job-command request clj-jenkins-api/disable-job :disable-job))
+    (perform-job-command request jenkins-api/disable-job :disable-job))
 
 (defn delete-job
     [request]
-    (perform-job-command request clj-jenkins-api/delete-job :delete-job))
+    (perform-job-command request jenkins-api/delete-job :delete-job))
 
 (defn job-invalid-input
     [job-name git-repo branch]
@@ -244,11 +245,14 @@
                     (-> (jenkins-api/create-job (config/get-jenkins-url request)
                                                 (config/get-jenkins-auth request)
                                                 (config/include-jenkins-reply? request)
-                                                job-name git-repo branch metadata)
+                                                job-name git-repo branch
+                                                (config/get-credentials-id request)
+                                                metadata-directory metadata)
                         (reload-job-list request)
                         (send-response request))
                     (send-job-invalid-metadata-response request :create-job (job-invalid-input job-name git-repo branch)))))
         (catch Exception e
+            (.printStackTrace e)
             (send-job-invalid-metadata-response request :create-job "invalid or missing input"))))
 
 (defn update-job
@@ -265,7 +269,9 @@
                     (-> (jenkins-api/update-job (config/get-jenkins-url request)
                                                 (config/get-jenkins-auth request)
                                                 (config/include-jenkins-reply? request)
-                                                job-name git-repo branch metadata)
+                                                job-name git-repo branch
+                                                (config/get-credentials-id request)
+                                                metadata-directory metadata)
                         ;(reload-job-list request)
                         (send-response request))
                     (send-job-invalid-metadata-response request :update-job (job-invalid-input job-name git-repo branch)))
@@ -316,7 +322,7 @@
     (let [job-name (get-job-name-from-uri-or-params request "/api/get_job_results/" uri)]
         (if job-name
             (if (results/job-exists? job-name)
-                (let [job-results   (jenkins-api/read-job-results (config/get-jenkins-url request) job-name)]
+                (let [job-results (jenkins-api/read-job-results (config/get-jenkins-url request) job-name)]
                      (if job-results
                          (send-plain-response job-results)
                          (-> (create-error-response job-name "get_job_results" "can not read test results")

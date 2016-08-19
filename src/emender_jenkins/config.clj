@@ -96,3 +96,8 @@
     [request]
     (-> request :configuration :config :include-jenkins-reply))
 
+(defn get-credentials-id
+    "Read the Jenkins credentials ID."
+    [request]
+    (-> request :configuration :jenkins :credentials-id))
+
