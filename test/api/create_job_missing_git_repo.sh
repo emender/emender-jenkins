@@ -9,5 +9,5 @@
 #  http://www.eclipse.org/legal/epl-v10.html
 #
 
-curl -v -X POST --header "Content-Type: application/json" -d '{"name":"doc-Test_Product-1.0-Test_Book_3-en-US (test)", "branch":"master"}' localhost:3000/api/create_job
+curl -v -X POST --header "Content-Type: application/json" -d '{"name":"test-Test_Product-1.0-Test_Book_3-en-US (preview)", "branch":"master"}' localhost:3000/api/create_job
 
