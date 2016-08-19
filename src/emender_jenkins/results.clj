@@ -15,8 +15,8 @@
 
 (require '[clojure.pprint :as pprint])
 (require '[clj-fileutils.fileutils     :as file-utils])
+(require '[clj-jenkins-api.jenkins-api :as jenkins-api])
 
-(require '[emender-jenkins.jenkins-api :as jenkins-api])
 (require '[emender-jenkins.config      :as config])
 
 (def results (atom nil))
