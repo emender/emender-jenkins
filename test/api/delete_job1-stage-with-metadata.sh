@@ -9,5 +9,5 @@
 #  http://www.eclipse.org/legal/epl-v10.html
 #
 
-curl -X POST --header "Content-Type: application/json" -d '{"name":"doc-Test_Product-1.0-Test_Book_Metadata-en-US (test-stage)"}' localhost:3000/api/delete_job
+curl -X POST --header "Content-Type: application/json" -d '{"name":"test-Test_Product-1.0-Test_Book_Metadata-en-US (stage)"}' localhost:3000/api/delete_job
 
