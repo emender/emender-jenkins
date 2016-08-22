@@ -164,17 +164,31 @@
         -1e10 (parse-float "-1e10")))
 
 (deftest test-parse-float-min-value
-    "Check the behaviour of function zg.config/parse-int."
+    "Check the behaviour of function emender-jenkins.config/parse-int."
     (is (== Float/MIN_VALUE (parse-float "0x0.000002P-126f"))))
 
 (deftest test-parse-float-max-value
-    "Check the behaviour of function zg.config/parse-int."
+    "Check the behaviour of function emender-jenkins.config/parse-int."
     (is (== Float/MAX_VALUE (parse-float "0x1.fffffeP+127f"))))
 
 (deftest test-parse-float-bad-input
-    "Check the behaviour of function zg.config/parse-float."
+    "Check the behaviour of function emender-jenkins.config/parse-float."
     (are [x] (thrown? NumberFormatException x)
         (parse-float "")
         (parse-float "xyzzy")
         (parse-float "-1xyzzy")))
+
+(deftest test-properties->map-1
+    "Check the behaviour of function emender-jenkins/properties->map."
+    (let [property (doto (new java.util.Properties)
+                         (.setProperty "a" "A")
+                         (.setProperty "b" "B"))]
+        (is (= {:a 'A :b 'B} (properties->map property)))))
+
+(deftest test-properties->map-2
+    "Check the behaviour of function emender-jenkins/properties->map."
+    (let [property (doto (new java.util.Properties)
+                         (.setProperty "propertyA" "property_a")
+                         (.setProperty "propertyB" "property_b"))]
+        (is (= {:propertyA 'property_a :propertyB 'property_b} (properties->map property)))))
 
