@@ -343,7 +343,7 @@
 
 (deftest test-include-jenkins-reply?-1
     "Check the behaviour of function emender-jenkins.config/include-jenkins-reply?."
-    (testing "the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+    (testing "the behaviour of function emender-jenkins.config/include-jenkins-reply?.."
         (are [x y] (= x y)
             (include-jenkins-reply? {:configuration {:config {:include-jenkins-reply nil}}})   nil
             (include-jenkins-reply? {:configuration {:config {:include-jenkins-reply false}}}) false
@@ -352,11 +352,28 @@
 
 (deftest test-include-jenkins-reply?-2
     "Check the behaviour of function emender-jenkins.config/include-jenkins-reply?."
-    (testing "the behaviour of function emender-jenkins.config/assoc-in-if-not-nil."
+    (testing "the behaviour of function emender-jenkins.config/include-jenkins-reply?.."
         (are [x y] (= x y)
             (include-jenkins-reply? {:configuration {:config nil}}) nil
             (include-jenkins-reply? {:configuration nil}) nil
             (include-jenkins-reply? nil) nil)))
+
+(deftest test-get-credentials-id-1
+    "Check the behaviour of function emender-jenkins.config/get-credentials-id."
+    (testing "the behaviour of function emender-jenkins.config/get-credentials-id."
+        (are [x y] (= x y)
+            (get-credentials-id {:configuration {:jenkins {:credentials-id nil}}})   nil
+            (get-credentials-id {:configuration {:jenkins {:credentials-id false}}}) false
+            (get-credentials-id {:configuration {:jenkins {:credentials-id true}}})  true
+            (get-credentials-id {:configuration {:jenkins {:credentials-id "xyzzy"}}}) "xyzzy")))
+
+(deftest test-get-credentials-id-2
+    "Check the behaviour of function emender-jenkins.config/get-credentials-id."
+    (testing "the behaviour of function emender-jenkins.config/get-credentials-id."
+        (are [x y] (= x y)
+            (get-credentials-id {:configuration {:jenkins nil}}) nil
+            (get-credentials-id {:configuration nil}) nil
+            (get-credentials-id nil) nil)))
 
 (deftest test-override-options-by-cli-1
     "Check the behaviour of function emender-jenkins.config/override-options-by-cli."
