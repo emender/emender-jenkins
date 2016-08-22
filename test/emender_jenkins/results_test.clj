@@ -207,3 +207,21 @@
             "6.2" (job-name->version "test-Red_Hat_Enterprise_Linux-6.2-Book_Name_1-en-US (preview)")
             "7"   (job-name->version "test-Red_Hat_Enterprise_Linux-7-Book_Name_1-en-US (preview)"))))
 
+(deftest test-job-name->book-name
+    "Check the emender-jenkins.results/job-name->book-name function."
+    (testing "the emender-jenkins.results/job-name->book-name function."
+        (are [x y] (= x y)
+            "Book1"       (job-name->book-name "test-Product-1-Book1-en-US (preview)")
+            "Book1"       (job-name->book-name "test-Product_Name-1-Book1-en-US (preview)")
+            "Book Name 1" (job-name->book-name "test-Red_Hat_Enterprise_Linux-6.2-Book_Name_1-en-US (preview)")
+            "Book Name 1" (job-name->book-name "test-Red_Hat_Enterprise_Linux-7-Book_Name_1-en-US (preview)"))))
+
+(deftest test-job-name->environment
+    "Check the emender-jenkins.results/job-name->environment function."
+    (testing "the emender-jenkins.results/job-name->environment function."
+        (are [x y] (= x y)
+            :preview (job-name->environment "test-Product-1-Book1-en-US (preview)" "(preview)" "(stage)" "(prod)")
+            :preview (job-name->environment "test-Product_Name-1-Book1-en-US (preview)" "(preview)" "(stage)" "(prod)")
+            :preview (job-name->environment "test-Red_Hat_Enterprise_Linux-6.2-Book_Name_1-en-US (preview)" "(preview)" "(stage)" "(prod)")
+            :preview (job-name->environment "test-Red_Hat_Enterprise_Linux-7-Book_Name_1-en-US (preview)" "(preview)" "(stage)" "(prod)"))))
+
