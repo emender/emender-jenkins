@@ -256,19 +256,21 @@
               git-repo   (get input-data :ssh_url_to_repo)
               branch     (get input-data :branch)
               metadata   (get input-data :metadata)]
-            (if (results/job-exists? job-name)
-                (-> (job-already-exist-response job-name :create-job)
-                    (send-error-response request :bad-request))
-                (if (job-metadata-ok? job-name git-repo branch)
-                    (-> (jenkins-api/create-job (config/get-jenkins-url request)
-                                                (config/get-jenkins-auth request)
-                                                (config/include-jenkins-reply? request)
-                                                job-name git-repo branch
-                                                (config/get-credentials-id request)
-                                                metadata-directory metadata)
-                        (reload-job-list request)
-                        (send-response request))
-                    (send-job-invalid-metadata-response request :create-job (job-invalid-input job-name git-repo branch)))))
+            (if (test-job? job-name request)
+                (if (results/job-exists? job-name)
+                    (-> (job-already-exist-response job-name :create-job)
+                        (send-error-response request :bad-request))
+                    (if (job-metadata-ok? job-name git-repo branch)
+                        (-> (jenkins-api/create-job (config/get-jenkins-url request)
+                                                    (config/get-jenkins-auth request)
+                                                    (config/include-jenkins-reply? request)
+                                                    job-name git-repo branch
+                                                    (config/get-credentials-id request)
+                                                    metadata-directory metadata)
+                            (reload-job-list request)
+                            (send-response request))
+                        (send-job-invalid-metadata-response request :create-job (job-invalid-input job-name git-repo branch))))
+                (send-wrong-job-name-response request job-name :create-job)))
         (catch Exception e
             (.printStackTrace e)
             (send-job-invalid-metadata-response request :create-job "invalid or missing input"))))
@@ -282,18 +284,20 @@
               git-repo   (get input-data :ssh_url_to_repo)
               branch     (get input-data :branch)
               metadata   (get input-data :metadata)]
-            (if (results/job-exists? job-name)
-                (if (job-metadata-ok? job-name git-repo branch)
-                    (-> (jenkins-api/update-job (config/get-jenkins-url request)
-                                                (config/get-jenkins-auth request)
-                                                (config/include-jenkins-reply? request)
-                                                job-name git-repo branch
-                                                (config/get-credentials-id request)
-                                                metadata-directory metadata)
-                        ;(reload-job-list request)
-                        (send-response request))
-                    (send-job-invalid-metadata-response request :update-job (job-invalid-input job-name git-repo branch)))
-                (send-job-does-not-exist-response request job-name :update-job)))
+            (if (test-job? job-name request)
+                (if (results/job-exists? job-name)
+                    (if (job-metadata-ok? job-name git-repo branch)
+                        (-> (jenkins-api/update-job (config/get-jenkins-url request)
+                                                    (config/get-jenkins-auth request)
+                                                    (config/include-jenkins-reply? request)
+                                                    job-name git-repo branch
+                                                    (config/get-credentials-id request)
+                                                    metadata-directory metadata)
+                            ;(reload-job-list request)
+                            (send-response request))
+                        (send-job-invalid-metadata-response request :update-job (job-invalid-input job-name git-repo branch)))
+                    (send-job-does-not-exist-response request job-name :update-job))
+                (send-wrong-job-name-response request job-name :update-job)))
         (catch Exception e
             (send-job-invalid-metadata-response request :update-job "invalid or missing input"))))
 
@@ -318,13 +322,15 @@
     [request uri]
     (let [job-name (get-job-name-from-uri-or-params request "/api/get_job/" uri)]
         (if job-name
-            (if (results/job-exists? job-name)
-                (let [job-metadata (results/find-job-with-name job-name)]
-                     (if job-metadata
-                         (send-response job-metadata request)
-                         (-> (create-error-response job-name (get commands :get-job) "Test results does not exist")
-                             (send-error-response request :not-found))))
-                (send-job-does-not-exist-response request job-name :get-job))
+            (if (test-job? job-name request)
+                (if (results/job-exists? job-name)
+                    (let [job-metadata (results/find-job-with-name job-name)]
+                         (if job-metadata
+                             (send-response job-metadata request)
+                             (-> (create-error-response job-name (get commands :get-job) "Test results does not exist")
+                                 (send-error-response request :not-found))))
+                    (send-job-does-not-exist-response request job-name :get-job))
+                (send-wrong-job-name-response request job-name :get-job))
             (send-job-not-specified-response request :get-job))))
 
 (defn get-jobs
@@ -339,13 +345,15 @@
     [request uri]
     (let [job-name (get-job-name-from-uri-or-params request "/api/get_job_results/" uri)]
         (if job-name
-            (if (results/job-exists? job-name)
-                (let [job-results (jenkins-api/read-job-results (config/get-jenkins-url request) job-name)]
-                     (if job-results
-                         (send-plain-response job-results)
-                         (-> (create-error-response job-name "get_job_results" "can not read test results")
-                             (send-error-response request :not-found))))
-                (send-job-does-not-exist-response request job-name :get-job-results))
+            (if (test-job? job-name request)
+                (if (results/job-exists? job-name)
+                    (let [job-results (jenkins-api/read-job-results (config/get-jenkins-url request) job-name)]
+                         (if job-results
+                             (send-plain-response job-results)
+                             (-> (create-error-response job-name "get_job_results" "can not read test results")
+                                 (send-error-response request :not-found))))
+                    (send-job-does-not-exist-response request job-name :get-job-results))
+                (send-wrong-job-name-response request job-name :get-job-results))
             (send-job-not-specified-response request :get-job-results))))
 
 (defn job-started-handler
