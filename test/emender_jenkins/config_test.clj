@@ -426,6 +426,23 @@
             (get-stage-test-jobs-suffix {:configuration nil}) nil
             (get-stage-test-jobs-suffix nil) nil)))
 
+(deftest test-get-prod-test-jobs-suffix-1
+    "Check the behaviour of function emender-jenkins.config/get-prod-test-jobs-suffix."
+    (testing "the behaviour of function emender-jenkins.config/get-prod-test-jobs-suffix."
+        (are [x y] (= x y)
+            (get-prod-test-jobs-suffix {:configuration {:jobs {:prod-test-jobs-suffix nil}}})   nil
+            (get-prod-test-jobs-suffix {:configuration {:jobs {:prod-test-jobs-suffix false}}}) false
+            (get-prod-test-jobs-suffix {:configuration {:jobs {:prod-test-jobs-suffix true}}})  true
+            (get-prod-test-jobs-suffix {:configuration {:jobs {:prod-test-jobs-suffix "xyzzy"}}}) "xyzzy")))
+
+(deftest test-get-prod-test-jobs-suffix-2
+    "Check the behaviour of function emender-jenkins.config/get-prod-test-jobs-suffix."
+    (testing "the behaviour of function emender-jenkins.config/get-prod-test-jobs-suffix."
+        (are [x y] (= x y)
+            (get-prod-test-jobs-suffix {:configuration {:jobs nil}}) nil
+            (get-prod-test-jobs-suffix {:configuration nil}) nil
+            (get-prod-test-jobs-suffix nil) nil)))
+
 (deftest test-override-options-by-cli-1
     "Check the behaviour of function emender-jenkins.config/override-options-by-cli."
     (testing "the behaviour of function emender-jenkins.config/override-options-by-cli."
