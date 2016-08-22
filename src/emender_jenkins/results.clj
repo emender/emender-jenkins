@@ -130,12 +130,17 @@
              :testSummary (test-summary jenkins-url job-name message)
             })))
 
+(defn test-job?
+    [job-name jobs-prefix preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix]
+    (and (.startsWith job-name jobs-prefix)
+         (or (.endsWith job-name preview-jobs-suffix)
+             (.endsWith job-name stage-jobs-suffix)
+             (.endsWith job-name prod-jobs-suffix))))
+
 (defn filter-test-jobs
     [all-jobs jobs-prefix preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix]
-    (filter #(and (.startsWith (get %1 "name") jobs-prefix)
-                  (or (.endsWith (get %1 "name") preview-jobs-suffix)
-                      (.endsWith (get %1 "name") stage-jobs-suffix)
-                      (.endsWith (get %1 "name") prod-jobs-suffix)))
+    (filter #(test-job? (get %1 "name")
+                        jobs-prefix preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix)
             all-jobs))
 
 (defn read-list-of-test-jobs
