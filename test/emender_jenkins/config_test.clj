@@ -375,6 +375,23 @@
             (get-credentials-id {:configuration nil}) nil
             (get-credentials-id nil) nil)))
 
+(deftest test-get-test-jobs-prefix-1
+    "Check the behaviour of function emender-jenkins.config/get-test-jobs-prefix."
+    (testing "the behaviour of function emender-jenkins.config/get-test-jobs-prefix."
+        (are [x y] (= x y)
+            (get-test-jobs-prefix {:configuration {:jobs {:test-jobs-prefix nil}}})   nil
+            (get-test-jobs-prefix {:configuration {:jobs {:test-jobs-prefix false}}}) false
+            (get-test-jobs-prefix {:configuration {:jobs {:test-jobs-prefix true}}})  true
+            (get-test-jobs-prefix {:configuration {:jobs {:test-jobs-prefix "xyzzy"}}}) "xyzzy")))
+
+(deftest test-get-test-jobs-prefix-2
+    "Check the behaviour of function emender-jenkins.config/get-test-jobs-prefix."
+    (testing "the behaviour of function emender-jenkins.config/get-test-jobs-prefix."
+        (are [x y] (= x y)
+            (get-test-jobs-prefix {:configuration {:jobs nil}}) nil
+            (get-test-jobs-prefix {:configuration nil}) nil
+            (get-test-jobs-prefix nil) nil)))
+
 (deftest test-override-options-by-cli-1
     "Check the behaviour of function emender-jenkins.config/override-options-by-cli."
     (testing "the behaviour of function emender-jenkins.config/override-options-by-cli."
