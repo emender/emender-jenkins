@@ -101,3 +101,19 @@
     [request]
     (-> request :configuration :jenkins :credentials-id))
 
+(defn get-test-jobs-prefix
+    [request]
+    (-> request :configuration :jobs :test-jobs-prefix))
+
+(defn get-preview-test-jobs-suffix
+    [request]
+    (-> request :configuration :jobs :preview-test-jobs-suffix))
+
+(defn get-stage-test-jobs-suffix
+    [request]
+    (-> request :configuration :jobs :stage-test-jobs-suffix))
+
+(defn get-prod-jobs-prefix
+    [request]
+    (-> request :configuration :jobs :prod-test-jobs-suffix))
+
