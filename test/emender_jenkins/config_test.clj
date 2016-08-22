@@ -93,6 +93,25 @@
     (testing "if the emender-jenkins.config/pretty-print? definition exists."
         (is (callable? 'emender-jenkins.config/pretty-print?))))
 
+
+(deftest test-verbose-show-configuration?-existence
+    "Check that the emender-jenkins.config/verbose-show-configuration? definition exists."
+    (testing "if the emender-jenkins.config/verbose-show-configuration? definition exists."
+        (is (callable? 'emender-jenkins.config/verbose-show-configuration?))))
+
+
+(deftest test-include-jenkins-reply?-existence
+    "Check that the emender-jenkins.config/include-jenkins-reply? definition exists."
+    (testing "if the emender-jenkins.config/include-jenkins-reply? definition exists."
+        (is (callable? 'emender-jenkins.config/include-jenkins-reply?))))
+
+
+(deftest test-get-credentials-id-existence
+    "Check that the emender-jenkins.config/get-credentials-id definition exists."
+    (testing "if the emender-jenkins.config/get-credentials-id definition exists."
+        (is (callable? 'emender-jenkins.config/get-credentials-id))))
+
+
 ;
 ; Test for function behaviours
 ;
