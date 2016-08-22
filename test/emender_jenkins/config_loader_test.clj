@@ -183,12 +183,13 @@
     (let [property (doto (new java.util.Properties)
                          (.setProperty "a" "A")
                          (.setProperty "b" "B"))]
-        (is (= {:a 'A :b 'B} (properties->map property)))))
+        (is (= {:a "A" :b "B"} (properties->map property)))))
 
 (deftest test-properties->map-2
     "Check the behaviour of function emender-jenkins/properties->map."
     (let [property (doto (new java.util.Properties)
                          (.setProperty "propertyA" "property_a")
                          (.setProperty "propertyB" "property_b"))]
-        (is (= {:propertyA 'property_a :propertyB 'property_b} (properties->map property)))))
+        (is (= {:propertyA "property_a" :propertyB "property_b"} (properties->map property)))))
+
 
