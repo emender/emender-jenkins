@@ -57,7 +57,8 @@
 (defn body->job-info
     "Try to parse the request body as JSON format and keywordize keys."
     [body]
-    (json/read-str body :key-fn clojure.core/keyword))
+    (if body
+        (json/read-str body :key-fn clojure.core/keyword)))
 
 (defn get-job-name
     "Common function to retrieve job name from given data structure."
