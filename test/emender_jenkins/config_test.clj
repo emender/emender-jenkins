@@ -112,6 +112,28 @@
         (is (callable? 'emender-jenkins.config/get-credentials-id))))
 
 
+(deftest test-get-test-jobs-prefix-existence
+    "Check that the emender-jenkins.config/get-test-jobs-prefix definition exists."
+    (testing "if the emender-jenkins.config/get-test-jobs-prefix definition exists."
+        (is (callable? 'emender-jenkins.config/get-test-jobs-prefix))))
+
+
+(deftest test-get-preview-test-jobs-suffix-existence
+    "Check that the emender-jenkins.config/get-preview-test-jobs-suffix definition exists."
+    (testing "if the emender-jenkins.config/get-preview-test-jobs-suffix definition exists."
+        (is (callable? 'emender-jenkins.config/get-preview-test-jobs-suffix))))
+
+
+(deftest test-get-stage-test-jobs-suffix-existence
+    "Check that the emender-jenkins.config/get-stage-test-jobs-suffix definition exists."
+    (testing "if the emender-jenkins.config/get-stage-test-jobs-suffix definition exists."
+        (is (callable? 'emender-jenkins.config/get-stage-test-jobs-suffix))))
+
+
+(deftest test-get-prod-test-jobs-suffix-existence
+    "Check that the emender-jenkins.config/get-prod-test-jobs-suffix definition exists."
+    (testing "if the emender-jenkins.config/get-prod-test-jobs-suffix definition exists."
+        (is (callable? 'emender-jenkins.config/get-prod-test-jobs-suffix))))
 ;
 ; Test for function behaviours
 ;
