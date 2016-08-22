@@ -392,6 +392,23 @@
             (get-test-jobs-prefix {:configuration nil}) nil
             (get-test-jobs-prefix nil) nil)))
 
+(deftest test-get-preview-test-jobs-suffix-1
+    "Check the behaviour of function emender-jenkins.config/get-preview-test-jobs-suffix."
+    (testing "the behaviour of function emender-jenkins.config/get-preview-test-jobs-suffix."
+        (are [x y] (= x y)
+            (get-preview-test-jobs-suffix {:configuration {:jobs {:preview-test-jobs-suffix nil}}})   nil
+            (get-preview-test-jobs-suffix {:configuration {:jobs {:preview-test-jobs-suffix false}}}) false
+            (get-preview-test-jobs-suffix {:configuration {:jobs {:preview-test-jobs-suffix true}}})  true
+            (get-preview-test-jobs-suffix {:configuration {:jobs {:preview-test-jobs-suffix "xyzzy"}}}) "xyzzy")))
+
+(deftest test-get-preview-test-jobs-suffix-2
+    "Check the behaviour of function emender-jenkins.config/get-preview-test-jobs-suffix."
+    (testing "the behaviour of function emender-jenkins.config/get-preview-test-jobs-suffix."
+        (are [x y] (= x y)
+            (get-preview-test-jobs-suffix {:configuration {:jobs nil}}) nil
+            (get-preview-test-jobs-suffix {:configuration nil}) nil
+            (get-preview-test-jobs-suffix nil) nil)))
+
 (deftest test-override-options-by-cli-1
     "Check the behaviour of function emender-jenkins.config/override-options-by-cli."
     (testing "the behaviour of function emender-jenkins.config/override-options-by-cli."
