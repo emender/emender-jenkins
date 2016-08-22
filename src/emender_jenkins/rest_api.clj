@@ -147,6 +147,10 @@
     [job-name command]
     (create-error-response job-name (get commands command) "Job does not exist"))
 
+(defn wrong-job-name
+    [job-name command]
+    (create-error-response job-name (get commands command) "The name of job is wrong"))
+
 (defn job-already-exist-response
     [job-name command]
     (create-error-response job-name (get commands command) "Job already exist"))
@@ -154,6 +158,11 @@
 (defn send-job-does-not-exist-response
     [request job-name command]
     (-> (job-does-not-exist-response job-name command)
+        (send-error-response request :not-found)))
+
+(defn send-wrong-job-name
+    [request job-name command]
+    (-> (wrong-job-name job-name command)
         (send-error-response request :not-found)))
 
 (defn send-job-not-specified-response
@@ -191,14 +200,16 @@
     [request function command]
     (let [job-name (get-job-name-from-body request)]
         (if job-name
-            (if (results/job-exists? job-name)
-                (-> (function (config/get-jenkins-url request)
-                              (config/get-jenkins-auth request)
-                              (config/include-jenkins-reply? request)
-                              job-name)
-                    (reload-job-list request)
-                    (send-response request))
-                (send-job-does-not-exist-response request job-name command))
+            (if (test-job? job-name request)
+                (if (results/job-exists? job-name)
+                    (-> (function (config/get-jenkins-url request)
+                                  (config/get-jenkins-auth request)
+                                  (config/include-jenkins-reply? request)
+                                  job-name)
+                        (reload-job-list request)
+                        (send-response request))
+                    (send-job-does-not-exist-response request job-name command))
+                (send-wrong-job-name-response request job-name command))
             (send-job-not-specified-response request command))))
 
 (defn start-job
