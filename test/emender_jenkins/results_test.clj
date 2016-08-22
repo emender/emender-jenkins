@@ -185,3 +185,25 @@
     (testing "if the emender-jenkins.results/job-exists? definition exists."
         (is (callable? 'emender-jenkins.results/job-exists?))))
 
+;
+; Test behaviour of functions
+;
+
+(deftest test-job-name->product-name
+    "Check the emender-jenkins.results/job-name->product-name function."
+    (testing "the emender-jenkins.results/job-name->product-name function."
+        (are [x y] (= x y)
+            "Product"                  (job-name->product-name "test-Product-1-Book1-en-US (preview)")
+            "Product Name"             (job-name->product-name "test-Product_Name-1-Book1-en-US (preview)")
+            "Red Hat Enterprise Linux" (job-name->product-name "test-Red_Hat_Enterprise_Linux-6.2-Book_Name_1-en-US (preview)")
+            "Red Hat Enterprise Linux" (job-name->product-name "test-Red_Hat_Enterprise_Linux-7-Book_Name_1-en-US (preview)"))))
+
+(deftest test-job-name->version
+    "Check the emender-jenkins.results/job-name->version function."
+    (testing "the emender-jenkins.results/job-name->version function."
+        (are [x y] (= x y)
+            "1"   (job-name->version "test-Product-1-Book1-en-US (preview)")
+            "1"   (job-name->version "test-Product_Name-1-Book1-en-US (preview)")
+            "6.2" (job-name->version "test-Red_Hat_Enterprise_Linux-6.2-Book_Name_1-en-US (preview)")
+            "7"   (job-name->version "test-Red_Hat_Enterprise_Linux-7-Book_Name_1-en-US (preview)"))))
+
