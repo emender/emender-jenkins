@@ -113,7 +113,7 @@
     [request]
     (-> request :configuration :jobs :stage-test-jobs-suffix))
 
-(defn get-prod-jobs-prefix
+(defn get-prod-test-jobs-suffix
     [request]
     (-> request :configuration :jobs :prod-test-jobs-suffix))
 

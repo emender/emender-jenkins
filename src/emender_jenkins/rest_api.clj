@@ -75,6 +75,13 @@
         (catch Exception e
             nil)))
 
+(defn test-job?
+    [job-name request]
+    (results/test-job? job-name (config/get-test-jobs-prefix request)
+                                (config/get-preview-test-jobs-suffix request)
+                                (config/get-stage-test-jobs-suffix request)
+                                (config/get-prod-test-jobs-suffix request)))
+
 (defn send-response
     [response request]
     (if (config/pretty-print? request)
@@ -160,10 +167,10 @@
     (-> (job-does-not-exist-response job-name command)
         (send-error-response request :not-found)))
 
-(defn send-wrong-job-name
+(defn send-wrong-job-name-response
     [request job-name command]
     (-> (wrong-job-name job-name command)
-        (send-error-response request :not-found)))
+        (send-error-response request :bad-request)))
 
 (defn send-job-not-specified-response
     [request command]
