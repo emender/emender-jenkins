@@ -192,4 +192,22 @@
                          (.setProperty "propertyB" "property_b"))]
         (is (= {:propertyA "property_a" :propertyB "property_b"} (properties->map property)))))
 
+(deftest test-properties->map-3
+    "Check the behaviour of function emender-jenkins/properties->map."
+    (let [property (doto (new java.util.Properties)
+                         (.setProperty "value1" "1")
+                         (.setProperty "value2" "2"))]
+        (is (= {:value1 "1" :value2 "2"} (properties->map property)))))
+
+(deftest test-properties->map-4
+    "Check the behaviour of function emender-jenkins/properties->map."
+    (let [property (doto (new java.util.Properties)
+                         (.setProperty "value1" "")
+                         (.setProperty "" "2"))]
+        (is (= {(keyword "") "2" :value1 ""} (properties->map property)))))
+
+(deftest test-load-property-file
+    "Check the behaviour of function emender-jenkins/load-property-file."
+    (let [property (load-property-file "test/test1.properties")]
+        (is (= {:value1 "value1" :value2 "42" :value.3 "3"} (properties->map property)))))
 
