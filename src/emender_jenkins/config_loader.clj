@@ -36,7 +36,7 @@
     [properties]
     (into {}
         (for [[k v] properties]
-              [(keyword k) (read-string v)])))
+              [(keyword k) v])))
 
 (defn load-property-file
     "Load configuration from the provided property file."
