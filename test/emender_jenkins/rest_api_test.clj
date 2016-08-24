@@ -309,3 +309,13 @@
             {:status "error" :jobName nil       :command "create_job" :message "The name of job is wrong"} (wrong-job-name nil :create-job)
             {:status "error" :jobName nil       :command nil          :message "The name of job is wrong"} (wrong-job-name nil nil))))
 
+(deftest test-uri->job-name
+    "Check the function emender-jenkins.rest-api/uri->job-name."
+    (testing "the function emender-jenkins.rest-api/uri->job-name."
+        (are [x y] (= x y)
+            "test-Product_Name-Product_Version-Book_Name-en-US (prod)"
+            (uri->job-name "http://10.20.30.40:8080/test-Product_Name-Product_Version-Book_Name-en-US%20(prod)" "http://10.20.30.40:8080/")
+            "test-Product_Name-Product_Version-Book_Name-en-US (prod)"
+            (uri->job-name "http://jenkins.server.com:8080/test-Product_Name-Product_Version-Book_Name-en-US%20(prod)" "http://jenkins.server.com:8080/")
+            )))
+
