@@ -17,6 +17,7 @@
               :url "http://www.eclipse.org/legal/epl-v10.html"}
     :dependencies [[org.clojure/clojure "1.7.0"]
                    [org.clojure/tools.cli "0.3.1"]
+                   [org.clojure/data.csv  "0.1.2"]
                    [ring/ring-core "1.3.2"]
                    [ring/ring-jetty-adapter "1.3.2"]
                    [org.clojure/data.json "0.2.5"]
@@ -25,7 +26,7 @@
                    [clj-rm-rf "1.0.0-SNAPSHOT"]
                    [clojure-ini "0.0.1"]
                    [irclj "0.5.0-alpha4"]
-                   [org.clojars.tisnik/clj-jenkins-api "0.9.0-SNAPSHOT"]
+                   [org.clojars.tisnik/clj-jenkins-api "0.10.0-SNAPSHOT"]
                    [org.clojars.tisnik/clj-fileutils "0.2.0-SNAPSHOT"]]
     :dev-dependencies [[lein-ring "0.8.10"]]
     :plugins [[lein-ring "0.8.10"]
