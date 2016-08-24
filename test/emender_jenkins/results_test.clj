@@ -189,7 +189,7 @@
 ; Test behaviour of functions
 ;
 
-(deftest test-job-name->product-name
+(deftest test-job-name->product-name-1
     "Check the emender-jenkins.results/job-name->product-name function."
     (testing "the emender-jenkins.results/job-name->product-name function."
         (are [x y] (= x y)
@@ -197,6 +197,11 @@
             "Product Name"             (job-name->product-name "test-Product_Name-1-Book1-en-US (preview)")
             "Red Hat Enterprise Linux" (job-name->product-name "test-Red_Hat_Enterprise_Linux-6.2-Book_Name_1-en-US (preview)")
             "Red Hat Enterprise Linux" (job-name->product-name "test-Red_Hat_Enterprise_Linux-7-Book_Name_1-en-US (preview)"))))
+
+(deftest test-job-name->product-name-2
+    "Check the emender-jenkins.results/job-name->product-name function."
+    (testing "the emender-jenkins.results/job-name->product-name function."
+        (is (= "unknown"   (job-name->product-name nil)))))
 
 (deftest test-job-name->version-1
     "Check the emender-jenkins.results/job-name->version function."
@@ -216,7 +221,7 @@
             "unknown" (job-name->version "test-Red_Hat_Enterprise_Linux-6.beta-Book_Name_1-en-US (preview)")
             "unknown" (job-name->version "test-Red_Hat_Enterprise_Linux-Book_Name_1-en-US (preview)"))))
 
-(deftest test-job-name->book-name
+(deftest test-job-name->book-name-1
     "Check the emender-jenkins.results/job-name->book-name function."
     (testing "the emender-jenkins.results/job-name->book-name function."
         (are [x y] (= x y)
