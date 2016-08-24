@@ -27,3 +27,14 @@
 ; Tests for various function definitions
 ;
 
+(deftest test-data->csv-existence
+    "Check that the emender-jenkins.metadata-analyzer/data->csv definition exists."
+    (testing "if the emender-jenkins.metadata-analyzer/data->csv definition exists."
+        (is (callable? 'emender-jenkins.metadata-analyzer/data->csv))))
+
+
+(deftest test-select-results-existence
+    "Check that the emender-jenkins.metadata-analyzer/select-results definition exists."
+    (testing "if the emender-jenkins.metadata-analyzer/select-results definition exists."
+        (is (callable? 'emender-jenkins.metadata-analyzer/select-results))))
+
