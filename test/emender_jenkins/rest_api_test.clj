@@ -265,6 +265,13 @@
             {:status "error" :jobName "job-name" :command "command" :message nil}       (create-error-response "job-name" "command" nil)
             {:status "error" :jobName nil        :command nil       :message nil}       (create-error-response nil nil nil))))
 
+(deftest test-create-bad-request-response-1
+    "Check the function emender-jenkins.rest-api/create-bad-request-response."
+    (testing "the function emender-jenkins.rest-api/create-bad-request-response."
+        (are [x y] (= x y)
+            {:status "error" :command "command"} (create-bad-request-response "command")
+            {:status "error" :command nil      } (create-bad-request-response nil))))
+
 (deftest test-create-bad-request-response-2
     "Check the function emender-jenkins.rest-api/create-bad-request-response."
     (testing "the function emender-jenkins.rest-api/create-bad-request-response."
