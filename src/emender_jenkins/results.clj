@@ -41,26 +41,32 @@
 
 (defn job-name->product-name
     [job-name]
-    (let [name-version (clojure.string/split job-name #"-")
-          product-name (second name-version)]
-          (if product-name
-              (clojure.string/replace product-name "_" " "))))
+    (if job-name
+        (let [name-version (clojure.string/split job-name #"-")
+              product-name (second name-version)]
+              (if product-name
+                  (clojure.string/replace product-name "_" " ")))
+        "unknown"))
 
 (defn job-name->version
     [job-name]
-    (let [name-version (clojure.string/split job-name #"-")
-          version      (get name-version 2)]
-          (if (and version (re-matches #"[0-9.]+" version))
-              version
-              "unknown")))
+    (if job-name
+        (let [name-version (clojure.string/split job-name #"-")
+              version      (get name-version 2)]
+              (if (and version (re-matches #"[0-9.]+" version))
+                  version
+                  "unknown"))
+        "unknown"))
 
 (defn job-name->book-name
     [job-name]
-    (let [name-version (clojure.string/split job-name #"-")
-          book-name    (get name-version 3)]
-          (if book-name
-              (clojure.string/replace book-name "_" " ")
-              "unknown")))
+    (if job-name
+        (let [name-version (clojure.string/split job-name #"-")
+              book-name    (get name-version 3)]
+              (if book-name
+                  (clojure.string/replace book-name "_" " ")
+                  "unknown"))
+        "unknown"))
 
 (defn job-name->environment
     [job-name preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix]
