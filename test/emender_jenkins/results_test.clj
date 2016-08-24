@@ -235,6 +235,13 @@
             "Book Name 1" (job-name->book-name "test-Red_Hat_Enterprise_Linux-6.2-Book_Name_1-en-US (preview)")
             "Book Name 1" (job-name->book-name "test-Red_Hat_Enterprise_Linux-7-Book_Name_1-en-US (preview)"))))
 
+(deftest test-job-name->book-name-2
+    "Check the emender-jenkins.results/job-name->book-name function."
+    (testing "the emender-jenkins.results/job-name->book-name function."
+        (are [x y] (= x y)
+            "unknown"     (job-name->book-name "test-Product-1 (preview)")
+            "unknown"     (job-name->book-name nil))))
+
 (deftest test-job-name->environment
     "Check the emender-jenkins.results/job-name->environment function."
     (testing "the emender-jenkins.results/job-name->environment function."
