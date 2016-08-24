@@ -251,3 +251,17 @@
     (testing "if the emender-jenkins.rest-api/unknown-call-handler definition exists."
         (is (callable? 'emender-jenkins.rest-api/unknown-call-handler))))
 
+;
+; Function behaviours
+;
+
+(deftest test-create-error-response
+    "Check the function emender-jenkins.rest-api/create-error-response."
+    (testing "the function emender-jenkins.rest-api/create-error-response."
+        (are [x y] (= x y)
+            {:status "error" :jobName "job-name" :command "command" :message "message"} (create-error-response "job-name" "command" "message")
+            {:status "error" :jobName nil        :command "command" :message "message"}        (create-error-response nil "command" "message")
+            {:status "error" :jobName "job-name" :command nil       :message "message"}       (create-error-response "job-name" nil "message")
+            {:status "error" :jobName "job-name" :command "command" :message nil}       (create-error-response "job-name" "command" nil)
+            {:status "error" :jobName nil        :command nil       :message nil}       (create-error-response nil nil nil))))
+
