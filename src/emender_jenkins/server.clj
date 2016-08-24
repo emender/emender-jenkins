@@ -66,6 +66,7 @@
             [:get  "system"]                (rest-api/system-banners         request uri)
             [:post "reload-all-results"]    (rest-api/reload-all-results     request)
             [:post "reload-tests-metadata"] (rest-api/reload-tests-metadata  request)
+            [:get  "get_metadata"]          (rest-api/get-metadata           request)
             [:post "create_job"]            (rest-api/create-job             request)
             [:post "update_job"]            (rest-api/update-job             request)
             [:post "delete_job"]            (rest-api/delete-job             request)

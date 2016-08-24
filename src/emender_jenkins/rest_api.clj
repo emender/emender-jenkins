@@ -13,15 +13,16 @@
 (ns emender-jenkins.rest-api
     "Handler for all REST API calls.")
 
-(require '[ring.util.response               :as http-response])
-(require '[clojure.pprint                   :as pprint])
-(require '[clojure.data.json                :as json])
-(require '[clj-jenkins-api.jenkins-api      :as jenkins-api])
-(require '[clj-fileutils.fileutils          :as file-utils])
+(require '[ring.util.response                :as http-response])
+(require '[clojure.pprint                    :as pprint])
+(require '[clojure.data.json                 :as json])
+(require '[clj-jenkins-api.jenkins-api       :as jenkins-api])
+(require '[clj-fileutils.fileutils           :as file-utils])
 
-(require '[emender-jenkins.results          :as results])
-(require '[emender-jenkins.config           :as config])
-(require '[emender-jenkins.metadata-reader  :as metadata-reader])
+(require '[emender-jenkins.results           :as results])
+(require '[emender-jenkins.config            :as config])
+(require '[emender-jenkins.metadata-reader   :as metadata-reader])
+(require '[emender-jenkins.metadata-analyzer :as metadata-analyzer])
 
 ; command names used by various REST API responses
 (def commands {
@@ -198,9 +199,10 @@
     (try
         (results/reload-all-results (:configuration request))
         (metadata-reader/reload-tests-metadata (:configuration request) (results/get-job-results))
-        (let [response (metadata-reader/metadata-count)]
+        (let [response (metadata-reader/get-metadata)]
             (send-response response request))
         (catch Exception e
+                (.printStackTrace e)
                 (-> (create-error-response "(not needed)" "reload-tests-metadata" (.getMessage e))
                     (send-error-response request :internal-server-error)))))
 
@@ -380,4 +382,14 @@
                     :uri uri
                     :method method}]
         (send-error-response response request :bad-request)))
+
+(defn get-metadata
+    [request]
+    (let [params  (:params request)
+          ;product (get params "product")
+          ;version (get params "version")
+          metadata (metadata-reader/get-metadata)
+          results  (metadata-analyzer/select-results metadata)]
+        (-> (http-response/response results)
+            (http-response/content-type "application/csv"))))
 
