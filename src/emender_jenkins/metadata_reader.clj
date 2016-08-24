@@ -12,6 +12,7 @@
 
 (ns emender-jenkins.metadata-reader)
 
+(require '[emender-jenkins.results     :as results])
 (require '[clj-jenkins-api.jenkins-api :as jenkins-api])
 
 (def GuideStatisticResultNames {
@@ -27,25 +28,44 @@
     :used-graphics-count              "results.GuideStatistic.UsedGraphicsCount.cnt"
     :word-count                       "results.GuideStatistic.WordCount.cnt"
     :xincludes-count                  "results.GuideStatistic.XiIncludes.cnt"
-    :zpage-count                      "results.GuideStatistic.ZPageCount.cn"})
+    :zpage-count                      "results.GuideStatistic.ZPageCount.cnt"})
+
+(def CustomerPortalRequirements {
+    :chunkable-tags-ids               "results.CustomerPortalRequirements.testChunkableTagsIDsTag.cnt"})
 
 (def metadata (atom nil))
+
+(defn parse-int
+    [^String string]
+    (if (and string (re-matches #"[0-9]+" string))
+        (java.lang.Integer/parseInt string))) ; nil instead
 
 (defn read-and-parse-list-of-commiters
     [jenkins-url job-name]
     (let [raw-data (jenkins-api/read-file-from-artifact jenkins-url job-name (:commiters-list GuideStatisticResultNames) nil)]
         (count raw-data)))
 
+(defn read-and-parse-chunkable-tags-ids
+    [jenkins-url job-name]
+    (let [raw-data  (jenkins-api/read-file-from-artifact jenkins-url job-name (:chunkable-tags-ids CustomerPortalRequirements) nil)
+          lines     (if raw-data (clojure.string/split-lines raw-data))]
+          {:total   (-> (first lines) parse-int)
+           :missing (-> (second lines) parse-int)}))
+
 (defn job-results->job-names
     [job-results]
     (for [job-result job-results]
-        (:job-name job-result)))
+        (:jobName job-result)))
 
 (defn load-and-parse-metadata
     [jenkins-url job-names]
     (for [job-name job-names]
-        {:job-name job-name
-         :commiters-list (read-and-parse-list-of-commiters jenkins-url job-name)}))
+        {:job-name           job-name
+         :product            (results/job-name->product-name job-name)
+         :version            (results/job-name->version job-name)
+         :book               (results/job-name->book-name job-name)
+         :commiters-list     (read-and-parse-list-of-commiters  jenkins-url job-name)
+         :chunkable-tags-ids (read-and-parse-chunkable-tags-ids jenkins-url job-name)}))
 
 (defn reload-tests-metadata
     [configuration job-results]
@@ -53,10 +73,13 @@
           parsed-metadata (->> (job-results->job-names job-results)
                                (load-and-parse-metadata jenkins-url))]
     (reset! metadata parsed-metadata)
-    nil))
+    parsed-metadata))
 
 (defn metadata-count
     []
-    @metadata)
+    (count @metadata))
 
+(defn get-metadata
+    []
+    @metadata)
 
