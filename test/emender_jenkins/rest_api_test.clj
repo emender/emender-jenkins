@@ -291,3 +291,12 @@
             {:status "error" :jobName nil       :command "create_job" :message "Job does not exist"} (job-does-not-exist-response nil :create-job)
             {:status "error" :jobName nil       :command nil          :message "Job does not exist"} (job-does-not-exist-response nil nil))))
 
+(deftest test-wrong-job-name
+    "Check the function emender-jenkins.rest-api/wrong-job-name."
+    (testing "the function emender-jenkins.rest-api/wrong-job-name."
+        (are [x y] (= x y)
+            {:status "error" :jobName "jobName" :command "create_job" :message "The name of job is wrong"} (wrong-job-name "jobName" :create-job)
+            {:status "error" :jobName "jobName" :command nil          :message "The name of job is wrong"} (wrong-job-name "jobName" nil)
+            {:status "error" :jobName nil       :command "create_job" :message "The name of job is wrong"} (wrong-job-name nil :create-job)
+            {:status "error" :jobName nil       :command nil          :message "The name of job is wrong"} (wrong-job-name nil nil))))
+
