@@ -221,6 +221,11 @@
             "unknown" (job-name->version "test-Red_Hat_Enterprise_Linux-6.beta-Book_Name_1-en-US (preview)")
             "unknown" (job-name->version "test-Red_Hat_Enterprise_Linux-Book_Name_1-en-US (preview)"))))
 
+(deftest test-job-name->version-3
+    "Check the emender-jenkins.results/job-name->version function."
+    (testing "the emender-jenkins.results/job-name->version function."
+        (is (= "unknown" (job-name->version nil)))))
+
 (deftest test-job-name->book-name-1
     "Check the emender-jenkins.results/job-name->book-name function."
     (testing "the emender-jenkins.results/job-name->book-name function."
