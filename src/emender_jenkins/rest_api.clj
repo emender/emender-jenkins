@@ -7,7 +7,7 @@
 ;  http://www.eclipse.org/legal/epl-v10.html
 ;
 ;  Contributors:
-;      Pavel Tisnovsky
+;      Pavel Tisnovsky
 ;
 
 (ns emender-jenkins.rest-api
@@ -139,7 +139,7 @@
 (defn create-error-response
     [job-name command message]
     {:status "error"
-     :job-name job-name
+     :jobName job-name
      :command command
      :message message})
 
