@@ -33,6 +33,12 @@
         (is (callable? 'emender-jenkins.metadata-reader/read-and-parse-list-of-commiters))))
 
 
+(deftest test-read-and-parse-chunkable-tags-ids-existence
+    "Check that the emender-jenkins.metadata-reader/read-and-parse-chunkable-tags-ids definition exists."
+    (testing "if the emender-jenkins.metadata-reader/read-and-parse-chunkable-tags-ids definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/read-and-parse-chunkable-tags-ids))))
+
+
 (deftest test-job-results->job-names-existence
     "Check that the emender-jenkins.metadata-reader/job-results->job-names definition exists."
     (testing "if the emender-jenkins.metadata-reader/job-results->job-names definition exists."
@@ -55,4 +61,10 @@
     "Check that the emender-jenkins.metadata-reader/metadata-count definition exists."
     (testing "if the emender-jenkins.metadata-reader/metadata-count definition exists."
         (is (callable? 'emender-jenkins.metadata-reader/metadata-count))))
+
+
+(deftest test-get-metadata-existence
+    "Check that the emender-jenkins.metadata-reader/get-metadata definition exists."
+    (testing "if the emender-jenkins.metadata-reader/get-metadata definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/get-metadata))))
 
