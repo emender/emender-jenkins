@@ -282,3 +282,12 @@
             {:status "error" :command "command" :message nil}       (create-bad-request-response "command" nil)
             {:status "error" :command nil       :message nil}       (create-bad-request-response nil nil))))
 
+(deftest test-job-does-not-exist-response
+    "Check the function emender-jenkins.rest-api/job-does-not-exist-response."
+    (testing "the function emender-jenkins.rest-api/job-does-not-exist-response."
+        (are [x y] (= x y)
+            {:status "error" :jobName "jobName" :command "create_job" :message "Job does not exist"} (job-does-not-exist-response "jobName" :create-job)
+            {:status "error" :jobName "jobName" :command nil          :message "Job does not exist"} (job-does-not-exist-response "jobName" nil)
+            {:status "error" :jobName nil       :command "create_job" :message "Job does not exist"} (job-does-not-exist-response nil :create-job)
+            {:status "error" :jobName nil       :command nil          :message "Job does not exist"} (job-does-not-exist-response nil nil))))
+
