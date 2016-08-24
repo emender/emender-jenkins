@@ -198,7 +198,7 @@
             "Red Hat Enterprise Linux" (job-name->product-name "test-Red_Hat_Enterprise_Linux-6.2-Book_Name_1-en-US (preview)")
             "Red Hat Enterprise Linux" (job-name->product-name "test-Red_Hat_Enterprise_Linux-7-Book_Name_1-en-US (preview)"))))
 
-(deftest test-job-name->version
+(deftest test-job-name->version-1
     "Check the emender-jenkins.results/job-name->version function."
     (testing "the emender-jenkins.results/job-name->version function."
         (are [x y] (= x y)
@@ -206,6 +206,15 @@
             "1"   (job-name->version "test-Product_Name-1-Book1-en-US (preview)")
             "6.2" (job-name->version "test-Red_Hat_Enterprise_Linux-6.2-Book_Name_1-en-US (preview)")
             "7"   (job-name->version "test-Red_Hat_Enterprise_Linux-7-Book_Name_1-en-US (preview)"))))
+
+(deftest test-job-name->version-2
+    "Check the emender-jenkins.results/job-name->version function."
+    (testing "the emender-jenkins.results/job-name->version function."
+        (are [x y] (= x y)
+            "unknown" (job-name->version "test-Product-Book1-en-US (preview)")
+            "unknown" (job-name->version "test-Product_Name-bad-Book1-en-US (preview)")
+            "unknown" (job-name->version "test-Red_Hat_Enterprise_Linux-6.beta-Book_Name_1-en-US (preview)")
+            "unknown" (job-name->version "test-Red_Hat_Enterprise_Linux-Book_Name_1-en-US (preview)"))))
 
 (deftest test-job-name->book-name
     "Check the emender-jenkins.results/job-name->book-name function."
