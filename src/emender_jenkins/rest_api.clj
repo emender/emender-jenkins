@@ -384,6 +384,18 @@
                     :method method}]
         (send-error-response response request :bad-request)))
 
+(defn get-output-format
+    [request]
+    (let [output-format (-> (:params request) (get "format"))]
+        (condp = output-format
+            "json" :json
+            "xml"  :xml
+            "csv"  :csv
+            "edn"  :edn
+            "text" :txt
+            "txt"  :txt
+                   :json)))
+
 (defn get-metadata
     [request]
     (let [params  (:params request)
