@@ -28,6 +28,12 @@
     [products]
     (json/write-str products))
 
+(defn data->edn
+    "Convert/format any data to EDN format."
+    [data]
+    (with-out-str
+        (clojure.pprint/pprint data)))
+
 (defn export2csv
     [columns data]
     (data->csv (cons columns data)))
