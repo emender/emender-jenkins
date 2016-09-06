@@ -38,11 +38,19 @@
     [columns data]
     (data->csv (cons columns data)))
 
+(defn export2json
+    [columns data]
+    (data->json data))
+
+(defn export2edn
+    [columns data]
+    (data->edn data))
+
 (defn export
     [columns data output-format]
     (case output-format
-        :json  nil
-        :edn   nil
+        :json  (export2json columns data)
+        :edn   (export2edn columns data)
         :csv   (export2csv columns data)
         :txt   nil
         :xml   nil))
