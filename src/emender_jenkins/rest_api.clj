@@ -396,6 +396,15 @@
             "txt"  :txt
                    :json)))
 
+(defn mime-type
+    [output-format]
+    (case output-format
+        :json  "application/json"
+        :edn   "application/edn"
+        :csv   "text/csv"
+        :txt   "text/plain"
+        :xml   "text/xml"))
+
 (defn get-metadata
     [request]
     (let [params  (:params request)
