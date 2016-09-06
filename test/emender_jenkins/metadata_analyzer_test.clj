@@ -10,7 +10,7 @@
 ;      Pavel Tisnovsky
 ;
 
-(ns emender-jenkins.middleware-test
+(ns emender-jenkins.metadata-analyzer
   (:require [clojure.test :refer :all]
             [emender-jenkins.metadata-analyzer :refer :all]))
 

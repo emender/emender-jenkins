@@ -10,7 +10,7 @@
 ;      Pavel Tisnovsky
 ;
 
-(ns emender-jenkins.core-test
+(ns emender-jenkins.server-test
   (:require [clojure.test :refer :all]
             [emender-jenkins.server :refer :all]))
 
