@@ -9,5 +9,5 @@
 #  http://www.eclipse.org/legal/epl-v10.html
 #
 
-curl -X GET -v localhost:3000/api/get_metadata
+curl -X GET -v localhost:3000/api/get_metadata -o out.csv
 
