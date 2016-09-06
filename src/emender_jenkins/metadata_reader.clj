@@ -79,9 +79,15 @@
     []
     (count @metadata))
 
+(defn metadata-filter
+    [product version book-regexp item]
+    (and (or (nil? product) (= product (:product item)))
+         (or (nil? version) (= version (:version item)))
+         (or (nil? book-regexp) (re-matches book-regexp (:book item)))))
+
 (defn get-metadata
     ([]
-     (get-metadata nil nil nil))
+     @metadata)
     ([product version book-regexp]
-     @metadata))
+     (filter #(metadata-filter product version book-regexp %) @metadata)))
 
