@@ -22,6 +22,7 @@
 (require '[emender-jenkins.results           :as results])
 (require '[emender-jenkins.config            :as config])
 (require '[emender-jenkins.metadata-reader   :as metadata-reader])
+(require '[emender-jenkins.metadata-exporter :as metadata-exporter])
 (require '[emender-jenkins.metadata-analyzer :as metadata-analyzer])
 
 ; command names used by various REST API responses
@@ -389,7 +390,8 @@
           ;product (get params "product")
           ;version (get params "version")
           metadata (metadata-reader/get-metadata)
-          results  (metadata-analyzer/select-results metadata)]
-        (-> (http-response/response results)
+          results  (metadata-analyzer/select-results metadata)
+          output   (metadata-exporter/export2csv ["Job" "Product" "Version" "Book" "Total tags" "Tags without ID"] results)]
+        (-> (http-response/response output)
             (http-response/content-type "application/csv"))))
 

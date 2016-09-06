@@ -12,3 +12,15 @@
 
 (ns emender-jenkins.metadata-exporter)
 
+(require '[clojure.data.csv      :as csv])
+
+(defn data->csv
+    "Convert/format any data to CSV format."
+    [data]
+    (with-out-str
+        (csv/write-csv *out* data)))
+
+(defn export2csv
+    [columns data]
+    (data->csv (cons columns data)))
+
