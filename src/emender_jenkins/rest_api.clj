@@ -408,11 +408,14 @@
 (defn get-metadata
     [request]
     (let [params  (:params request)
+          output-format (get-output-format request)
+          mime-type (mime-type output-format)
+          columns ["Job" "Product" "Version" "Book" "Total tags" "Tags without ID"]
           ;product (get params "product")
           ;version (get params "version")
           metadata (metadata-reader/get-metadata)
           results  (metadata-analyzer/select-results metadata)
-          output   (metadata-exporter/export2csv ["Job" "Product" "Version" "Book" "Total tags" "Tags without ID"] results)]
+          output   (metadata-exporter/export columns results output-format)]
         (-> (http-response/response output)
-            (http-response/content-type "application/csv"))))
+            (http-response/content-type mime-type))))
 
