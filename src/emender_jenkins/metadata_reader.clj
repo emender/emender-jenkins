@@ -83,7 +83,7 @@
     [product version book-regexp item]
     (and (or (nil? product) (= product (:product item)))
          (or (nil? version) (= version (:version item)))
-         (or (nil? book-regexp) (re-matches book-regexp (:book item)))))
+         (or (nil? book-regexp) (re-matches (re-pattern book-regexp) (:book item)))))
 
 (defn get-metadata
     ([]
