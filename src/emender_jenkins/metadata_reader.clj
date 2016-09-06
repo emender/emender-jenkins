@@ -80,6 +80,8 @@
     (count @metadata))
 
 (defn get-metadata
-    []
-    @metadata)
+    ([]
+     (get-metadata nil nil nil))
+    ([product version book-regexp]
+     @metadata))
 

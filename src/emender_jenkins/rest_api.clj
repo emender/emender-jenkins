@@ -409,13 +409,14 @@
     [request]
     (let [params  (:params request)
           output-format (get-output-format request)
-          mime-type (mime-type output-format)
-          columns ["Job" "Product" "Version" "Book" "Total tags" "Tags without ID"]
-          ;product (get params "product")
-          ;version (get params "version")
-          metadata (metadata-reader/get-metadata)
-          results  (metadata-analyzer/select-results metadata)
-          output   (metadata-exporter/export columns results output-format)]
+          mime-type     (mime-type output-format)
+          columns       ["Job" "Product" "Version" "Book" "Total tags" "Tags without ID"]
+          product       (get params "product")
+          version       (get params "version")
+          book-regexp   (get params "book")
+          metadata      (metadata-reader/get-metadata product version book-regexp)
+          results       (metadata-analyzer/select-results metadata)
+          output        (metadata-exporter/export columns results output-format)]
         (-> (http-response/response output)
             (http-response/content-type mime-type))))
 
