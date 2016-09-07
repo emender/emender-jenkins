@@ -18,6 +18,7 @@
 (require '[clj-jenkins-api.jenkins-api :as jenkins-api])
 
 (require '[emender-jenkins.config      :as config])
+(use     '[emender-jenkins.utils])
 
 (def results (atom nil))
 
@@ -71,9 +72,9 @@
 (defn job-name->environment
     [job-name preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix]
     (cond
-        (.endsWith job-name preview-jobs-suffix) :preview
-        (.endsWith job-name stage-jobs-suffix)   :stage
-        (.endsWith job-name prod-jobs-suffix)    :prod))
+        (endsWith job-name preview-jobs-suffix) :preview
+        (endsWith job-name stage-jobs-suffix)   :stage
+        (endsWith job-name prod-jobs-suffix)    :prod))
 
 (defn compute-job-status
     [jenkins-job-status buildable?]
@@ -139,9 +140,9 @@
 (defn test-job?
     [job-name jobs-prefix preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix]
     (and (.startsWith job-name jobs-prefix)
-         (or (.endsWith job-name preview-jobs-suffix)
-             (.endsWith job-name stage-jobs-suffix)
-             (.endsWith job-name prod-jobs-suffix))))
+         (or (endsWith job-name preview-jobs-suffix)
+             (endsWith job-name stage-jobs-suffix)
+             (endsWith job-name prod-jobs-suffix))))
 
 (defn filter-test-jobs
     [all-jobs jobs-prefix preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix]
