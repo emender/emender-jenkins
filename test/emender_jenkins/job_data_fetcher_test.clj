@@ -98,3 +98,11 @@
             1000 (seconds-to-ms 1)
             2000 (seconds-to-ms 2))))
 
+(deftest test-compute-sleep-amount
+    "Check the function emender-jenkins.job-data-fetcher/compute-sleep-amount."
+    (testing "the function emender-jenkins.job-data-fetcher/compute-sleep-amount."
+        (are [x y] (= x y)
+               0 (compute-sleep-amount 0)
+           60000 (compute-sleep-amount 1)
+          120000 (compute-sleep-amount 2))))
+
