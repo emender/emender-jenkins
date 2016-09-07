@@ -287,3 +287,14 @@
             nil (job-name->environment "test-Red_Hat_Enterprise_Linux-6.2-Book_Name_1-en-US (unknown)" "(preview)" "(stage)" "(prod)")
             nil (job-name->environment "test-Red_Hat_Enterprise_Linux-7-Book_Name_1-en-US (unknown)" "(preview)" "(stage)" "(prod)"))))
 
+(deftest test-compute-job-status
+    "Check the emender-jenkins.results/compute-job-status function."
+    (testing "the emender-jenkins.results/compute-job-status function."
+        (are [x y] (= x y)
+            :disabled        (compute-job-status true nil)
+            :ok              (compute-job-status "blue" true)
+            :unstable        (compute-job-status "yellow" true)
+            :disabled        (compute-job-status "disabled" true)
+            :failure         (compute-job-status "xyzzy" true)
+            :does-not-exists (compute-job-status nil true))))
+
