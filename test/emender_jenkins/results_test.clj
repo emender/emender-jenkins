@@ -298,3 +298,14 @@
             :failure         (compute-job-status "xyzzy" true)
             :does-not-exists (compute-job-status nil true))))
 
+(deftest test-compute-job-disabled
+    "Check the emender-jenkins.results/compute-job-disabled function."
+    (testing "the emender-jenkins.results/compute-job-disabled function."
+        (are [x y] (= x y)
+            true  (compute-job-disabled true nil)
+            false (compute-job-disabled "blue" true)
+            false (compute-job-disabled "yellow" true)
+            true  (compute-job-disabled "disabled" true)
+            false (compute-job-disabled "xyzzy" true)
+            true  (compute-job-disabled nil true))))
+
