@@ -28,53 +28,53 @@
 ;
 
 (deftest test-third-existence
-    "Check that the clouseau.utils/third definition exists."
-    (testing "if the clouseau.utils/third definition exists."
-        (is (callable? 'clouseau.utils/third))))
+    "Check that the emender-jenkins.utils/third definition exists."
+    (testing "if the emender-jenkins.utils/third definition exists."
+        (is (callable? 'emender-jenkins.utils/third))))
 
 
 (deftest test-substring-existence
-    "Check that the clouseau.utils/substring definition exists."
-    (testing "if the clouseau.utils/substring definition exists."
-        (is (callable? 'clouseau.utils/substring))))
+    "Check that the emender-jenkins.utils/substring definition exists."
+    (testing "if the emender-jenkins.utils/substring definition exists."
+        (is (callable? 'emender-jenkins.utils/substring))))
 
 
 (deftest test-startsWith-existence
-    "Check that the clouseau.utils/startsWith definition exists."
-    (testing "if the clouseau.utils/startsWith definition exists."
-        (is (callable? 'clouseau.utils/startsWith))))
+    "Check that the emender-jenkins.utils/startsWith definition exists."
+    (testing "if the emender-jenkins.utils/startsWith definition exists."
+        (is (callable? 'emender-jenkins.utils/startsWith))))
 
 
 (deftest test-endsWith-existence
-    "Check that the clouseau.utils/endsWith definition exists."
-    (testing "if the clouseau.utils/endsWith definition exists."
-        (is (callable? 'clouseau.utils/endsWith))))
+    "Check that the emender-jenkins.utils/endsWith definition exists."
+    (testing "if the emender-jenkins.utils/endsWith definition exists."
+        (is (callable? 'emender-jenkins.utils/endsWith))))
 
 
 (deftest test-contains-existence
-    "Check that the clouseau.utils/contains definition exists."
-    (testing "if the clouseau.utils/contains definition exists."
-        (is (callable? 'clouseau.utils/contains))))
+    "Check that the emender-jenkins.utils/contains definition exists."
+    (testing "if the emender-jenkins.utils/contains definition exists."
+        (is (callable? 'emender-jenkins.utils/contains))))
 
 
 (deftest test-replaceAll-existence
-    "Check that the clouseau.utils/replaceAll definition exists."
-    (testing "if the clouseau.utils/replaceAll definition exists."
-        (is (callable? 'clouseau.utils/replaceAll))))
+    "Check that the emender-jenkins.utils/replaceAll definition exists."
+    (testing "if the emender-jenkins.utils/replaceAll definition exists."
+        (is (callable? 'emender-jenkins.utils/replaceAll))))
 
 
 (deftest test-get-exception-message-existence
-    "Check that the clouseau.utils/get-exception-message definition exists."
-    (testing "if the clouseau.utils/get-exception-message definition exists."
-        (is (callable? 'clouseau.utils/get-exception-message))))
+    "Check that the emender-jenkins.utils/get-exception-message definition exists."
+    (testing "if the emender-jenkins.utils/get-exception-message definition exists."
+        (is (callable? 'emender-jenkins.utils/get-exception-message))))
 
 ;
 ; Tests for behaviour of all functions
 ;
 
 (deftest test-get-exception-message-1
-    "Check the function clouseau.utils/get-exception-message."
-    (testing "the function clouseau.utils/get-exception-message."
+    "Check the function emender-jenkins.utils/get-exception-message."
+    (testing "the function emender-jenkins.utils/get-exception-message."
         (try
             (throw (new java.lang.Exception "Message text"))
             (is nil "Exception not thrown as expected!")
@@ -82,8 +82,8 @@
                 (is (= "Message text" (get-exception-message e)))))))
 
 (deftest test-get-exception-message-2
-    "Check the function clouseau.utils/get-exception-message."
-    (testing "the function clouseau.utils/get-exception-message."
+    "Check the function emender-jenkins.utils/get-exception-message."
+    (testing "the function emender-jenkins.utils/get-exception-message."
         (try
             (/ 1 0)
             (is nil "Exception not thrown as expected!")
@@ -91,8 +91,8 @@
                 (is (= "Divide by zero" (get-exception-message e)))))))
 
 (deftest test-get-exception-message-3
-    "Check the function clouseau.utils/get-exception-message."
-    (testing "the function clouseau.utils/get-exception-message."
+    "Check the function emender-jenkins.utils/get-exception-message."
+    (testing "the function emender-jenkins.utils/get-exception-message."
         (try
             (Integer/parseInt "unparseable")
             (is nil "Exception not thrown as expected!")
@@ -100,8 +100,8 @@
                 (is (.startsWith (get-exception-message e) "For input string:"))))))
 
 (deftest test-get-exception-message-4
-    "Check the function clouseau.utils/get-exception-message."
-    (testing "the function clouseau.utils/get-exception-message."
+    "Check the function emender-jenkins.utils/get-exception-message."
+    (testing "the function emender-jenkins.utils/get-exception-message."
         (try
             (throw (new java.lang.Exception ""))
             (is nil "Exception not thrown as expected!")
@@ -109,8 +109,8 @@
                 (is (= "" (get-exception-message e)))))))
 
 (deftest test-get-exception-message-5
-    "Check the function clouseau.utils/get-exception-message."
-    (testing "the function clouseau.utils/get-exception-message."
+    "Check the function emender-jenkins.utils/get-exception-message."
+    (testing "the function emender-jenkins.utils/get-exception-message."
         (try
             (throw (new java.lang.Exception))
             (is nil "Exception not thrown as expected!")
@@ -118,8 +118,8 @@
                 (is (nil? (get-exception-message e)))))))
 
 (deftest test-get-exception-message-6
-    "Check the function clouseau.utils/get-exception-message."
-    (testing "the function clouseau.utils/get-exception-message."
+    "Check the function emender-jenkins.utils/get-exception-message."
+    (testing "the function emender-jenkins.utils/get-exception-message."
         (try
             (println (nth [] 10)) ; realize the sequence and getter
             (is nil "Exception not thrown as expected!")
@@ -127,8 +127,8 @@
                 (is (nil? (get-exception-message e)))))))
 
 (deftest test-third-1
-    "Check the function clouseau.utils/third."
-    (testing "the function clouseau.utils/third."
+    "Check the function emender-jenkins.utils/third."
+    (testing "the function emender-jenkins.utils/third."
         (are [x y] (= x y)
             3 (third [1 2 3])
             3 (third [1 2 3 4 5])
@@ -136,21 +136,21 @@
             3 (third '(1 2 3 4 5)))))
 
 (deftest test-third-2
-    "Check the function clouseau.utils/third."
-    (testing "the function clouseau.utils/third."
+    "Check the function emender-jenkins.utils/third."
+    (testing "the function emender-jenkins.utils/third."
         (are [x y] (= x y)
             nil (third [1 2])
             nil (third '(1 2)))))
 
 (deftest test-third-not-NPE
-    "Check the function clouseau.utils/third."
-    (testing "the function clouseau.utils/third."
+    "Check the function emender-jenkins.utils/third."
+    (testing "the function emender-jenkins.utils/third."
         (are [x y] (= x y)
             nil (third nil))))
 
 (deftest test-substring-1
-    "Check the function clouseau.utils/substring."
-    (testing "the function clouseau.utils/substring."
+    "Check the function emender-jenkins.utils/substring."
+    (testing "the function emender-jenkins.utils/substring."
         (are [x y] (= x y)
             "H"      (substring "Hello world!" 0 1)
             "He"     (substring "Hello world!" 0 2)
@@ -158,8 +158,8 @@
             "Hello " (substring "Hello world!" 0 6))))
 
 (deftest test-substring-2
-    "Check the function clouseau.utils/substring."
-    (testing "the function clouseau.utils/substring."
+    "Check the function emender-jenkins.utils/substring."
+    (testing "the function emender-jenkins.utils/substring."
         (are [x y] (= x y)
             "w"      (substring "Hello world!" 6 7)
             "wo"     (substring "Hello world!" 6 8)
@@ -167,8 +167,8 @@
             "world!" (substring "Hello world!" 6 12))))
 
 (deftest test-substring-empty-result
-    "Check the function clouseau.utils/substring."
-    (testing "the function clouseau.utils/substring."
+    "Check the function emender-jenkins.utils/substring."
+    (testing "the function emender-jenkins.utils/substring."
         (are [x y] (= x y)
             "" (substring "Hello world!" 0 0)
             "" (substring "Hello world!" 1 1)
