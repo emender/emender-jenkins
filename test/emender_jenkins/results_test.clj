@@ -278,3 +278,12 @@
             :prod (job-name->environment "test-Red_Hat_Enterprise_Linux-6.2-Book_Name_1-en-US (prod)" "(preview)" "(stage)" "(prod)")
             :prod (job-name->environment "test-Red_Hat_Enterprise_Linux-7-Book_Name_1-en-US (prod)" "(preview)" "(stage)" "(prod)"))))
 
+(deftest test-job-name->environment-unknown
+    "Check the emender-jenkins.results/job-name->environment function."
+    (testing "the emender-jenkins.results/job-name->environment function."
+        (are [x y] (= x y)
+            nil (job-name->environment "test-Product-1-Book1-en-US (unknown)" "(preview)" "(stage)" "(prod)")
+            nil (job-name->environment "test-Product_Name-1-Book1-en-US (unknown)" "(preview)" "(stage)" "(prod)")
+            nil (job-name->environment "test-Red_Hat_Enterprise_Linux-6.2-Book_Name_1-en-US (unknown)" "(preview)" "(stage)" "(prod)")
+            nil (job-name->environment "test-Red_Hat_Enterprise_Linux-7-Book_Name_1-en-US (unknown)" "(preview)" "(stage)" "(prod)"))))
+
