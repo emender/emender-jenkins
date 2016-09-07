@@ -18,6 +18,7 @@
 
 (require '[emender-jenkins.config   :as config])
 (require '[emender-jenkins.rest-api :as rest-api])
+(use     '[emender-jenkins.utils])
 
 (defn return-file
     "Creates HTTP response containing content of specified file.
@@ -45,12 +46,12 @@
     "Retrieve the actual command from the API call."
     [uri prefix]
     (if uri
-        (if (.startsWith uri prefix)
+        (if (startsWith uri prefix)
             (let [uri-without-prefix (subs uri (count prefix))]
                 (if (empty? uri-without-prefix) ; special handler for a call with / only
                     ""
                  (let [api-part (re-find #"/[^/]*" (subs uri (count prefix)))]
-                    (if (and api-part (.startsWith api-part "/"))
+                    (if (and api-part (startsWith api-part "/"))
                         (subs api-part 1)
                         api-part)))))))
 
@@ -113,7 +114,7 @@
           :else
         (let [uri    (:uri request)
               method (:request-method request)]
-             (if (.startsWith uri (config/get-api-prefix request))
+             (if (startsWith uri (config/get-api-prefix request))
                  (api-call-handler     request uri method)
                  (non-api-call-handler request uri)))))
 
