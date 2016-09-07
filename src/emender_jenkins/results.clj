@@ -7,7 +7,7 @@
 ;  http://www.eclipse.org/legal/epl-v10.html
 ;
 ;  Contributors:
-;      Pavel Tisnovsky
+;      Pavel Tisnovsky
 ;
 
 (ns emender-jenkins.results
@@ -101,7 +101,8 @@
             true)))
 
 (defn parse-int
-    [string]
+    "Parse the given string as an integer number."
+    [^String string]
     (java.lang.Integer/parseInt string))
 
 (defn parse-test-results
