@@ -57,3 +57,18 @@
         (is (callable? 'clouseau.utils/contains))))
 
 
+(deftest test-replaceAll-existence
+    "Check that the clouseau.utils/replaceAll definition exists."
+    (testing "if the clouseau.utils/replaceAll definition exists."
+        (is (callable? 'clouseau.utils/replaceAll))))
+
+
+(deftest test-get-exception-message-existence
+    "Check that the clouseau.utils/get-exception-message definition exists."
+    (testing "if the clouseau.utils/get-exception-message definition exists."
+        (is (callable? 'clouseau.utils/get-exception-message))))
+
+;
+; Tests for behaviour of all functions
+;
+
