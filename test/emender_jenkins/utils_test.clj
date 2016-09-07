@@ -27,3 +27,33 @@
 ; Tests for various function definitions
 ;
 
+(deftest test-third-existence
+    "Check that the clouseau.utils/third definition exists."
+    (testing "if the clouseau.utils/third definition exists."
+        (is (callable? 'clouseau.utils/third))))
+
+
+(deftest test-substring-existence
+    "Check that the clouseau.utils/substring definition exists."
+    (testing "if the clouseau.utils/substring definition exists."
+        (is (callable? 'clouseau.utils/substring))))
+
+
+(deftest test-startsWith-existence
+    "Check that the clouseau.utils/startsWith definition exists."
+    (testing "if the clouseau.utils/startsWith definition exists."
+        (is (callable? 'clouseau.utils/startsWith))))
+
+
+(deftest test-endsWith-existence
+    "Check that the clouseau.utils/endsWith definition exists."
+    (testing "if the clouseau.utils/endsWith definition exists."
+        (is (callable? 'clouseau.utils/endsWith))))
+
+
+(deftest test-contains-existence
+    "Check that the clouseau.utils/contains definition exists."
+    (testing "if the clouseau.utils/contains definition exists."
+        (is (callable? 'clouseau.utils/contains))))
+
+
