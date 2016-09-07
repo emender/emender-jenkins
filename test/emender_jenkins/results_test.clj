@@ -309,3 +309,10 @@
             false (compute-job-disabled "xyzzy" true)
             true  (compute-job-disabled nil true))))
 
+(deftest test-parse-test-results-negative
+    "Check the emender-jenkins.results/parse-test-results function."
+    (testing "the emender-jenkins.results/parse-test-results function."
+        (are [x y] (= x y)
+            nil   (parse-test-results "")
+            nil   (parse-test-results "xyzzy")
+            nil   (parse-test-results "Total: "))))
