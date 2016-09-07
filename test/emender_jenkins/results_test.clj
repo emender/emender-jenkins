@@ -251,7 +251,7 @@
             "unknown"     (job-name->book-name "test-Product-1 (preview)")
             "unknown"     (job-name->book-name nil))))
 
-(deftest test-job-name->environment
+(deftest test-job-name->environment-preview
     "Check the emender-jenkins.results/job-name->environment function."
     (testing "the emender-jenkins.results/job-name->environment function."
         (are [x y] (= x y)
@@ -259,4 +259,22 @@
             :preview (job-name->environment "test-Product_Name-1-Book1-en-US (preview)" "(preview)" "(stage)" "(prod)")
             :preview (job-name->environment "test-Red_Hat_Enterprise_Linux-6.2-Book_Name_1-en-US (preview)" "(preview)" "(stage)" "(prod)")
             :preview (job-name->environment "test-Red_Hat_Enterprise_Linux-7-Book_Name_1-en-US (preview)" "(preview)" "(stage)" "(prod)"))))
+
+(deftest test-job-name->environment-stage
+    "Check the emender-jenkins.results/job-name->environment function."
+    (testing "the emender-jenkins.results/job-name->environment function."
+        (are [x y] (= x y)
+            :stage (job-name->environment "test-Product-1-Book1-en-US (stage)" "(preview)" "(stage)" "(prod)")
+            :stage (job-name->environment "test-Product_Name-1-Book1-en-US (stage)" "(preview)" "(stage)" "(prod)")
+            :stage (job-name->environment "test-Red_Hat_Enterprise_Linux-6.2-Book_Name_1-en-US (stage)" "(preview)" "(stage)" "(prod)")
+            :stage (job-name->environment "test-Red_Hat_Enterprise_Linux-7-Book_Name_1-en-US (stage)" "(preview)" "(stage)" "(prod)"))))
+
+(deftest test-job-name->environment-prod
+    "Check the emender-jenkins.results/job-name->environment function."
+    (testing "the emender-jenkins.results/job-name->environment function."
+        (are [x y] (= x y)
+            :prod (job-name->environment "test-Product-1-Book1-en-US (prod)" "(preview)" "(stage)" "(prod)")
+            :prod (job-name->environment "test-Product_Name-1-Book1-en-US (prod)" "(preview)" "(stage)" "(prod)")
+            :prod (job-name->environment "test-Red_Hat_Enterprise_Linux-6.2-Book_Name_1-en-US (prod)" "(preview)" "(stage)" "(prod)")
+            :prod (job-name->environment "test-Red_Hat_Enterprise_Linux-7-Book_Name_1-en-US (prod)" "(preview)" "(stage)" "(prod)"))))
 
