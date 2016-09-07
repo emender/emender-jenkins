@@ -53,7 +53,7 @@
 
 (defn get-formatted-time
     "Returns formatted time."
-    [ms]
+    [^long ms]
     (let [sdf         (new java.text.SimpleDateFormat "yyyy-MM-dd HH:mm:ss")
           result-date (new java.util.Date ms)]
           (.format sdf result-date)))
