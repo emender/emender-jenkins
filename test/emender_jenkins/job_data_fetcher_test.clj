@@ -77,3 +77,24 @@
     (testing "if the emender-jenkins.job-data-fetcher/run-fetcher-in-thread definition exists."
         (is (callable? 'emender-jenkins.job-data-fetcher/run-fetcher-in-thread))))
 
+;
+; Function behaviours
+;
+
+(deftest test-minutes-to-seconds
+    "Check the function emender-jenkins.job-data-fetcher/minutes-to-seconds."
+    (testing "the function emender-jenkins.job-data-fetcher/minutes-to-seconds."
+        (are [x y] (= x y)
+               0 (minutes-to-seconds 0)
+              60 (minutes-to-seconds 1)
+             120 (minutes-to-seconds 2)
+            3600 (minutes-to-seconds 60))))
+
+(deftest test-seconds-to-ms
+    "Check the function emender-jenkins.job-data-fetcher/seconds-to-ms."
+    (testing "the function emender-jenkins.job-data-fetcher/seconds-to-ms."
+        (are [x y] (= x y)
+               0 (seconds-to-ms 0)
+            1000 (seconds-to-ms 1)
+            2000 (seconds-to-ms 2))))
+
