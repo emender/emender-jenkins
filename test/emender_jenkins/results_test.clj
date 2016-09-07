@@ -224,6 +224,15 @@
 (deftest test-job-name->version-3
     "Check the emender-jenkins.results/job-name->version function."
     (testing "the emender-jenkins.results/job-name->version function."
+        (are [x y] (= x y)
+            "unknown" (job-name->version "test-Product-Book1-en-US")
+            "unknown" (job-name->version "test-Product_Book1")
+            "unknown" (job-name->version "test-Product")
+            "unknown" (job-name->version "test"))))
+
+(deftest test-job-name->version-4
+    "Check the emender-jenkins.results/job-name->version function."
+    (testing "the emender-jenkins.results/job-name->version function."
         (is (= "unknown" (job-name->version nil)))))
 
 (deftest test-job-name->book-name-1
