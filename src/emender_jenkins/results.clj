@@ -139,7 +139,7 @@
 
 (defn test-job?
     [job-name jobs-prefix preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix]
-    (and (.startsWith job-name jobs-prefix)
+    (and (startsWith job-name jobs-prefix)
          (or (endsWith job-name preview-jobs-suffix)
              (endsWith job-name stage-jobs-suffix)
              (endsWith job-name prod-jobs-suffix))))
