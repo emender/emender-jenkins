@@ -52,6 +52,54 @@
           {:total   (-> (first lines) parse-int)
            :missing (-> (second lines) parse-int)}))
 
+(defn read-and-parse-docbook-versions
+    []
+)
+
+(defn read-and-parse-entities-count
+    []
+)
+
+(defn read-and-parse-entities-uniq
+    []
+)
+
+(defn read-and-parse-other-parts-count
+    []
+)
+
+(defn read-and-parse-program-listing
+    []
+)
+
+(defn read-and-parse-tag-frequencies
+    []
+)
+
+(defn read-and-parse-tags-with-conditions-count
+    []
+)
+
+(defn read-and-parse-tags-with-conditions-list
+    []
+)
+
+(defn read-and-parse-used-graphics-count
+    []
+)
+
+(defn read-and-parse-word-count
+    []
+)
+
+(defn read-and-parse-xincludes-count
+    []
+)
+
+(defn read-and-parse-zpage-count
+    []
+)
+
 (defn job-results->job-names
     [job-results]
     (for [job-result job-results]
@@ -60,12 +108,24 @@
 (defn load-and-parse-metadata
     [jenkins-url job-names]
     (for [job-name job-names]
-        {:job-name           job-name
-         :product            (results/job-name->product-name job-name)
-         :version            (results/job-name->version job-name)
-         :book               (results/job-name->book-name job-name)
-         :commiters-list     (read-and-parse-list-of-commiters  jenkins-url job-name)
-         :chunkable-tags-ids (read-and-parse-chunkable-tags-ids jenkins-url job-name)}))
+        {:job-name                  job-name
+         :product                   (results/job-name->product-name job-name)
+         :version                   (results/job-name->version job-name)
+         :book                      (results/job-name->book-name job-name)
+         :commiters-list            (read-and-parse-list-of-commiters          jenkins-url job-name)
+         :chunkable-tags-ids        (read-and-parse-chunkable-tags-ids         jenkins-url job-name)
+         :docbook-versions          (read-and-parse-docbook-versions           jenkins-url job-name)
+         :entities-count            (read-and-parse-entities-count             jenkins-url job-name)
+         :entities-uniq             (read-and-parse-entities-uniq              jenkins-url job-name)
+         :other-parts-count         (read-and-parse-other-parts-count          jenkins-url job-name)
+         :program-listing           (read-and-parse-program-listing            jenkins-url job-name)
+         :tag-frequencies           (read-and-parse-tag-frequencies            jenkins-url job-name)
+         :tags-with-condition-count (read-and-parse-tags-with-conditions-count jenkins-url job-name)
+         :tags-with-condition-list  (read-and-parse-tags-with-conditions-list  jenkins-url job-name)
+         :used-graphics-count       (read-and-parse-used-graphics-count        jenkins-url job-name)
+         :word-count                (read-and-parse-word-count                 jenkins-url job-name)
+         :xincludes-count           (read-and-parse-xincludes-count            jenkins-url job-name)
+         :zpage-count               (read-and-parse-zpage-count                jenkins-url job-name)}))
 
 (defn reload-tests-metadata
     [configuration job-results]
