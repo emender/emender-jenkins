@@ -23,3 +23,17 @@
     [function-name]
     (clojure.test/function? function-name))
 
+;
+; Tests for function existence
+;
+
+(deftest test-message-to-channel?
+    "Check that the emender-jenkins.irc-bot/message-to-channel? definition exists."
+    (testing "if the emender-jenkins.irc-bot/message-to-channel? definition exists."
+        (is (callable? 'emender-jenkins.irc-bot/message-to-channel?))))
+
+(deftest test-message-for-me?
+    "Check that the emender-jenkins.irc-bot/message-for-me? definition exists."
+    (testing "if the emender-jenkins.irc-bot/message-for-me? definition exists."
+        (is (callable? 'emender-jenkins.irc-bot/message-for-me?))))
+
