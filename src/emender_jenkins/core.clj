@@ -30,7 +30,7 @@
     "Definitions of all command line options that are  currenty supported."
     ;; an option with a required argument
     [["-h"   "--help"                       "show help"                                                    :id :help]
-     ["-p"   "--port   PORT"                "port number on which Stage Dashboard should accepts requests" :id :port]
+     ["-p"   "--port   PORT"                "port number on which Emender Jenkins should accepts requests" :id :port]
      ["-j"   "--jenkins-url url"            "url to Jenkins, for example: http://10.20.30.40:8080/"        :id :jenkins-url]
      ["-t"   "--test-jobs-suffix suffix"    "test jobs suffix, for example 'test'"                         :id :test-jobs-suffix]
      ["-f"   "--fetch-only"                 "just start job fetcher once, then stop processing"            :id :fetch-only]
@@ -201,7 +201,7 @@
             (start-server configuration (get-port port) openshift-port openshift-ip))))
 
 (defn -main
-    "Entry point to the Emender service server."
+    "Entry point to the Emender-Jenkins service server."
     [& args]
     (let [all-options         (cli/parse-opts args cli-options)
           options             (all-options :options)
