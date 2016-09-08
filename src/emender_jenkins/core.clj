@@ -25,6 +25,7 @@
 (require '[emender-jenkins.middleware       :as middleware])
 (require '[emender-jenkins.process-info     :as process-info])
 (require '[emender-jenkins.job-data-fetcher :as job-data-fetcher])
+(require '[emender-jenkins.irc-bot          :as job-data-fetcher])
 
 (def cli-options
     "Definitions of all command line options that are  currenty supported."
@@ -197,6 +198,10 @@
                  (config/load-configuration-from-ini "config.ini")
                  (config/override-options-by-cli jenkins-url test-jobs-suffix))]
             ;(results/reload-all-results configuration) ; to be done in the job-data-fetcher module
+            (irc-bot/start-irc-bot (-> configuration :irc :server)
+                                   (-> configuration :irc :port)
+                                   (-> configuration :irc :channel)
+                                   (-> configuration :irc :nick))
             (job-data-fetcher/run-fetcher-in-thread configuration)
             (start-server configuration (get-port port) openshift-port openshift-ip))))
 
