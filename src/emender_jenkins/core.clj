@@ -25,7 +25,7 @@
 (require '[emender-jenkins.middleware       :as middleware])
 (require '[emender-jenkins.process-info     :as process-info])
 (require '[emender-jenkins.job-data-fetcher :as job-data-fetcher])
-(require '[emender-jenkins.irc-bot          :as job-data-fetcher])
+(require '[emender-jenkins.irc-bot          :as irc-bot])
 
 (def cli-options
     "Definitions of all command line options that are  currenty supported."
