@@ -21,14 +21,21 @@ REST API and web-based interface between Jenkins, Jenkins jobs and Emender test 
 1. Clone the emender-jenkins repository
 1. Run the following commands:
 
-    $ lein compile
-    $ lein install
+    $ lein deps
+    $ lein uberjar
+
+Result is stored in an Java archive (JAR) that can be found in the 'target/uberjar' subdirectory.
+
 
 ## Usage
 
 To start the service, run the following command:
 
     $ lein run
+
+Or alternatively you can use the Java archive:
+
+    $ java -jar target/uberjar/emender-jenkins-0.1.0-SNAPSHOT-standalone.jar
 
 ## Options
 
