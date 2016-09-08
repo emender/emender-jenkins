@@ -14,6 +14,7 @@
     "Functions that retrieve basic information about the service process.")
 
 (defn get-current-pid
+    "Returns process ID for current process."
     []
     (-> (java.lang.management.ManagementFactory/getRuntimeMXBean)
         (.getName)
@@ -21,6 +22,7 @@
         (first)))
 
 (defn read-properties
+    "Read all properties of the operation system and JVM."
     []
     {:java-version    (System/getProperty "java.version")
      :java-class-path (System/getProperty "java.class.path")
