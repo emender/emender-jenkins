@@ -47,3 +47,18 @@
     (testing "if the emender-jenkins.irc-bot/prepare-reply-text definition exists."
         (is (callable? 'emender-jenkins.irc-bot/prepare-reply-text))))
 
+(deftest test-on-incoming-message
+    "Check that the emender-jenkins.irc-bot/on-incoming-message definition exists."
+    (testing "if the emender-jenkins.irc-bot/on-incoming-message definition exists."
+        (is (callable? 'emender-jenkins.irc-bot/on-incoming-message))))
+
+(deftest test-send-message
+    "Check that the emender-jenkins.irc-bot/send-message definition exists."
+    (testing "if the emender-jenkins.irc-bot/send-message definition exists."
+        (is (callable? 'emender-jenkins.irc-bot/send-message))))
+
+(deftest test-start-irc-bot
+    "Check that the emender-jenkins.irc-bot/start-irc-bot definition exists."
+    (testing "if the emender-jenkins.irc-bot/start-irc-bot definition exists."
+        (is (callable? 'emender-jenkins.irc-bot/start-irc-bot))))
+
