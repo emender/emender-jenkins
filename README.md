@@ -36,9 +36,11 @@ Current version of this service accepts the following command line options:
 
 ## REST API
 
+Please read [this file](doc/REST_API.adoc)
+
 ## License
 
-Copyright © 2016 FIXME
+Copyright © 2016 Pavel Tisnovsky, Red Hat Inc.
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
