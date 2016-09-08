@@ -79,6 +79,7 @@
             nil)))
 
 (defn test-job?
+    "Check if the given job name is name of the test job."
     [job-name request]
     (results/test-job? job-name (config/get-test-jobs-prefix request)
                                 (config/get-preview-test-jobs-suffix request)
@@ -86,6 +87,7 @@
                                 (config/get-prod-test-jobs-suffix request)))
 
 (defn send-response
+    "Send normal response (with application/json MIME type) back to the client."
     [response request]
     (if (config/pretty-print? request)
         (-> (http-response/response (with-out-str (json/pprint response)))
@@ -94,6 +96,7 @@
             (http-response/content-type "application/json"))))
 
 (defn send-error-response
+    "Send error response (with application/json MIME type) back to the client."
     [response request http-code]
     (if (config/pretty-print? request)
         (-> (http-response/response (with-out-str (json/pprint response)))
@@ -104,11 +107,13 @@
             (http-response/status (get http-codes http-code)))))
 
 (defn send-plain-response
+    "Send a response (with application/json MIME type) back to the client."
     [response]
     (-> (http-response/response response)
         (http-response/content-type "application/json")))
 
 (defn info-handler
+    "REST API handler for the /api request."
     [request hostname]
     (let [response {:name       "Emender Jenkins Service"
                     :version    (config/get-version request)
@@ -117,6 +122,7 @@
         (send-response response request)))
 
 (defn configuration-handler
+    "REST API handler for the /api/configuration request."
     [request]
     (if (config/verbose-show-configuration? request)
         (let [response (-> request :configuration)]
@@ -126,6 +132,7 @@
             (send-response response request))))
 
 (defn system-banners
+    "REST API handler for the /api/system/banners request."
     [request uri]
     (if (= uri "/api/system/banners")
         (let [response {:message "Alpha version"
