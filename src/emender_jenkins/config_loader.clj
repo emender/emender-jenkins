@@ -32,7 +32,7 @@
         (= string "True")))
 
 (defn properties->map
-    "Convert property entries into map."
+    "Convert property entries into map. Keys are converted into proper keywords."
     [properties]
     (into {}
         (for [[k v] properties]
