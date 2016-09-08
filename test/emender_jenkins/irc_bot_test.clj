@@ -37,3 +37,13 @@
     (testing "if the emender-jenkins.irc-bot/message-for-me? definition exists."
         (is (callable? 'emender-jenkins.irc-bot/message-for-me?))))
 
+(deftest test-create-reply
+    "Check that the emender-jenkins.irc-bot/create-reply definition exists."
+    (testing "if the emender-jenkins.irc-bot/create-reply definition exists."
+        (is (callable? 'emender-jenkins.irc-bot/create-reply))))
+
+(deftest test-prepare-reply-text
+    "Check that the emender-jenkins.irc-bot/prepare-reply-text definition exists."
+    (testing "if the emender-jenkins.irc-bot/prepare-reply-text definition exists."
+        (is (callable? 'emender-jenkins.irc-bot/prepare-reply-text))))
+
