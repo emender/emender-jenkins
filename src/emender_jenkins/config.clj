@@ -11,7 +11,8 @@
 ;
 
 (ns emender-jenkins.config
-    "Module that contains all functions required to load configuration from the INI file.")
+    "Module that contains all functions that are required to load configuration
+     from the provided INI file.")
 
 (require '[clojure.pprint :as pprint])
 
@@ -32,42 +33,47 @@
         (update-in [:fetcher :delay]                     config-loader/parse-int)))
 
 (defn load-configuration-from-ini
-    "Load configuration from the provided INI file and perform conversions on numeric and Boolean values."
+    "Load configuration from the provided INI file and perform conversions
+     on selected items from strings to numeric or Boolean values."
     [ini-file-name]
     (-> (config-loader/load-configuration-file ini-file-name)
         update-configuration))
 
 (defn assoc-in-if-not-nil
-    "Assoc new (updated) value into the configuration map, but only when new value exists."
+    "Assoc new (updated) value into the configuration map, but only when
+     new value exists. If value does not exist at all, the old value is kept."
     [input selector value]
     (if value
         (assoc-in input selector value)
         input))
 
 (defn override-options-by-cli
-    "Update configuration options read form the INI file by new values."
+    "Update configuration options read from the provided INI file by new values."
     [configuration jenkins-url test-jobs-suffix]
     (-> configuration
         (assoc-in-if-not-nil [:jenkins :jenkins-url]      jenkins-url)
         (assoc-in-if-not-nil [:jobs    :test-jobs-suffix] test-jobs-suffix)))
 
 (defn print-configuration
-    "Print actual configuration to the output."
+    "Print actual configuration to the standard output."
     [configuration]
     (pprint/pprint configuration))
 
 (defn get-api-prefix
-    "Read prefix for API calls from the configuration passed via HTTP request."
+    "Read prefix for API calls from the configuration passed via
+     HTTP request structure (middleware can be used to pass config into it)."
     [request]
     (-> request :configuration :api :prefix))
 
 (defn verbose?
-    "Read verbose mode settings from the configuration passed via HTTP request."
+    "Read verbose mode settings from the configuration passed via
+     HTTP request structure (middleware can be used to pass config into it)."
     [request]
     (-> request :configuration :config :verbose))
 
 (defn get-version
-    "Read service version from the configuration passed via HTTP request."
+    "Read service version from the configuration passed via
+     HTTP request structure (middleware can be used to pass config into it)."
     [request]
     (-> request :configuration :info :version))
 
@@ -102,18 +108,22 @@
     (-> request :configuration :jenkins :credentials-id))
 
 (defn get-test-jobs-prefix
+    "Read prefix used in names of all test jobs."
     [request]
     (-> request :configuration :jobs :test-jobs-prefix))
 
 (defn get-preview-test-jobs-suffix
+    "Read suffix used in names of all test jobs on preview environment."
     [request]
     (-> request :configuration :jobs :preview-test-jobs-suffix))
 
 (defn get-stage-test-jobs-suffix
+    "Read suffix used in names of all test jobs on stage environment."
     [request]
     (-> request :configuration :jobs :stage-test-jobs-suffix))
 
 (defn get-prod-test-jobs-suffix
+    "Read suffix used in names of all test jobs on production environment."
     [request]
     (-> request :configuration :jobs :prod-test-jobs-suffix))
 
