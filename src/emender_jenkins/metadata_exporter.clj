@@ -64,13 +64,9 @@
     (with-out-str
         (clojure.pprint/pprint data)))
 
-(defn export2csv
-    [columns data]
-    (data->csv (cons columns data)))
-
-(defn export2txt
-    [columns data]
-    (data->txt (cons columns data)))
+(defn flat-file-export
+    [columns data export-function]
+    (export-function (cons columns data)))
 
 (defn export2json
     [columns data]
@@ -99,7 +95,7 @@
     (case output-format
         :json  (export2json columns data)
         :edn   (export2edn columns data)
-        :csv   (export2csv columns data)
-        :txt   (export2txt columns data)
+        :csv   (flat-file-export columns data data->csv)
+        :txt   (flat-file-export columns data data->txt)
         :xml   (export2xml columns data)))
 
