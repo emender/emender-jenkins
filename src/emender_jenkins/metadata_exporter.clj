@@ -17,6 +17,17 @@
 (require '[clojure.xml       :as xml])
 (require '[clojure.data.csv  :as csv])
 
+(defn column->keyword
+    [columns]
+    (for [column columns]
+    (-> (clojure.string/replace column " " "*")
+        keyword)))
+
+(defn mix-columns-with-data
+    [columns data]
+    (for [item data]
+        (zipmap (column->keyword columns) item)))
+
 (defn data->csv
     "Convert/format any data to CSV format."
     [data]
@@ -44,7 +55,8 @@
 
 (defn export2edn
     [columns data]
-    (data->edn data))
+    (-> (mix-columns-with-data columns data)
+        data->edn))
 
 (defn export
     [columns data output-format]
