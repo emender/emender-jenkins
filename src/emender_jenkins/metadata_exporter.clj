@@ -68,15 +68,10 @@
     [columns data export-function]
     (export-function (cons columns data)))
 
-(defn export2json
-    [columns data]
-    (-> (mix-columns-with-data columns data column->json-key)
-        data->json))
-
-(defn export2edn
-    [columns data]
-    (-> (mix-columns-with-data columns data column->keyword)
-        data->edn))
+(defn tree-file-export
+    [columns data export-function column-rename-function]
+    (-> (mix-columns-with-data columns data column-rename-function)
+        export-function))
 
 (defn export2xml
     [columns data]
@@ -93,8 +88,8 @@
 (defn export
     [columns data output-format]
     (case output-format
-        :json  (export2json columns data)
-        :edn   (export2edn columns data)
+        :json  (tree-file-export columns data data->json column->json-key)
+        :edn   (tree-file-export columns data data->edn  column->keyword)
         :csv   (flat-file-export columns data data->csv)
         :txt   (flat-file-export columns data data->txt)
         :xml   (export2xml columns data)))
