@@ -29,6 +29,12 @@
     (-> (clojure.string/replace column " " "_")
         keyword)))
 
+(defn column->xml-key
+    [columns]
+    (for [column columns]
+    (-> (clojure.string/replace column " " "_")
+        clojure.string/lower-case)))
+
 (defn mix-columns-with-data
     [columns data function]
     (for [item data]
@@ -76,6 +82,18 @@
     (-> (mix-columns-with-data columns data column->keyword)
         data->edn))
 
+(defn export2xml
+    [columns data]
+    (with-out-str
+        (xml/emit {:tag "jobs" :content
+            (for [item data]
+                {:tag :job-metadata
+                 :attrs   {:name (first item)}
+                 :content
+                     (for [z (zipmap (column->xml-key columns) item)]
+                         {:tag (key z) :content [(str (val z))]}
+                         )})})))
+
 (defn export
     [columns data output-format]
     (case output-format
@@ -83,5 +101,5 @@
         :edn   (export2edn columns data)
         :csv   (export2csv columns data)
         :txt   (export2txt columns data)
-        :xml   nil))
+        :xml   (export2xml columns data)))
 
