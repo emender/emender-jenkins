@@ -40,6 +40,13 @@
     (with-out-str
         (csv/write-csv *out* data)))
 
+(defn data->txt
+    "Convert/format any data to the plain text format. Items are separated by tabs."
+    [data]
+    (clojure.string/join "\n"
+        (for [item data]
+            (clojure.string/join "\t" item))))
+
 (defn data->json
     "Convert/format any data to JSON format."
     [products]
@@ -54,6 +61,10 @@
 (defn export2csv
     [columns data]
     (data->csv (cons columns data)))
+
+(defn export2txt
+    [columns data]
+    (data->txt (cons columns data)))
 
 (defn export2json
     [columns data]
@@ -71,6 +82,6 @@
         :json  (export2json columns data)
         :edn   (export2edn columns data)
         :csv   (export2csv columns data)
-        :txt   nil
+        :txt   (export2txt columns data)
         :xml   nil))
 
