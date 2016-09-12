@@ -20,13 +20,19 @@
 (defn column->keyword
     [columns]
     (for [column columns]
-    (-> (clojure.string/replace column " " "*")
+    (-> (clojure.string/replace column " " "-")
+        keyword)))
+
+(defn column->json-key
+    [columns]
+    (for [column columns]
+    (-> (clojure.string/replace column " " "_")
         keyword)))
 
 (defn mix-columns-with-data
-    [columns data]
+    [columns data function]
     (for [item data]
-        (zipmap (column->keyword columns) item)))
+        (zipmap (function columns) item)))
 
 (defn data->csv
     "Convert/format any data to CSV format."
@@ -51,11 +57,12 @@
 
 (defn export2json
     [columns data]
-    (data->json data))
+    (-> (mix-columns-with-data columns data column->json-key)
+        data->json))
 
 (defn export2edn
     [columns data]
-    (-> (mix-columns-with-data columns data)
+    (-> (mix-columns-with-data columns data column->keyword)
         data->edn))
 
 (defn export
