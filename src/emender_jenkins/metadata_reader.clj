@@ -53,51 +53,51 @@
            :missing (-> (second lines) parse-int)}))
 
 (defn read-and-parse-docbook-versions
-    []
+    [jenkins-url job-name]
 )
 
 (defn read-and-parse-entities-count
-    []
+    [jenkins-url job-name]
 )
 
 (defn read-and-parse-entities-uniq
-    []
+    [jenkins-url job-name]
 )
 
 (defn read-and-parse-other-parts-count
-    []
+    [jenkins-url job-name]
 )
 
 (defn read-and-parse-program-listing
-    []
+    [jenkins-url job-name]
 )
 
 (defn read-and-parse-tag-frequencies
-    []
+    [jenkins-url job-name]
 )
 
 (defn read-and-parse-tags-with-conditions-count
-    []
+    [jenkins-url job-name]
 )
 
 (defn read-and-parse-tags-with-conditions-list
-    []
+    [jenkins-url job-name]
 )
 
 (defn read-and-parse-used-graphics-count
-    []
+    [jenkins-url job-name]
 )
 
 (defn read-and-parse-word-count
-    []
+    [jenkins-url job-name]
 )
 
 (defn read-and-parse-xincludes-count
-    []
+    [jenkins-url job-name]
 )
 
 (defn read-and-parse-zpage-count
-    []
+    [jenkins-url job-name]
 )
 
 (defn job-results->job-names
