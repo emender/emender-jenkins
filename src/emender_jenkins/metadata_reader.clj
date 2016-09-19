@@ -104,7 +104,7 @@
 
 (defn read-and-parse-used-graphics-count
     [jenkins-url job-name]
-)
+    (read-and-parse-first-number-from-jenkins jenkins-url job-name (:used-graphics-count GuideStatisticResultNames) -1))
 
 (defn read-and-parse-word-count
     [jenkins-url job-name]
