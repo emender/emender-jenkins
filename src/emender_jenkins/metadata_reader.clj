@@ -98,7 +98,9 @@
 
 (defn read-and-parse-zpage-count
     [jenkins-url job-name]
-)
+    (let [raw-data  (jenkins-api/read-file-from-artifact jenkins-url job-name (:zpage-count GuideStatisticResultNames) nil)
+          lines     (if raw-data (clojure.string/split-lines raw-data))]
+          (-> (first lines) parse-int)))
 
 (defn job-results->job-names
     [job-results]

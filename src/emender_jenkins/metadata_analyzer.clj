@@ -22,5 +22,6 @@
          (-> (:chunkable-tags-ids job-result)
              :total)
          (-> (:chunkable-tags-ids job-result)
-             :missing)]))
+             :missing)
+         (:zpage-count job-result)]))
 
