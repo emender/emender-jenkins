@@ -93,6 +93,10 @@
           (-> (first lines)
               (parse-int default-value))))
 
+(defn read-file-from-artifact
+    [jenkins-url job-name filename]
+    (jenkins-api/read-file-from-artifact jenkins-url job-name filename nil))
+
 (defn read-and-parse-used-graphics-count
     [jenkins-url job-name]
 )
@@ -103,12 +107,12 @@
 
 (defn read-and-parse-xincludes-count
     [jenkins-url job-name]
-    (-> (jenkins-api/read-file-from-artifact jenkins-url job-name (:xincludes-count GuideStatisticResultNames) nil)
+    (-> (read-file-from-artifact jenkins-url job-name (:xincludes-count GuideStatisticResultNames))
         (parse-first-number-from-stream -1)))
 
 (defn read-and-parse-zpage-count
     [jenkins-url job-name]
-    (-> (jenkins-api/read-file-from-artifact jenkins-url job-name (:zpage-count GuideStatisticResultNames) nil)
+    (-> (read-file-from-artifact jenkins-url job-name (:zpage-count GuideStatisticResultNames))
         (parse-first-number-from-stream -1)))
 
 (defn job-results->job-names
