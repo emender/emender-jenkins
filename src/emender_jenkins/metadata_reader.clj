@@ -36,9 +36,12 @@
 (def metadata (atom nil))
 
 (defn parse-int
-    [^String string]
-    (if (and string (re-matches #"[0-9]+" string))
-        (java.lang.Integer/parseInt string))) ; nil instead
+    ([^String string]
+     (parse-int string nil)) ; nil instead
+    ([^String string default-value]
+     (if (and string (re-matches #"[0-9]+" string))
+         (java.lang.Integer/parseInt string)
+         default-value)))
 
 (defn read-and-parse-list-of-commiters
     [jenkins-url job-name]
