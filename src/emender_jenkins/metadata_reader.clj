@@ -59,14 +59,6 @@
     [jenkins-url job-name]
 )
 
-(defn read-and-parse-entities-count
-    [jenkins-url job-name]
-)
-
-(defn read-and-parse-entities-uniq
-    [jenkins-url job-name]
-)
-
 (defn read-and-parse-other-parts-count
     [jenkins-url job-name]
 )
@@ -101,6 +93,14 @@
     [jenkins-url job-name filename default-value]
     (-> (read-file-from-artifact jenkins-url job-name filename)
         (parse-first-number-from-stream default-value)))
+
+(defn read-and-parse-entities-count
+    [jenkins-url job-name]
+    (read-and-parse-first-number-from-jenkins jenkins-url job-name (:entities-count GuideStatisticResultNames) -1))
+
+(defn read-and-parse-entities-uniq
+    [jenkins-url job-name]
+    (read-and-parse-first-number-from-jenkins jenkins-url job-name (:entities-uniq GuideStatisticResultNames) -1))
 
 (defn read-and-parse-used-graphics-count
     [jenkins-url job-name]

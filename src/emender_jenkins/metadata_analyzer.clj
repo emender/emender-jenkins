@@ -26,5 +26,7 @@
          (:zpage-count job-result)
          (:word-count job-result)
          (:used-graphics-count job-result)
-         (:xincludes-count job-result)]))
+         (:xincludes-count     job-result)
+         (:entities-count      job-result)
+         (:entities-uniq       job-result)]))
 
