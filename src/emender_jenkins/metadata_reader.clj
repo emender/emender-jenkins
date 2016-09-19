@@ -87,6 +87,12 @@
     [jenkins-url job-name]
 )
 
+(defn parse-first-number-from-stream
+    [input-stream default-value]
+    (let [lines (if input-stream (clojure.string/split-lines input-stream))]
+          (-> (first lines)
+              (parse-int default-value))))
+
 (defn read-and-parse-used-graphics-count
     [jenkins-url job-name]
 )
@@ -97,13 +103,8 @@
 
 (defn read-and-parse-xincludes-count
     [jenkins-url job-name]
-)
-
-(defn parse-first-number-from-stream
-    [input-stream default-value]
-    (let [lines (if input-stream (clojure.string/split-lines input-stream))]
-          (-> (first lines)
-              (parse-int default-value))))
+    (-> (jenkins-api/read-file-from-artifact jenkins-url job-name (:xincludes-count GuideStatisticResultNames) nil)
+        (parse-first-number-from-stream -1)))
 
 (defn read-and-parse-zpage-count
     [jenkins-url job-name]

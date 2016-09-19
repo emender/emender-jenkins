@@ -417,7 +417,7 @@
     (let [params  (:params request)
           output-format (get-output-format request)
           mime-type     (mime-type output-format)
-          columns       ["Job" "Product" "Version" "Book" "Total tags" "Tags without ID" "Zpage count"]
+          columns       ["Job" "Product" "Version" "Book" "Total tags" "Tags without ID" "Zpage count" "Xincludes count"]
           product       (get params "product")
           version       (get params "version")
           book-regexp   (get params "book")
