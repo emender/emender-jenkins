@@ -103,7 +103,8 @@
 
 (defn read-and-parse-word-count
     [jenkins-url job-name]
-)
+    (-> (read-file-from-artifact jenkins-url job-name (:word-count GuideStatisticResultNames))
+        (parse-first-number-from-stream -1)))
 
 (defn read-and-parse-xincludes-count
     [jenkins-url job-name]

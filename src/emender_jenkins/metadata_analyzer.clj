@@ -24,5 +24,6 @@
          (-> (:chunkable-tags-ids job-result)
              :missing)
          (:zpage-count job-result)
+         (:word-count job-result)
          (:xincludes-count job-result)]))
 
