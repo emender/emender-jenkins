@@ -59,9 +59,21 @@
     [jenkins-url job-name]
 )
 
+(defn find-value-on-line
+    [lines prefix]
+    (let [line (first (filter #(.startsWith % prefix) lines))]
+        (if line
+            (-> (subs line (count prefix))
+                clojure.string/trim))))
+
 (defn read-and-parse-other-parts-count
     [jenkins-url job-name]
-)
+    (let [raw-data  (jenkins-api/read-file-from-artifact jenkins-url job-name (:other-parts-count GuideStatisticResultNames) nil)
+          lines     (if raw-data (clojure.string/split-lines raw-data))]
+          {:tables           (-> (find-value-on-line lines "tables")           str)
+           :procedures       (-> (find-value-on-line lines "procedures")       str)
+           :command-examples (-> (find-value-on-line lines "command examples") str)
+           :code-samples     (-> (find-value-on-line lines "code samples")     str)}))
 
 (defn read-and-parse-program-listing
     [jenkins-url job-name]
