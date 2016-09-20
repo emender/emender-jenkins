@@ -12,6 +12,8 @@
 
 (ns emender-jenkins.metadata-analyzer)
 
+(require '[clojure.tools.logging   :as log])
+
 (defn select-results
     [metadata]
     (for [job-result metadata]

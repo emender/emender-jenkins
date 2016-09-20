@@ -15,6 +15,7 @@
 
 (require '[clojure.pprint           :as pprint])
 (require '[ring.util.response       :as http-response])
+(require '[clojure.tools.logging    :as log])
 
 (require '[emender-jenkins.config   :as config])
 (require '[emender-jenkins.rest-api :as rest-api])

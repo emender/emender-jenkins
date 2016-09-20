@@ -16,6 +16,7 @@
 (require '[clojure.pprint :as pprint])
 (require '[clj-fileutils.fileutils     :as file-utils])
 (require '[clj-jenkins-api.jenkins-api :as jenkins-api])
+(require '[clojure.tools.logging       :as log])
 
 (require '[emender-jenkins.config      :as config])
 (use     '[emender-jenkins.utils])

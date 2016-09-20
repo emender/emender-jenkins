@@ -13,6 +13,8 @@
 (ns emender-jenkins.middleware
     "Definition(s) of middleware used by this app with the cooperation with Clojure Ring.")
 
+(require '[clojure.tools.logging   :as log])
+
 (defn inject-configuration
     "Inject configuration structure into the request parameter.
      It means that the process request -> emender-jenkins -> response could be implemented

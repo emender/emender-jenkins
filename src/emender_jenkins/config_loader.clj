@@ -14,6 +14,7 @@
     "Configuration file(s) parsing and processing functions.")
 
 (require '[clojure-ini.core :as clojure-ini])
+(require '[clojure.tools.logging :as log])
 
 (defn parse-int
     "Parse the given string as an integer number."

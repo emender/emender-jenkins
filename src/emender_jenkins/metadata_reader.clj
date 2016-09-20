@@ -12,6 +12,8 @@
 
 (ns emender-jenkins.metadata-reader)
 
+(require '[clojure.tools.logging   :as log])
+
 (require '[emender-jenkins.results     :as results])
 (require '[clj-jenkins-api.jenkins-api :as jenkins-api])
 

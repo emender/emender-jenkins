@@ -14,6 +14,7 @@
     "Module containing IRC bot used to inform users about test results.")
 
 (require '[irclj.core :as irc])
+(require '[clojure.tools.logging   :as log])
 
 (def connection (atom nil))
 (def bot-nick (atom nil))

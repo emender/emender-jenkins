@@ -15,6 +15,7 @@
      from the provided INI file.")
 
 (require '[clojure.pprint :as pprint])
+(require '[clojure.tools.logging :as log])
 
 (require '[emender-jenkins.config-loader :as config-loader])
 

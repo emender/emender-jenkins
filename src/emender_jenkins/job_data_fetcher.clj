@@ -13,6 +13,8 @@
 (ns emender-jenkins.job-data-fetcher
      "Module that contains the job fetching machinery that should be run in a separate thread.")
 
+(require '[clojure.tools.logging   :as log])
+
 (require '[emender-jenkins.results :as results])
 
 (def started-on    (atom nil))

@@ -13,6 +13,8 @@
 (ns emender-jenkins.process-info
     "Functions that retrieve basic information about the service process.")
 
+(require '[clojure.tools.logging   :as log])
+
 (defn get-current-pid
     "Returns process ID for current process."
     []
