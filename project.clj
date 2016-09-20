@@ -26,6 +26,7 @@
                    [clj-rm-rf "1.0.0-SNAPSHOT"]
                    [clojure-ini "0.0.1"]
                    [irclj "0.5.0-alpha4"]
+                   [org.clojure/tools.logging "0.3.1"]
                    [org.clojars.tisnik/clj-jenkins-api "0.10.0-SNAPSHOT"]
                    [org.clojars.tisnik/clj-fileutils "0.2.0-SNAPSHOT"]]
     :dev-dependencies [[lein-ring "0.8.10"]]
