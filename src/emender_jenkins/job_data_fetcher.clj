@@ -49,7 +49,7 @@
     (try
         (fetch-data configuration)
         (catch Exception e
-            (println "*** Exception in fetcher:" (.getMessage e)))))
+            (log/error e "Exception in job fetcher"))))
 
 ;TODO put it into the proper module."
 
@@ -67,7 +67,7 @@
     (let [ms-to-sleep (compute-sleep-amount sleep-amount)]
         (while true
             (do
-                (println "[Fetcher] reading job results")
+                (log/info "Fetcher is reading job results")
                 (let [start-time (System/currentTimeMillis)]
                     (try-to-fetch-data configuration)
                     (let [end-time (System/currentTimeMillis)
@@ -75,19 +75,21 @@
                           (reset! started-on  (get-formatted-time start-time))
                           (reset! finished-on (get-formatted-time end-time))
                           (reset! last-duration    duration)
-                          (println "Done in " duration "ms , sleeping for" sleep-amount " minutes")))
+                          (log/info "Done in " duration "ms , sleeping for" sleep-amount " minutes")))
                 (Thread/sleep ms-to-sleep)))))
 
 (defn run-fetcher
     "Run the endless fetcher loop."
     [configuration]
     (let [sleep-amount  (-> configuration :fetcher :delay)]
-        (println "Fetcher started in its own thread, configured sleep amount: " sleep-amount)
+        (log/info "Fetcher started in its own thread, configured sleep amount: " sleep-amount)
         (run-fetcher-in-a-loop (-> configuration :fetcher :delay) configuration)))
 
 (defn run-fetcher-in-thread
     "Run the fetcher (its loop) in a separate thread."
     [configuration]
+    (log/info "starting job fetcher")
+    (log/debug "delay" (-> configuration :fetcher :delay))
     ; he have to use lambda here because we need to pass parameter into the run-fetcher function
     (.start (Thread. #(run-fetcher configuration))))
 

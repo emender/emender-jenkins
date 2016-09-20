@@ -196,10 +196,14 @@
           test-jobs-suffix    (options :test-jobs-suffix)
           openshift-ip        (System/getenv "OPENSHIFT_CLOJURE_HTTP_IP")
           openshift-port      (System/getenv "OPENSHIFT_CLOJURE_HTTP_PORT")]
+        (log/info "started app on port" port)
+        (log/info "openshift-ip" openshift-ip)
+        (log/info "openshift-port" openshift-port)
         (let [configuration (->
                  (config/load-configuration-from-ini "config.ini")
                  (config/override-options-by-cli jenkins-url test-jobs-suffix))]
             ;(results/reload-all-results configuration) ; to be done in the job-data-fetcher module
+            (log/info "starting IRC bot" (-> configuration :irc))
             (irc-bot/start-irc-bot (-> configuration :irc :server)
                                    (-> configuration :irc :port)
                                    (-> configuration :irc :channel)
