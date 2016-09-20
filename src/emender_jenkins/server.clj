@@ -86,14 +86,14 @@
 (defn restcall-options-handler
     "Empty handler for OPTIONS method."
     []
-    (println "Method:  OPTIONS")
+    (log/info "Method:  OPTIONS")
     (-> (http-response/response "")
         (http-response/content-type "application/json")))
 
 (defn restcall-head-handler
     "Empty handler for HEAD method."
     []
-    (println "Method:  HEAD")
+    (log/info "Method:  HEAD")
     (-> (http-response/response "")
         (http-response/content-type "application/json")))
 

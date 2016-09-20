@@ -80,7 +80,7 @@
         (let [headers (get request :headers)
               origin  (get headers "origin")
               response (handler request)]
-              (println "Origin: " origin)
+              (log/debug "Origin: " origin)
               (if (origin-allowed? access-control-allow-origins origin)
                   (update-in response [:headers]
                    merge (get-cors-headers origin))
@@ -98,13 +98,13 @@
 (defn start-server-on-regular-machine
     "Start the service on regular machine."
     [ring-app port]
-    (println "Starting the server at the port: " port)
+    (log/info "Starting the server at the port: " port)
     (jetty/run-jetty ring-app {:port (read-string port)}))
 
 (defn start-server-on-openshift
     "Start the service on OpenShift machine."
     [ring-app port host]
-    (println "Starting the server on openshift at the port: " port " and host: " host)
+    (log/info "Starting the server on openshift at the port: " port " and host: " host)
     (jetty/run-jetty ring-app {:port (read-string port) :host host}))
 
 (defn start-server
@@ -162,7 +162,7 @@
 (defn fetch-jobs-only
     "Function that is used just to fetch job data and exports them."
     [options]
-    (println "Generating data.edn")
+    (log/info "Generating data.edn")
     (let [jenkins-url         (options :jenkins-url)
           test-jobs-suffix    (options :test-jobs-suffix)
           configuration (->
@@ -171,7 +171,7 @@
              (results/reload-all-results configuration))
     ; export loaded data into the 'data.edn' file
     (spit "data.edn" (with-out-str (clojure.pprint/pprint @results/results)))
-    (println "Done"))
+    (log/info "Generating data done"))
 
 (defn show-config
     "Show the current configuration on the standard output."

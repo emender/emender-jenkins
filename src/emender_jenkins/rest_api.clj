@@ -370,17 +370,17 @@
 
 (defn job-started-handler
     [request]
-    (println "job-started")
+    (log/info "job-started")
     (send-response {:status "ok"} request))
 
 (defn job-finished-handler
     [request]
-    (println "job-finished")
+    (log/info "job-finished")
     (send-response {:status "ok"} request))
 
 (defn job-results
     [request]
-    (println "job-results")
+    (log/info "job-results")
     (send-response {:status "ok"} request))
 
 (defn unknown-call-handler
