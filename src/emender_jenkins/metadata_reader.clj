@@ -45,10 +45,30 @@
          (java.lang.Integer/parseInt string)
          default-value)))
 
+(defn parse-commiter
+    [line]
+    (let [parts (re-matches #"\s+(\d+)(.*)" line)]
+        (if parts
+            {:name    (-> (nth parts 2) clojure.string/trim)
+             :commits (-> (second parts) (parse-int 0))})))
+
+(defn parse-commiters
+    [lines]
+    (for [line lines]
+        (parse-commiter line)))
+
+(defn count-total-commits
+    [commiters]
+    (reduce + (map #(:commits %) commiters)))
+
 (defn read-and-parse-list-of-commiters
     [jenkins-url job-name]
-    (let [raw-data (jenkins-api/read-file-from-artifact jenkins-url job-name (:commiters-list GuideStatisticResultNames) nil)]
-        (count raw-data)))
+    (let [raw-data (jenkins-api/read-file-from-artifact jenkins-url job-name (:commiters-list GuideStatisticResultNames) nil)
+          lines    (if raw-data (clojure.string/split-lines raw-data))
+          commiters (parse-commiters lines)]
+          {:commiters-count (count lines)
+           :commiters       commiters
+           :total-commits   (count-total-commits commiters)}))
 
 (defn read-and-parse-chunkable-tags-ids
     [jenkins-url job-name]
