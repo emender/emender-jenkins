@@ -30,5 +30,8 @@
          (:used-graphics-count job-result)
          (:xincludes-count     job-result)
          (:entities-count      job-result)
-         (:entities-uniq       job-result)]))
+         (:entities-uniq       job-result)
+         (-> job-result :commits :commiters-count)
+         (-> job-result :commits :total-commits)
+         ]))
 

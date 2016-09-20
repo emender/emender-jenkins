@@ -54,8 +54,7 @@
 
 (defn parse-commiters
     [lines]
-    (for [line lines]
-        (parse-commiter line)))
+    (map #(parse-commiter %) lines))
 
 (defn count-total-commits
     [commiters]
@@ -164,7 +163,7 @@
          :product                   (results/job-name->product-name job-name)
          :version                   (results/job-name->version job-name)
          :book                      (results/job-name->book-name job-name)
-         :commiters-list            (read-and-parse-list-of-commiters          jenkins-url job-name)
+         :commits                   (read-and-parse-list-of-commiters          jenkins-url job-name)
          :chunkable-tags-ids        (read-and-parse-chunkable-tags-ids         jenkins-url job-name)
          :docbook-versions          (read-and-parse-docbook-versions           jenkins-url job-name)
          :entities-count            (read-and-parse-entities-count             jenkins-url job-name)
