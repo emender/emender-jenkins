@@ -27,6 +27,11 @@
                    [clojure-ini "0.0.1"]
                    [irclj "0.5.0-alpha4"]
                    [org.clojure/tools.logging "0.3.1"]
+                   [log4j/log4j "1.2.17" :exclusions [javax.mail/mail
+                                                      javax.jms/jms
+                                                      com.sun.jmdk/jmxtools
+                                                      com.sun.jmx/jmxri]]
+                   [org.slf4j/slf4j-log4j12 "1.6.6"]
                    [org.clojars.tisnik/clj-jenkins-api "0.10.0-SNAPSHOT"]
                    [org.clojars.tisnik/clj-fileutils "0.2.0-SNAPSHOT"]]
     :dev-dependencies [[lein-ring "0.8.10"]]
