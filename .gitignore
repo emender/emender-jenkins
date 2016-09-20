@@ -13,3 +13,4 @@ test/api/vm62*.sh
 test/api/openshift*.sh
 data.edn
 test/api/*.csv
+/log
