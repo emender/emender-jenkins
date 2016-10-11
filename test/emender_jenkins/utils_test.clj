@@ -214,3 +214,11 @@
             true  (contains "Hello world!" "o w")
             true  (contains "Hello world!" "world!"))))
 
+(deftest test-contains-NPE
+    "Check the function emender-jenkins.utils/contains."
+    (testing "the function emender-jenkins.utils/contains."
+        (is (thrown? NullPointerException (contains nil "")))
+        (is (thrown? NullPointerException (contains "" nil)))
+        (is (thrown? NullPointerException (contains nil nil)))))
+
+
