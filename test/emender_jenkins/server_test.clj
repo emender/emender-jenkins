@@ -87,16 +87,31 @@
     (testing "if the emender-jenkins.server/handler definition exists."
         (is (callable? 'emender-jenkins.server/handler))))
 
-;(get-api-command nil "/api")
+;
+; Function behaviours
+;
+(deftest test-get-api-command-null-uri
+    "Check the function emender-jenkins.server/get-api-command."
+    (testing "the function emender-jenkins.server/get-api-command."
+        (are [x y] (= x y)
+            nil (get-api-command nil nil)
+            nil (get-api-command nil "")
+            nil (get-api-command nil "/api")
+            nil (get-api-command nil "/api/endpoint"))))
 
-;(get-api-command "/" "/api")
-;(get-api-command "xyzzy/" "/api")
-;(get-api-command "xyzzy/xyzzy" "/api")
+(deftest test-get-api-command-not-found
+    "Check the function emender-jenkins.server/get-api-command."
+    (testing "the function emender-jenkins.server/get-api-command."
+        (are [x y] (= x y)
+            nil (get-api-command "/" "/api")
+            nil (get-api-command "xyzzy/" "/api")
+            nil (get-api-command "xyzzy/xyzzy/" "/api"))))
 
-;(get-api-command "/api" "/api")
-
-;(get-api-command "/api/create_job", "/api")
-
-;(get-api-command "/api/system/banners" "/api")
-
+(deftest test-get-api-command-correct-url
+    "Check the function emender-jenkins.server/get-api-command."
+    (testing "the function emender-jenkins.server/get-api-command."
+        (are [x y] (= x y)
+            ""           (get-api-command "/api" "/api")
+            "create_job" (get-api-command "/api/create_job" "/api")
+            "system"     (get-api-command "/api/system/banners" "/api"))))
 
