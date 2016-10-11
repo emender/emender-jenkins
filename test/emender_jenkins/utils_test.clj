@@ -139,6 +139,10 @@
     "Check the function emender-jenkins.utils/third."
     (testing "the function emender-jenkins.utils/third."
         (are [x y] (= x y)
+            nil (third [])
+            nil (third '())
+            nil (third [1])
+            nil (third '(1))
             nil (third [1 2])
             nil (third '(1 2)))))
 
@@ -184,6 +188,13 @@
             "" (substring "Hello world!" 1 1)
             "" (substring "Hello world!" 2 2)
             "" (substring "Hello world!" 10 10))))
+
+(deftest test-substring-NPE
+    "Check the function emender-jenkins.utils/substring."
+    (testing "the function emender-jenkins.utils/substring."
+        (is (thrown? NullPointerException (substring nil 0 0)))
+        (is (thrown? NullPointerException (substring "" nil 0)))
+        (is (thrown? NullPointerException (substring "" 0 nil)))))
 
 (deftest test-contains-1
     "Check the function emender-jenkins.utils/contains."
