@@ -77,15 +77,13 @@
            60000 (compute-sleep-amount 1)
           120000 (compute-sleep-amount 2))))
 
-(deftest test-get-formatted-time-1
+(deftest test-get-formatted-time-2
     "Check the function emender-jenkins.time-utils/get-formatted-time."
     (testing "the function emender-jenkins.time-utils/get-formatted-time."
         (are [x y] (= x (get-formatted-time y))
-            "1970-01-01 01:00:00"   0  ; Britain remaining on GMT+1 throughout the year 1970!
-            "1970-01-01 01:00:00"   1
-            "1970-01-01 01:00:01"   1000
-            "1970-01-01 01:00:02"   2000
-            "1970-01-01 01:01:00"   (* 60 1000)
-            "1970-01-01 01:02:00"   (* 2 60 1000)
-            "1970-01-01 02:00:00"   (* 60 60 1000))))
+            "1970-01-02 01:00:00"   (* 24 60 60 1000)
+            "1970-01-03 01:00:00"   (* 2 24 60 60 1000)
+            "1970-01-10 01:00:00"   (* 9 24 60 60 1000)
+            "1970-01-31 01:00:00"   (* 30 24 60 60 1000)
+            "1970-02-01 01:00:00"   (* 31 24 60 60 1000))))
 
