@@ -32,3 +32,16 @@
     (testing "if the emender-jenkins.middleware/inject-configuration definition exists."
         (is (callable? 'emender-jenkins.middleware/inject-configuration))))
 
+;
+; Tests for function behaviours.
+;
+
+(deftest test-inject-confuguration-1
+    "Check the behaviour of function emender-jenkins.middleware/inject-configuration."
+    (testing "The function emender-jenkins.middleware/inject-configuration."
+        (let [function (inject-configuration (fn [x] x) :cfg)]
+            (are [x y] (= x y)
+                {:configuration :cfg} (function nil)
+                {:configuration :cfg} (function {})
+                {:configuration :cfg :foo :bar} (function {:foo :bar})))))
+
