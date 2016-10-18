@@ -45,3 +45,27 @@
         (is (callable? 'emender-jenkins.metadata-exporter/column->xml-key))))
 
 
+(deftest test-data->csv-existence
+    "Check that the emender-jenkins.metadata-exporter/data->csv definition exists."
+    (testing "if the emender-jenkins.metadata-exporter/data->csv definition exists."
+        (is (callable? 'emender-jenkins.metadata-exporter/data->csv))))
+
+
+(deftest test-data->txt-existence
+    "Check that the emender-jenkins.metadata-exporter/data->txt definition exists."
+    (testing "if the emender-jenkins.metadata-exporter/data->txt definition exists."
+        (is (callable? 'emender-jenkins.metadata-exporter/data->txt))))
+
+
+(deftest test-data->json-existence
+    "Check that the emender-jenkins.metadata-exporter/data->json definition exists."
+    (testing "if the emender-jenkins.metadata-exporter/data->json definition exists."
+        (is (callable? 'emender-jenkins.metadata-exporter/data->json))))
+
+
+(deftest test-data->edn-existence
+    "Check that the emender-jenkins.metadata-exporter/data->edn definition exists."
+    (testing "if the emender-jenkins.metadata-exporter/data->edn definition exists."
+        (is (callable? 'emender-jenkins.metadata-exporter/data->edn))))
+
+
