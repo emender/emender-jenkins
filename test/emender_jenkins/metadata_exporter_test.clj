@@ -69,3 +69,32 @@
         (is (callable? 'emender-jenkins.metadata-exporter/data->edn))))
 
 
+(deftest test-mix-columns-with-data-existence
+    "Check that the emender-jenkins.metadata-exporter/mix-columns-with-data definition exists."
+    (testing "if the emender-jenkins.metadata-exporter/mix-columns-with-data definition exists."
+        (is (callable? 'emender-jenkins.metadata-exporter/mix-columns-with-data))))
+
+
+(deftest test-flat-file-export-existence
+    "Check that the emender-jenkins.metadata-exporter/flat-file-export definition exists."
+    (testing "if the emender-jenkins.metadata-exporter/flat-file-export definition exists."
+        (is (callable? 'emender-jenkins.metadata-exporter/flat-file-export))))
+
+
+(deftest test-tree-file-export-existence
+    "Check that the emender-jenkins.metadata-exporter/tree-file-export definition exists."
+    (testing "if the emender-jenkins.metadata-exporter/tree-file-export definition exists."
+        (is (callable? 'emender-jenkins.metadata-exporter/tree-file-export))))
+
+
+(deftest test-export2xml-existence
+    "Check that the emender-jenkins.metadata-exporter/export2xml definition exists."
+    (testing "if the emender-jenkins.metadata-exporter/export2xml definition exists."
+        (is (callable? 'emender-jenkins.metadata-exporter/export2xml))))
+
+
+(deftest test-export-existence
+    "Check that the emender-jenkins.metadata-exporter/export definition exists."
+    (testing "if the emender-jenkins.metadata-exporter/export definition exists."
+        (is (callable? 'emender-jenkins.metadata-exporter/export))))
+
