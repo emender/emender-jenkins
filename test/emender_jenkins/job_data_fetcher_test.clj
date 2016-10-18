@@ -24,23 +24,6 @@
     (clojure.test/function? function-name))
 
 
-(deftest test-minutes-to-seconds-existence
-    "Check that the emender-jenkins.job-data-fetcher/minutes-to-seconds definition exists."
-    (testing "if the emender-jenkins.job-data-fetcher/minutes-to-seconds definition exists."
-        (is (callable? 'emender-jenkins.job-data-fetcher/minutes-to-seconds))))
-
-
-(deftest test-seconds-to-ms-existence
-    "Check that the emender-jenkins.job-data-fetcher/seconds-to-ms definition exists."
-    (testing "if the emender-jenkins.job-data-fetcher/seconds-to-ms definition exists."
-        (is (callable? 'emender-jenkins.job-data-fetcher/seconds-to-ms))))
-
-
-(deftest test-compute-sleep-amount-existence
-    "Check that the emender-jenkins.job-data-fetcher/compute-sleep-amount definition exists."
-    (testing "if the emender-jenkins.job-data-fetcher/compute-sleep-amount definition exists."
-        (is (callable? 'emender-jenkins.job-data-fetcher/compute-sleep-amount))))
-
 
 (deftest test-fetch-data-existence
     "Check that the emender-jenkins.job-data-fetcher/fetch-data definition exists."
@@ -52,12 +35,6 @@
     "Check that the emender-jenkins.job-data-fetcher/try-to-fetch-data definition exists."
     (testing "if the emender-jenkins.job-data-fetcher/try-to-fetch-data definition exists."
         (is (callable? 'emender-jenkins.job-data-fetcher/try-to-fetch-data))))
-
-
-(deftest test-get-formatted-time-existence
-    "Check that the emender-jenkins.job-data-fetcher/get-formatted-time definition exists."
-    (testing "if the emender-jenkins.job-data-fetcher/get-formatted-time definition exists."
-        (is (callable? 'emender-jenkins.job-data-fetcher/get-formatted-time))))
 
 
 (deftest test-run-fetcher-in-a-loop-existence
@@ -80,29 +57,4 @@
 ;
 ; Function behaviours
 ;
-
-(deftest test-minutes-to-seconds
-    "Check the function emender-jenkins.job-data-fetcher/minutes-to-seconds."
-    (testing "the function emender-jenkins.job-data-fetcher/minutes-to-seconds."
-        (are [x y] (= x y)
-               0 (minutes-to-seconds 0)
-              60 (minutes-to-seconds 1)
-             120 (minutes-to-seconds 2)
-            3600 (minutes-to-seconds 60))))
-
-(deftest test-seconds-to-ms
-    "Check the function emender-jenkins.job-data-fetcher/seconds-to-ms."
-    (testing "the function emender-jenkins.job-data-fetcher/seconds-to-ms."
-        (are [x y] (= x y)
-               0 (seconds-to-ms 0)
-            1000 (seconds-to-ms 1)
-            2000 (seconds-to-ms 2))))
-
-(deftest test-compute-sleep-amount
-    "Check the function emender-jenkins.job-data-fetcher/compute-sleep-amount."
-    (testing "the function emender-jenkins.job-data-fetcher/compute-sleep-amount."
-        (are [x y] (= x y)
-               0 (compute-sleep-amount 0)
-           60000 (compute-sleep-amount 1)
-          120000 (compute-sleep-amount 2))))
 
