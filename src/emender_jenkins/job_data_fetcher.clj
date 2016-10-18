@@ -15,28 +15,12 @@
 
 (require '[clojure.tools.logging   :as log])
 
-(require '[emender-jenkins.results :as results])
+(require '[emender-jenkins.results    :as results])
+(require '[emender-jenkins.time-utils :as time-utils])
 
 (def started-on    (atom nil))
 (def finished-on   (atom nil))
 (def last-duration (atom nil))
-
-(defn minutes-to-seconds
-    "Convert minutes to seconds."
-    [minutes]
-    (* minutes 60))
-
-(defn seconds-to-ms
-    "Convert seconds to milliseconds."
-    [seconds]
-    (* seconds 1000))
-
-(defn compute-sleep-amount
-    "Convert sleep amount specified in minutes into millisesonds."
-    [minutes]
-    (-> minutes
-        minutes-to-seconds
-        seconds-to-ms))
 
 (defn fetch-data
     "Read job statuses and job results. Stores them in the data structure in result module."
@@ -51,20 +35,11 @@
         (catch Exception e
             (log/error e "Exception in job fetcher"))))
 
-;TODO put it into the proper module."
-
-(defn get-formatted-time
-    "Returns formatted time."
-    [^long ms]
-    (let [sdf         (new java.text.SimpleDateFormat "yyyy-MM-dd HH:mm:ss")
-          result-date (new java.util.Date ms)]
-          (.format sdf result-date)))
-
 (defn run-fetcher-in-a-loop
     "Run the fetcher periodically. The sleep amount should containg time delay
     in minutes."
     [sleep-amount configuration]
-    (let [ms-to-sleep (compute-sleep-amount sleep-amount)]
+    (let [ms-to-sleep (time-utils/compute-sleep-amount sleep-amount)]
         (while true
             (do
                 (log/info "Fetcher is reading job results")
@@ -72,8 +47,8 @@
                     (try-to-fetch-data configuration)
                     (let [end-time (System/currentTimeMillis)
                           duration (- end-time start-time)]
-                          (reset! started-on  (get-formatted-time start-time))
-                          (reset! finished-on (get-formatted-time end-time))
+                          (reset! started-on  (time-utils/get-formatted-time start-time))
+                          (reset! finished-on (time-utils/get-formatted-time end-time))
                           (reset! last-duration    duration)
                           (log/info "Done in " duration "ms , sleeping for" sleep-amount " minutes")))
                 (Thread/sleep ms-to-sleep)))))
