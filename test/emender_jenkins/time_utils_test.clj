@@ -77,6 +77,18 @@
            60000 (compute-sleep-amount 1)
           120000 (compute-sleep-amount 2))))
 
+(deftest test-get-formatted-time-1
+    "Check the function emender-jenkins.time-utils/get-formatted-time."
+    (testing "the function emender-jenkins.time-utils/get-formatted-time."
+        (are [x y] (= x (get-formatted-time y))
+            "1970-01-01 01:00:00"   0
+            "1970-01-01 01:00:00"   1
+            "1970-01-01 01:00:01"   1000
+            "1970-01-01 01:00:02"   2000
+            "1970-01-01 01:01:00"   (* 60 1000)
+            "1970-01-01 01:02:00"   (* 2 60 1000)
+            "1970-01-01 02:00:00"   (* 60 60 1000))))
+
 (deftest test-get-formatted-time-2
     "Check the function emender-jenkins.time-utils/get-formatted-time."
     (testing "the function emender-jenkins.time-utils/get-formatted-time."
@@ -86,4 +98,14 @@
             "1970-01-10 01:00:00"   (* 9 24 60 60 1000)
             "1970-01-31 01:00:00"   (* 30 24 60 60 1000)
             "1970-02-01 01:00:00"   (* 31 24 60 60 1000))))
+
+(deftest test-get-formatted-time-negative-ms-value
+    "Check the function emender-jenkins.time-utils/get-formatted-time."
+    (testing "the function emender-jenkins.time-utils/get-formatted-time."
+        (are [x y] (= x (get-formatted-time y))
+            "1970-01-01 00:59:59"   -1
+            "1970-01-01 00:59:59"   -1000
+            "1970-01-01 00:59:58"   -2000
+            "1970-01-01 00:59:00"   (- (* 60 1000))
+            "1970-01-01 00:58:00"   (- (* 2 60 1000)))))
 
