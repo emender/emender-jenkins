@@ -27,3 +27,21 @@
 ; Tests for various function definitions
 ;
 
+(deftest test-column->keyword-existence
+    "Check that the emender-jenkins.metadata-exporter/column->keyword definition exists."
+    (testing "if the emender-jenkins.metadata-exporter/column->keyword definition exists."
+        (is (callable? 'emender-jenkins.metadata-exporter/column->keyword))))
+
+
+(deftest test-column->json-key-existence
+    "Check that the emender-jenkins.metadata-exporter/column->json-key definition exists."
+    (testing "if the emender-jenkins.metadata-exporter/column->json-key definition exists."
+        (is (callable? 'emender-jenkins.metadata-exporter/column->json-key))))
+
+
+(deftest test-column->xml-key-existence
+    "Check that the emender-jenkins.metadata-exporter/column->xml-key definition exists."
+    (testing "if the emender-jenkins.metadata-exporter/column->xml-key definition exists."
+        (is (callable? 'emender-jenkins.metadata-exporter/column->xml-key))))
+
+
