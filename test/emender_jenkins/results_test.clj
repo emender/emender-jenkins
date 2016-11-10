@@ -102,6 +102,24 @@
         (is (callable? 'emender-jenkins.results/read-update-job-info))))
 
 
+(deftest test-test-job?-existence
+    "Check that the emender-jenkins.results/test-job? definition exists."
+    (testing "if the emender-jenkins.results/test-job? definition exists."
+        (is (callable? 'emender-jenkins.results/test-job?))))
+
+
+(deftest test-filter-test-jobs-existence
+    "Check that the emender-jenkins.results/filter-test-jobs definition exists."
+    (testing "if the emender-jenkins.results/filter-test-jobs definition exists."
+        (is (callable? 'emender-jenkins.results/filter-test-jobs))))
+
+
+(deftest test-read-list-of-test-jobs-existence
+    "Check that the emender-jenkins.results/read-list-of-test-jobs definition exists."
+    (testing "if the emender-jenkins.results/read-list-of-test-jobs definition exists."
+        (is (callable? 'emender-jenkins.results/read-list-of-test-jobs))))
+
+
 (deftest test-reload-all-results-existence
     "Check that the emender-jenkins.results/reload-all-results definition exists."
     (testing "if the emender-jenkins.results/reload-all-results definition exists."
