@@ -27,37 +27,43 @@
 ; Tests for function existence
 ;
 
-(deftest test-message-to-channel?
+(deftest test-message-to-channel?-existence
     "Check that the emender-jenkins.irc-bot/message-to-channel? definition exists."
     (testing "if the emender-jenkins.irc-bot/message-to-channel? definition exists."
         (is (callable? 'emender-jenkins.irc-bot/message-to-channel?))))
 
-(deftest test-message-for-me?
+
+(deftest test-message-for-me?-existence
     "Check that the emender-jenkins.irc-bot/message-for-me? definition exists."
     (testing "if the emender-jenkins.irc-bot/message-for-me? definition exists."
         (is (callable? 'emender-jenkins.irc-bot/message-for-me?))))
 
-(deftest test-create-reply
+
+(deftest test-create-reply-existence
     "Check that the emender-jenkins.irc-bot/create-reply definition exists."
     (testing "if the emender-jenkins.irc-bot/create-reply definition exists."
         (is (callable? 'emender-jenkins.irc-bot/create-reply))))
 
-(deftest test-prepare-reply-text
+
+(deftest test-prepare-reply-text-existence
     "Check that the emender-jenkins.irc-bot/prepare-reply-text definition exists."
     (testing "if the emender-jenkins.irc-bot/prepare-reply-text definition exists."
         (is (callable? 'emender-jenkins.irc-bot/prepare-reply-text))))
 
-(deftest test-on-incoming-message
+
+(deftest test-on-incoming-message-existence
     "Check that the emender-jenkins.irc-bot/on-incoming-message definition exists."
     (testing "if the emender-jenkins.irc-bot/on-incoming-message definition exists."
         (is (callable? 'emender-jenkins.irc-bot/on-incoming-message))))
 
-(deftest test-send-message
+
+(deftest test-send-message-existence
     "Check that the emender-jenkins.irc-bot/send-message definition exists."
     (testing "if the emender-jenkins.irc-bot/send-message definition exists."
         (is (callable? 'emender-jenkins.irc-bot/send-message))))
 
-(deftest test-start-irc-bot
+
+(deftest test-start-irc-bot-existence
     "Check that the emender-jenkins.irc-bot/start-irc-bot definition exists."
     (testing "if the emender-jenkins.irc-bot/start-irc-bot definition exists."
         (is (callable? 'emender-jenkins.irc-bot/start-irc-bot))))
