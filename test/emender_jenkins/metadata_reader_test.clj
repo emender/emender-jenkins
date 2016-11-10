@@ -63,6 +63,56 @@
         (is (callable? 'emender-jenkins.metadata-reader/read-and-parse-chunkable-tags-ids))))
 
 
+(deftest test-read-and-parse-docbook-versions-existence
+    "Check that the emender-jenkins.metadata-reader/read-and-parse-docbook-versions definition exists."
+    (testing "if the emender-jenkins.metadata-reader/read-and-parse-docbook-versions definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/read-and-parse-docbook-versions))))
+
+
+(deftest test-find-value-on-line-existence
+    "Check that the emender-jenkins.metadata-reader/find-value-on-line definition exists."
+    (testing "if the emender-jenkins.metadata-reader/find-value-on-line definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/find-value-on-line))))
+
+
+(deftest test-read-and-parse-other-parts-count-existence
+    "Check that the emender-jenkins.metadata-reader/read-and-parse-other-parts-count definition exists."
+    (testing "if the emender-jenkins.metadata-reader/read-and-parse-other-parts-count definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/read-and-parse-other-parts-count))))
+
+
+(deftest test-read-and-parse-program-listing-existence
+    "Check that the emender-jenkins.metadata-reader/read-and-parse-program-listing definition exists."
+    (testing "if the emender-jenkins.metadata-reader/read-and-parse-program-listing definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/read-and-parse-program-listing))))
+
+
+(deftest test-read-and-parse-tag-frequencies-existence
+    "Check that the emender-jenkins.metadata-reader/read-and-parse-tag-frequencies definition exists."
+    (testing "if the emender-jenkins.metadata-reader/read-and-parse-tag-frequencies definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/read-and-parse-tag-frequencies))))
+
+
+(deftest test-read-and-parse-tags-with-conditions-count-existence
+    "Check that the emender-jenkins.metadata-reader/read-and-parse-tags-with-conditions-count definition exists."
+    (testing "if the emender-jenkins.metadata-reader/read-and-parse-tags-with-conditions-count definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/read-and-parse-tags-with-conditions-count))))
+
+
+(deftest test-read-and-parse-tags-with-conditions-list-existence
+    "Check that the emender-jenkins.metadata-reader/read-and-parse-tags-with-conditions-list definition exists."
+    (testing "if the emender-jenkins.metadata-reader/read-and-parse-tags-with-conditions-list definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/read-and-parse-tags-with-conditions-list))))
+
+
+(deftest test-parse-first-number-from-stream-existence
+    "Check that the emender-jenkins.metadata-reader/parse-first-number-from-stream definition exists."
+    (testing "if the emender-jenkins.metadata-reader/parse-first-number-from-stream definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/parse-first-number-from-stream))))
+
+
+
+
 (deftest test-job-results->job-names-existence
     "Check that the emender-jenkins.metadata-reader/job-results->job-names definition exists."
     (testing "if the emender-jenkins.metadata-reader/job-results->job-names definition exists."
