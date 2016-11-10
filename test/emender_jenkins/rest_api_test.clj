@@ -54,6 +54,12 @@
         (is (callable? 'emender-jenkins.rest-api/get-job-name-from-body))))
 
 
+(deftest test-test-job?-existence
+    "Check that the emender-jenkins.rest-api/test-job? definition exists."
+    (testing "if the emender-jenkins.rest-api/test-job? definition exists."
+        (is (callable? 'emender-jenkins.rest-api/test-job?))))
+
+
 (deftest test-send-response-existence
     "Check that the emender-jenkins.rest-api/send-response definition exists."
     (testing "if the emender-jenkins.rest-api/send-response definition exists."
@@ -120,6 +126,12 @@
         (is (callable? 'emender-jenkins.rest-api/job-does-not-exist-response))))
 
 
+(deftest test-wrong-job-name-existence
+    "Check that the emender-jenkins.rest-api/wrong-job-name definition exists."
+    (testing "if the emender-jenkins.rest-api/wrong-job-name definition exists."
+        (is (callable? 'emender-jenkins.rest-api/wrong-job-name))))
+
+
 (deftest test-job-already-exist-response-existence
     "Check that the emender-jenkins.rest-api/job-already-exist-response definition exists."
     (testing "if the emender-jenkins.rest-api/job-already-exist-response definition exists."
@@ -130,6 +142,12 @@
     "Check that the emender-jenkins.rest-api/send-job-does-not-exist-response definition exists."
     (testing "if the emender-jenkins.rest-api/send-job-does-not-exist-response definition exists."
         (is (callable? 'emender-jenkins.rest-api/send-job-does-not-exist-response))))
+
+
+(deftest test-send-wrong-job-name-response-existence
+    "Check that the emender-jenkins.rest-api/send-wrong-job-name-response definition exists."
+    (testing "if the emender-jenkins.rest-api/send-wrong-job-name-response definition exists."
+        (is (callable? 'emender-jenkins.rest-api/send-wrong-job-name-response))))
 
 
 (deftest test-send-job-not-specified-response-existence
@@ -204,6 +222,12 @@
         (is (callable? 'emender-jenkins.rest-api/uri->job-name))))
 
 
+(deftest test-get-job-name-from-uri-or-params-existence
+    "Check that the emender-jenkins.rest-api/get-job-name-from-uri-or-params definition exists."
+    (testing "if the emender-jenkins.rest-api/get-job-name-from-uri-or-params definition exists."
+        (is (callable? 'emender-jenkins.rest-api/get-job-name-from-uri-or-params))))
+
+
 (deftest test-get-job-existence
     "Check that the emender-jenkins.rest-api/get-job definition exists."
     (testing "if the emender-jenkins.rest-api/get-job definition exists."
@@ -250,6 +274,24 @@
     "Check that the emender-jenkins.rest-api/unknown-call-handler definition exists."
     (testing "if the emender-jenkins.rest-api/unknown-call-handler definition exists."
         (is (callable? 'emender-jenkins.rest-api/unknown-call-handler))))
+
+
+(deftest test-get-output-format-existence
+    "Check that the emender-jenkins.rest-api/get-output-format definition exists."
+    (testing "if the emender-jenkins.rest-api/get-output-format definition exists."
+        (is (callable? 'emender-jenkins.rest-api/get-output-format))))
+
+
+(deftest test-mime-type-existence
+    "Check that the emender-jenkins.rest-api/mime-type definition exists."
+    (testing "if the emender-jenkins.rest-api/mime-type definition exists."
+        (is (callable? 'emender-jenkins.rest-api/mime-type))))
+
+
+(deftest test-get-metadata-existence
+    "Check that the emender-jenkins.rest-api/get-metadata definition exists."
+    (testing "if the emender-jenkins.rest-api/get-metadata definition exists."
+        (is (callable? 'emender-jenkins.rest-api/get-metadata))))
 
 ;
 ; Function behaviours
