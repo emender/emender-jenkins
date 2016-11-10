@@ -111,6 +111,52 @@
         (is (callable? 'emender-jenkins.metadata-reader/parse-first-number-from-stream))))
 
 
+(deftest test-read-file-from-artifact-existence
+    "Check that the emender-jenkins.metadata-reader/read-file-from-artifact definition exists."
+    (testing "if the emender-jenkins.metadata-reader/read-file-from-artifact definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/read-file-from-artifact))))
+
+
+(deftest test-read-and-parse-first-number-from-jenkins-existence
+    "Check that the emender-jenkins.metadata-reader/read-and-parse-first-number-from-jenkins definition exists."
+    (testing "if the emender-jenkins.metadata-reader/read-and-parse-first-number-from-jenkins definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/read-and-parse-first-number-from-jenkins))))
+
+
+(deftest test-read-and-parse-entities-count-existence
+    "Check that the emender-jenkins.metadata-reader/read-and-parse-entities-count definition exists."
+    (testing "if the emender-jenkins.metadata-reader/read-and-parse-entities-count definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/read-and-parse-entities-count))))
+
+
+(deftest test-read-and-parse-entities-uniq-existence
+    "Check that the emender-jenkins.metadata-reader/read-and-parse-entities-uniq definition exists."
+    (testing "if the emender-jenkins.metadata-reader/read-and-parse-entities-uniq definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/read-and-parse-entities-uniq))))
+
+
+(deftest test-read-and-parse-used-graphics-count-existence
+    "Check that the emender-jenkins.metadata-reader/read-and-parse-used-graphics-count definition exists."
+    (testing "if the emender-jenkins.metadata-reader/read-and-parse-used-graphics-count definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/read-and-parse-used-graphics-count))))
+
+
+(deftest test-read-and-parse-word-count-existence
+    "Check that the emender-jenkins.metadata-reader/read-and-parse-word-count definition exists."
+    (testing "if the emender-jenkins.metadata-reader/read-and-parse-word-count definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/read-and-parse-word-count))))
+
+
+(deftest test-read-and-parse-xincludes-count-existence
+    "Check that the emender-jenkins.metadata-reader/read-and-parse-xincludes-count definition exists."
+    (testing "if the emender-jenkins.metadata-reader/read-and-parse-xincludes-count definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/read-and-parse-xincludes-count))))
+
+
+(deftest test-read-and-parse-zpage-count-existence
+    "Check that the emender-jenkins.metadata-reader/read-and-parse-zpage-count definition exists."
+    (testing "if the emender-jenkins.metadata-reader/read-and-parse-zpage-count definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/read-and-parse-zpage-count))))
 
 
 (deftest test-job-results->job-names-existence
