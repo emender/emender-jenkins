@@ -27,6 +27,30 @@
 ; Tests for various function definitions
 ;
 
+(deftest test-parse-int-existence
+    "Check that the emender-jenkins.metadata-reader/parse-int definition exists."
+    (testing "if the emender-jenkins.metadata-reader/parse-int definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/parse-int))))
+
+
+(deftest test-parse-commiter-existence
+    "Check that the emender-jenkins.metadata-reader/parse-commiter definition exists."
+    (testing "if the emender-jenkins.metadata-reader/parse-commiter definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/parse-commiter))))
+
+
+(deftest test-parse-commiters-existence
+    "Check that the emender-jenkins.metadata-reader/parse-commiters definition exists."
+    (testing "if the emender-jenkins.metadata-reader/parse-commiters definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/parse-commiters))))
+
+
+(deftest test-count-total-commits-existence
+    "Check that the emender-jenkins.metadata-reader/count-total-commits definition exists."
+    (testing "if the emender-jenkins.metadata-reader/count-total-commits definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/count-total-commits))))
+
+
 (deftest test-read-and-parse-list-of-commiters-existence
     "Check that the emender-jenkins.metadata-reader/read-and-parse-list-of-commiters definition exists."
     (testing "if the emender-jenkins.metadata-reader/read-and-parse-list-of-commiters definition exists."
@@ -61,6 +85,12 @@
     "Check that the emender-jenkins.metadata-reader/metadata-count definition exists."
     (testing "if the emender-jenkins.metadata-reader/metadata-count definition exists."
         (is (callable? 'emender-jenkins.metadata-reader/metadata-count))))
+
+
+(deftest test-metadata-filter-existence
+    "Check that the emender-jenkins.metadata-reader/metadata-filter definition exists."
+    (testing "if the emender-jenkins.metadata-reader/metadata-filter definition exists."
+        (is (callable? 'emender-jenkins.metadata-reader/metadata-filter))))
 
 
 (deftest test-get-metadata-existence
