@@ -144,11 +144,12 @@
 (defn status-handler
     "REST API handler for the /api/status"
     [request]
-    (let [response {:properties (process-info/read-properties)
-                    :pid        (process-info/get-current-pid)
-                    :started-on (config/get-started-on-str request)
-                    :started-ms (config/get-started-on-ms request)
-                    :uptime-sec (/ (- (System/currentTimeMillis) (config/get-started-on-ms request)) 1000)}]
+    (let [response {:properties     (process-info/read-properties)
+                    :pid            (process-info/get-current-pid)
+                    :started-on     (config/get-started-on-str request)
+                    :started-ms     (config/get-started-on-ms request)
+                    :current-time   (.toString (new java.util.Date))
+                    :uptime-seconds (/ (- (System/currentTimeMillis) (config/get-started-on-ms request)) 1000)}]
          (send-response response request)))
 
 (defn reload-job-list
