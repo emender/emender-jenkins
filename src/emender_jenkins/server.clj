@@ -66,6 +66,7 @@
             [:get  ""]                      (rest-api/info-handler request   (get-hostname))
             [:get  "configuration"]         (rest-api/configuration-handler  request)
             [:get  "system"]                (rest-api/system-banners         request uri)
+            [:get  "status"]                (rest-api/status-handler         request)
             [:post "reload-all-results"]    (rest-api/reload-all-results     request)
             [:post "reload-tests-metadata"] (rest-api/reload-tests-metadata  request)
             [:get  "get_metadata"]          (rest-api/get-metadata           request)
