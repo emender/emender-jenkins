@@ -190,7 +190,7 @@
 
 (defn run-app
     "Starts application on any supported configuration: regular machine or OpenStack VM."
-    [options]
+    [options started-on started-system-ms]
     (let [port                (options :port)
           jenkins-url         (options :jenkins-url)
           test-jobs-suffix    (options :test-jobs-suffix)
@@ -201,7 +201,8 @@
         (log/info "openshift-port" openshift-port)
         (let [configuration (->
                  (config/load-configuration-from-ini "config.ini")
-                 (config/override-options-by-cli jenkins-url test-jobs-suffix))]
+                 (config/override-options-by-cli jenkins-url test-jobs-suffix)
+                 (config/override-runtime-params started-on started-system-ms))]
             ;(results/reload-all-results configuration) ; to be done in the job-data-fetcher module
             (when (-> configuration :irc :connect)
                 (log/info "starting IRC bot" (-> configuration :irc))
@@ -220,13 +221,15 @@
           options             (all-options :options)
           show-help?          (options :help)
           fetch-only?         (options :fetch-only)
-          show-config?        (options :show-config)]
+          show-config?        (options :show-config)
+          started-on-str      (.toString (new java.util.Date))
+          started-system-ms   (System/currentTimeMillis)]
           (System/setProperty "javax.net.ssl.keyStore",   "keystore")
           (System/setProperty "javax.net.ssl.trustStore", "keystore")
           (cond show-help?   (show-help (:summary all-options))
                 fetch-only?  (fetch-jobs-only options)
                 show-config? (show-config options)
-                :else        (run-app options))))
+                :else        (run-app options started-on-str started-system-ms))))
 
 ; finito
 

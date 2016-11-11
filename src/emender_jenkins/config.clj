@@ -57,6 +57,12 @@
         (assoc-in-if-not-nil [:jenkins :jenkins-url]      jenkins-url)
         (assoc-in-if-not-nil [:jobs    :test-jobs-suffix] test-jobs-suffix)))
 
+(defn override-runtime-params
+    [configuration started-on started-system-ms]
+    (-> configuration
+        (assoc :started-on started-on)
+        (assoc :started-ms started-system-ms)))
+
 (defn print-configuration
     "Print actual configuration to the standard output."
     [configuration]
