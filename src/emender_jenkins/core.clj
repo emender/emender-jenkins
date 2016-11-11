@@ -203,11 +203,13 @@
                  (config/load-configuration-from-ini "config.ini")
                  (config/override-options-by-cli jenkins-url test-jobs-suffix))]
             ;(results/reload-all-results configuration) ; to be done in the job-data-fetcher module
-            (log/info "starting IRC bot" (-> configuration :irc))
-            (irc-bot/start-irc-bot (-> configuration :irc :server)
-                                   (-> configuration :irc :port)
-                                   (-> configuration :irc :channel)
-                                   (-> configuration :irc :nick))
+            (when (-> configuration :irc :connect)
+                (log/info "starting IRC bot" (-> configuration :irc))
+                (irc-bot/start-irc-bot (-> configuration :irc :server)
+                                       (-> configuration :irc :port)
+                                       (-> configuration :irc :channel)
+                                       (-> configuration :irc :nick))
+                (log/info "IRC bot started"))
             (job-data-fetcher/run-fetcher-in-thread configuration)
             (start-server configuration (get-port port) openshift-port openshift-ip))))
 
