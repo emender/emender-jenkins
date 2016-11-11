@@ -33,6 +33,7 @@
                                                       com.sun.jmx/jmxri]]
                    [org.slf4j/slf4j-log4j12 "1.6.6"]
                    [org.clojars.tisnik/clj-jenkins-api "0.10.0-SNAPSHOT"]
+                   [org.clojars.tisnik/clj-calendar "0.3.0-SNAPSHOT"]
                    [org.clojars.tisnik/clj-fileutils "0.2.0-SNAPSHOT"]]
     :dev-dependencies [[lein-ring "0.8.10"]]
     :plugins [[lein-ring "0.8.10"]
