@@ -32,7 +32,8 @@
         (update-in [:config :include-jenkins-reply]      config-loader/parse-boolean)
         (update-in [:config :verbose-show-configuration] config-loader/parse-boolean)
         (update-in [:fetcher :delay]                     config-loader/parse-int)
-        (update-in [:irc :port]                          config-loader/parse-int)))
+        (update-in [:irc :port]                          config-loader/parse-int)
+        (update-it [:irc :connect]                       config-loader/parse-boolean)))
 
 (defn load-configuration-from-ini
     "Load configuration from the provided INI file and perform conversions
