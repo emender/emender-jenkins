@@ -96,6 +96,12 @@
         (is (callable? 'emender-jenkins.rest-api/system-banners))))
 
 
+(deftest test-status-handler-existence
+    "Check that the emender-jenkins.rest-api/status-handler definition exists."
+    (testing "if the emender-jenkins.rest-api/status-handler definition exists."
+        (is (callable? 'emender-jenkins.rest-api/status-handler))))
+
+
 (deftest test-reload-job-list-existence
     "Check that the emender-jenkins.rest-api/reload-job-list definition exists."
     (testing "if the emender-jenkins.rest-api/reload-job-list definition exists."
