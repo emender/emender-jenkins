@@ -52,6 +52,12 @@
         (is (callable? 'emender-jenkins.config/override-options-by-cli))))
 
 
+(deftest test-override-runtime-params-existence
+    "Check that the emender-jenkins.config/override-runtime-params definition exists."
+    (testing "if the emender-jenkins.config/override-runtime-params definition exists."
+        (is (callable? 'emender-jenkins.config/override-runtime-params))))
+
+
 (deftest test-print-configuration-existence
     "Check that the emender-jenkins.config/print-configuration definition exists."
     (testing "if the emender-jenkins.config/print-configuration definition exists."
@@ -134,6 +140,18 @@
     "Check that the emender-jenkins.config/get-prod-test-jobs-suffix definition exists."
     (testing "if the emender-jenkins.config/get-prod-test-jobs-suffix definition exists."
         (is (callable? 'emender-jenkins.config/get-prod-test-jobs-suffix))))
+
+
+(deftest test-get-started-on-str-existence
+    "Check that the emender-jenkins.config/get-started-on-str definition exists."
+    (testing "if the emender-jenkins.config/get-started-on-str definition exists."
+        (is (callable? 'emender-jenkins.config/get-started-on-str))))
+
+
+(deftest test-get-started-on-ms-existence
+    "Check that the emender-jenkins.config/get-started-on-ms definition exists."
+    (testing "if the emender-jenkins.config/get-started-on-ms definition exists."
+        (is (callable? 'emender-jenkins.config/get-started-on-ms))))
 ;
 ; Test for function behaviours
 ;
