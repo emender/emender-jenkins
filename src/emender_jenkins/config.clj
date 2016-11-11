@@ -136,3 +136,11 @@
     [request]
     (-> request :configuration :jobs :prod-test-jobs-suffix))
 
+(defn get-started-on-str
+    [request]
+    (-> request :configuration :started-on))
+
+(defn get-started-on-ms
+    [request]
+    (-> request :configuration :started-ms))
+
