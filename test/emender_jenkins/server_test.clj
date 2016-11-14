@@ -120,3 +120,14 @@
     (testing "the function emender-jenkins.server/get-api-part-from-uri."
         (is (thrown? NullPointerException (get-api-part-from-uri nil nil)))))
 
+(deftest test-get-api-part-from-uri
+    "Check the function emender-jenkins.server/get-api-command."
+    (testing "the function emender-jenkins.server/get-api-command."
+        (are [x y] (= x y)
+            "create_job" (get-api-part-from-uri "/api/create_job" "/api")
+            "system"     (get-api-part-from-uri "/api/system/banners" "/api")
+            ""           (get-api-part-from-uri "/api/" "/api")
+            ""           (get-api-part-from-uri "/api/" "/api")
+            "create_job" (get-api-part-from-uri "/api/create_job/" "/api")
+            "system"     (get-api-part-from-uri "/api/system/banners/" "/api"))))
+
