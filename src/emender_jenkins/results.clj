@@ -163,12 +163,19 @@
           preview-jobs-suffix (-> configuration :jobs :preview-test-jobs-suffix)
           stage-jobs-suffix   (-> configuration :jobs :stage-test-jobs-suffix)
           prod-jobs-suffix    (-> configuration :jobs :prod-test-jobs-suffix)
+          verbose             (-> configuration :config :verbose)
+          pretty-print        (-> configuration :config :pretty-print)
           job-list (read-list-of-test-jobs (-> configuration :jenkins :jenkins-url)
                                            (-> configuration :jenkins :jenkins-job-list-url)
                                            test-jobs-prefix
                                            preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix)
           job-results (read-update-job-info (-> configuration :jenkins :jenkins-url) job-list   preview-jobs-suffix stage-jobs-suffix prod-jobs-suffix)]
-          (clojure.pprint/pprint job-results)
+          (log/info "Job read:" (count job-results))
+
+          ; print pretty printed tree of all jobs to the standard output
+          (if (and verbose pretty-print)
+              (clojure.pprint/pprint job-results))
+
           ;(spit "test.edn" (with-out-str (clojure.pprint/pprint job-results)))
           ;job-results (read-all-test-results configuration job-list)]
           (reset! results job-results)
