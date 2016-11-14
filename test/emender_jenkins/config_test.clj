@@ -496,6 +496,17 @@
             (-> cfg :jenkins :jenkins-job-list-url)    "api/json?tree=jobs[name,url,color,scm[userRemoteConfigs[url]],buildable,lastSuccessfulBuild[description]]"
             (-> cfg :jenkins :jenkins-auth)            ""))))
 
+(deftest test-override-options-by-cli-4
+    "Check the behaviour of function emender-jenkins.config/override-options-by-cli."
+    (testing "the behaviour of function emender-jenkins.config/override-options-by-cli."
+    (let [cfg (-> (load-configuration-from-ini "test/test1.ini")
+                  (override-options-by-cli "new-jenkins-url" "jobs-suffix"))]
+        (are [x y] (= x y)
+            (-> cfg :info  :version)                   "0.1.0"
+            (-> cfg :jenkins :jenkins-url)             "new-jenkins-url"
+            (-> cfg :jenkins :jenkins-job-list-url)    "api/json?tree=jobs[name,url,color,scm[userRemoteConfigs[url]],buildable,lastSuccessfulBuild[description]]"
+            (-> cfg :jenkins :jenkins-auth)            ""))))
+
 (deftest test-override-runtime-params-1
     "Check the behaviour of function emender-jenkins.config/override-runtime-params."
     (testing "the behaviour of function emender-jenkins.config/override-runtime-params."
