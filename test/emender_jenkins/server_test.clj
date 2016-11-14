@@ -115,3 +115,8 @@
             "create_job" (get-api-command "/api/create_job" "/api")
             "system"     (get-api-command "/api/system/banners" "/api"))))
 
+(deftest test-get-api-part-from-uri-NPE
+    "Check the function emender-jenkins.server/get-api-part-from-uri."
+    (testing "the function emender-jenkins.server/get-api-part-from-uri."
+        (is (thrown? NullPointerException (get-api-part-from-uri nil nil)))))
+
