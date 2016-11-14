@@ -131,3 +131,9 @@
             "create_job" (get-api-part-from-uri "/api/create_job/" "/api")
             "system"     (get-api-part-from-uri "/api/system/banners/" "/api"))))
 
+(deftest test-get-api-part-from-uri-wrong-api
+    "Check the function emender-jenkins.server/get-api-command."
+    (testing "the function emender-jenkins.server/get-api-command."
+        (are [x y] (= x y)
+            nil (get-api-part-from-uri "/wring-api" "/api"))))
+
