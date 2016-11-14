@@ -43,6 +43,14 @@
     []
     (.. java.net.InetAddress getLocalHost getHostName))
 
+(defn get-api-part-from-uri
+    "Get API part (string) from the full URI. The API part string should not starts with /"
+    [uri prefix]
+    (let [api-part (re-find #"/[^/]*" (subs uri (count prefix)))]
+       (if (and api-part (startsWith api-part "/"))
+           (subs api-part 1)
+           api-part)))
+
 (defn get-api-command
     "Retrieve the actual command from the API call."
     [uri prefix]
@@ -51,10 +59,7 @@
             (let [uri-without-prefix (subs uri (count prefix))]
                 (if (empty? uri-without-prefix) ; special handler for a call with / only
                     ""
-                 (let [api-part (re-find #"/[^/]*" (subs uri (count prefix)))]
-                    (if (and api-part (startsWith api-part "/"))
-                        (subs api-part 1)
-                        api-part)))))))
+                    (get-api-part-from-uri uri prefix))))))
 
 (defn api-call-handler
     "This function is used to handle all API calls. Three parameters are expected:
