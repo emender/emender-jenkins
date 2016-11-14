@@ -106,11 +106,19 @@
         "/"                      (render-front-page request)
                                  (render-error-page request)))
 
+(defn log-request
+    "Add info about the request into the log"
+    [request]
+    (if (config/verbose? request)
+        (if (config/pretty-print? request)
+            (pprint/pprint request)
+            (log/info "Handling request: " request))
+        (log/info "Handling request: " (:uri request) (:remote-addr request))))
+
 (defn handler
     "Handler that is called by Ring for all requests received from user(s)."
     [request]
-    (if (config/verbose? request)
-        (pprint/pprint request))
+    (log-request request)
     (cond (= (:request-method request) :options) (restcall-options-handler)
           (= (:request-method request) :head)    (restcall-head-handler)
           :else
