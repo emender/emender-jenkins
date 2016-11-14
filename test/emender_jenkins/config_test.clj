@@ -461,6 +461,23 @@
             (get-prod-test-jobs-suffix {:configuration nil}) nil
             (get-prod-test-jobs-suffix nil) nil)))
 
+(deftest test-get-started-on-str-1
+    "Check the behaviour of function emender-jenkins.config/get-started-on-str."
+    (testing "the behaviour of function emender-jenkins.config/get-started-on-str."
+        (are [x y] (= x y)
+            (get-started-on-str {:configuration {:started-on nil}})   nil
+            (get-started-on-str {:configuration {:started-on false}}) false
+            (get-started-on-str {:configuration {:started-on true}})  true
+            (get-started-on-str {:configuration {:started-on "10:20:30"}}) "10:20:30")))
+
+(deftest test-get-started-on-str-2
+    "Check the behaviour of function emender-jenkins.config/get-started-on-str."
+    (testing "the behaviour of function emender-jenkins.config/get-started-on-str."
+        (are [x y] (= x y)
+            (get-started-on-str {:configuration {:started-on nil}}) nil
+            (get-started-on-str {:configuration nil})               nil
+            (get-started-on-str {:configuration nil})               nil)))
+
 (deftest test-override-options-by-cli-1
     "Check the behaviour of function emender-jenkins.config/override-options-by-cli."
     (testing "the behaviour of function emender-jenkins.config/override-options-by-cli."
