@@ -478,6 +478,23 @@
             (get-started-on-str {:configuration nil})               nil
             (get-started-on-str {:configuration nil})               nil)))
 
+(deftest test-get-started-on-ms-1
+    "Check the behaviour of function emender-jenkins.config/get-started-on-ms."
+    (testing "the behaviour of function emender-jenkins.config/get-started-on-ms."
+        (are [x y] (= x y)
+            (get-started-on-ms {:configuration {:started-ms nil}})   nil
+            (get-started-on-ms {:configuration {:started-ms false}}) false
+            (get-started-on-ms {:configuration {:started-ms true}})  true
+            (get-started-on-ms {:configuration {:started-ms 12345}}) 12345)))
+
+(deftest test-get-started-on-ms-2
+    "Check the behaviour of function emender-jenkins.config/get-started-on-ms."
+    (testing "the behaviour of function emender-jenkins.config/get-started-on-ms."
+        (are [x y] (= x y)
+            (get-started-on-ms {:configuration {:started-ms nil}}) nil
+            (get-started-on-ms {:configuration nil})               nil
+            (get-started-on-ms {:configuration nil})               nil)))
+
 (deftest test-override-options-by-cli-1
     "Check the behaviour of function emender-jenkins.config/override-options-by-cli."
     (testing "the behaviour of function emender-jenkins.config/override-options-by-cli."
