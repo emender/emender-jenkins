@@ -16,6 +16,7 @@
 
 (require '[clojure.tools.logging :as log])
 (require '[clojure.pprint        :as pprint])
+(require '[ring.util.response    :as http-response])
 
 ;
 ; Common functions used by tests.
@@ -187,4 +188,11 @@
                 :error-page ""
                 :error-page "/info"
                 :error-page "something/else"))))
+
+(deftest test-restcall-options-handler
+    "Check the function emender-jenkins.server/restcall-options-handler."
+    (testing "the function emender-jenkins.server/restcall-options-handler."
+        (with-redefs [http-response/response     (fn [resp] {:response resp})
+                      http-response/content-type (fn [resp content-type] (assoc resp :content-type content-type))]
+            (is (= {:response "", :content-type "application/json"} (restcall-options-handler))))))
 
