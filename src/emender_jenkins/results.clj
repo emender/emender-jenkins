@@ -101,11 +101,6 @@
                   :else                             false)
             true)))
 
-(defn parse-int
-    "Parse the given string as an integer number."
-    [^String string]
-    (java.lang.Integer/parseInt string))
-
 (defn parse-test-results
     [message]
     (if message

@@ -78,12 +78,6 @@
         (is (callable? 'emender-jenkins.results/compute-job-disabled))))
 
 
-(deftest test-parse-int-existence
-    "Check that the emender-jenkins.results/parse-int definition exists."
-    (testing "if the emender-jenkins.results/parse-int definition exists."
-        (is (callable? 'emender-jenkins.results/parse-int))))
-
-
 (deftest test-parse-test-results-existence
     "Check that the emender-jenkins.results/parse-test-results definition exists."
     (testing "if the emender-jenkins.results/parse-test-results definition exists."
