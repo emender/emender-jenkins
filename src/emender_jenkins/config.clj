@@ -17,6 +17,7 @@
 (require '[clojure.pprint :as pprint])
 (require '[clojure.tools.logging :as log])
 
+(require '[emender-jenkins.utils         :as utils])
 (require '[emender-jenkins.config-loader :as config-loader])
 
 (def default-port
@@ -27,13 +28,13 @@
     "Update selected items in the configuration structure."
     [configuration]
     (-> configuration
-        (update-in [:config :verbose]                    config-loader/parse-boolean)
-        (update-in [:config :pretty-print]               config-loader/parse-boolean)
-        (update-in [:config :include-jenkins-reply]      config-loader/parse-boolean)
-        (update-in [:config :verbose-show-configuration] config-loader/parse-boolean)
-        (update-in [:fetcher :delay]                     config-loader/parse-int)
-        (update-in [:irc :port]                          config-loader/parse-int)
-        (update-in [:irc :connect]                       config-loader/parse-boolean)))
+        (update-in [:config :verbose]                    utils/parse-boolean)
+        (update-in [:config :pretty-print]               utils/parse-boolean)
+        (update-in [:config :include-jenkins-reply]      utils/parse-boolean)
+        (update-in [:config :verbose-show-configuration] utils/parse-boolean)
+        (update-in [:fetcher :delay]                     utils/parse-int)
+        (update-in [:irc :port]                          utils/parse-int)
+        (update-in [:irc :connect]                       utils/parse-boolean)))
 
 (defn load-configuration-from-ini
     "Load configuration from the provided INI file and perform conversions
