@@ -14,6 +14,8 @@
   (:require [clojure.test :refer :all]
             [emender-jenkins.server :refer :all]))
 
+(require '[clojure.tools.logging    :as log])
+
 ;
 ; Common functions used by tests.
 ;
@@ -87,6 +89,12 @@
     (testing "if the emender-jenkins.server/handler definition exists."
         (is (callable? 'emender-jenkins.server/handler))))
 
+
+(deftest test-log-request-existence
+    "Check that the emender-jenkins.server/log-request definition exists."
+    (testing "if the emender-jenkins.server/log-request definition exists."
+        (is (callable? 'emender-jenkins.server/log-request))))
+
 ;
 ; Function behaviours
 ;
@@ -136,4 +144,15 @@
     (testing "the function emender-jenkins.server/get-api-command."
         (are [x y] (= x y)
             nil (get-api-part-from-uri "/wring-api" "/api"))))
+
+(deftest test-log-request
+    "Check the function emender-jenkins.server/log-request."
+    (testing "the function emender-jenkins.server/log-request."
+        (with-redefs [log/log* (fn [logger level throwable message] message)]
+        (are [x y] (= x y)
+            "Handling request:  nil nil"                 (log-request {})
+            "Handling request:  http://test nil"         (log-request {:uri "http://test"})
+            "Handling request:  nil 10.20.30.40"         (log-request {:remote-addr "10.20.30.40"})
+            "Handling request:  http://test 10.20.30.40" (log-request {:uri "http://test" :remote-addr "10.20.30.40"})
+            ))))
 
