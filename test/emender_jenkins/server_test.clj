@@ -14,7 +14,8 @@
   (:require [clojure.test :refer :all]
             [emender-jenkins.server :refer :all]))
 
-(require '[clojure.tools.logging    :as log])
+(require '[clojure.tools.logging :as log])
+(require '[clojure.pprint        :as pprint])
 
 ;
 ; Common functions used by tests.
@@ -161,4 +162,18 @@
         (with-redefs [log/log* (fn [logger level throwable message] message)]
             (let [request  {:uri "http://test" :remote-addr "10.20.30.40" :configuration {:config {:verbose true :pretty-print false}}}]
                 (is (.startsWith (log-request request) "Handling request:  {"))))))
+
+(deftest test-log-request-pretty-print-mode-1
+    "Check the function emender-jenkins.server/log-request."
+    (testing "the function emender-jenkins.server/log-request."
+        (with-redefs [log/log* (fn [logger level throwable message] message)]
+            (let [request  {:uri "http://test" :remote-addr "10.20.30.40" :configuration {:config {:verbose true :pretty-print true}}}]
+                (is (nil? (log-request request)))))))
+
+(deftest test-log-request-pretty-print-mode-2
+    "Check the function emender-jenkins.server/log-request."
+    (testing "the function emender-jenkins.server/log-request."
+        (with-redefs [pprint/pprint (fn [value] (str value))]
+            (let [request  {:uri "http://test" :remote-addr "10.20.30.40" :configuration {:config {:verbose true :pretty-print true}}}]
+                (is (log-request request))))))
 
