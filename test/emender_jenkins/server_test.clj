@@ -177,3 +177,14 @@
             (let [request  {:uri "http://test" :remote-addr "10.20.30.40" :configuration {:config {:verbose true :pretty-print true}}}]
                 (is (log-request request))))))
 
+(deftest test-non-api-call-handler
+    "Check the function emender-jenkins.server/non-api-call-handler."
+    (testing "the function emender-jenkins.server/non-api-call-handler."
+        (with-redefs [render-front-page (fn [request] :front-page)
+                      render-error-page (fn [request] :error-page)]
+            (are [x y] (= x (non-api-call-handler :request y))
+                :front-page "/"
+                :error-page ""
+                :error-page "/info"
+                :error-page "something/else"))))
+
