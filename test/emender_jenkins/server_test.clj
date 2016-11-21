@@ -149,10 +149,16 @@
     "Check the function emender-jenkins.server/log-request."
     (testing "the function emender-jenkins.server/log-request."
         (with-redefs [log/log* (fn [logger level throwable message] message)]
-        (are [x y] (= x y)
-            "Handling request:  nil nil"                 (log-request {})
-            "Handling request:  http://test nil"         (log-request {:uri "http://test"})
-            "Handling request:  nil 10.20.30.40"         (log-request {:remote-addr "10.20.30.40"})
-            "Handling request:  http://test 10.20.30.40" (log-request {:uri "http://test" :remote-addr "10.20.30.40"})
-            ))))
+            (are [x y] (= x y)
+                "Handling request:  nil nil"                 (log-request {})
+                "Handling request:  http://test nil"         (log-request {:uri "http://test"})
+                "Handling request:  nil 10.20.30.40"         (log-request {:remote-addr "10.20.30.40"})
+                "Handling request:  http://test 10.20.30.40" (log-request {:uri "http://test" :remote-addr "10.20.30.40"})))))
+
+(deftest test-log-request-verbose-mode
+    "Check the function emender-jenkins.server/log-request."
+    (testing "the function emender-jenkins.server/log-request."
+        (with-redefs [log/log* (fn [logger level throwable message] message)]
+            (let [request  {:uri "http://test" :remote-addr "10.20.30.40" :configuration {:config {:verbose true :pretty-print false}}}]
+                (is (.startsWith (log-request request) "Handling request:  {"))))))
 
