@@ -385,3 +385,11 @@
             [1 2 3 4]   "[1,2,3,4]"
             {:a 1 :b 2} "{\"a\":1, \"b\":2}")))
 
+(deftest test-get-job-name
+    "Check the function emender-jenkins.rest-api/get-job-name."
+    (testing "the function emender-jenkins.rest-api/get-job-name."
+        (are [x y] (= x (get-job-name y))
+            nil       nil
+            nil       {:namex "jobname"}
+            "jobname" {:name "jobname"})))
+
