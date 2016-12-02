@@ -33,6 +33,12 @@
         (is (callable? 'emender-jenkins.utils/third))))
 
 
+(deftest test-fourth-existence
+    "Check that the emender-jenkins.utils/fourth definition exists."
+    (testing "if the emender-jenkins.utils/fourth definition exists."
+        (is (callable? 'emender-jenkins.utils/fourth))))
+
+
 (deftest test-substring-existence
     "Check that the emender-jenkins.utils/substring definition exists."
     (testing "if the emender-jenkins.utils/substring definition exists."
