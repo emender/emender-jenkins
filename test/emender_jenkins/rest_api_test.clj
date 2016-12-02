@@ -367,3 +367,12 @@
             (uri->job-name "http://jenkins.server.com:8080/test-Product_Name-Product_Version-Book_Name-en-US%20(prod)" "http://jenkins.server.com:8080/")
             )))
 
+(deftest test-body->results
+    "Check the function emender-jenkins.rest-api/body->results."
+    (testing "the function emender-jenkins.rest-api/body->results."
+        (are [x y] (= x (body->results y))
+            {}            "{}"
+            []            "[]"
+            [1 2 3 4]     "[1,2,3,4]"
+            {"a" 1 "b" 2} "{\"a\":1, \"b\":2}")))
+
