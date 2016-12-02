@@ -376,3 +376,12 @@
             [1 2 3 4]     "[1,2,3,4]"
             {"a" 1 "b" 2} "{\"a\":1, \"b\":2}")))
 
+(deftest test-body->job-info
+    "Check the function emender-jenkins.rest-api/body->job-info."
+    (testing "the function emender-jenkins.rest-api/body->job-info."
+        (are [x y] (= x (body->job-info y))
+            {}          "{}"
+            []          "[]"
+            [1 2 3 4]   "[1,2,3,4]"
+            {:a 1 :b 2} "{\"a\":1, \"b\":2}")))
+
