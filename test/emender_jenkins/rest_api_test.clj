@@ -410,3 +410,10 @@
             "application/json" nil
             "application/json" :other)))
 
+(deftest test-get-output-format-default
+    "Check the function emender-jenkins.rest-api/get-output-format."
+    (testing "the function emender-jenkins.rest-api/get-output-format."
+        (are [x y] (= x (get-output-format y))
+            :json nil
+            :json :other)))
+
