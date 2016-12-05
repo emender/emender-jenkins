@@ -463,3 +463,15 @@
                      :hostname   "hostname"
                      :test       "/api"} "hostname")))))
 
+(deftest test-system-banners
+    "Check the function emender-jenkins.rest-api/system-banners."
+    (testing "the function emender-jenkins.rest-api/system-banners."
+        (with-redefs [send-response (fn [response request] response)]
+            (let [request {}]
+                (is (= (system-banners request "/api/system/banners")
+                    {:message    "Alpha version"
+                     :type       "Warning"}))
+                (is (= (system-banners request "/api/system/xxx")
+                    nil
+                    ))))))
+
