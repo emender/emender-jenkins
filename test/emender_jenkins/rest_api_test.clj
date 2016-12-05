@@ -447,3 +447,19 @@
             false "test-Product_Name-Product_Version-Title_Name (other)"
             false "test-Product_Name-Product_Version-Title_Name"))))
 
+(deftest test-info-handler
+    "Check the function emender-jenkins.rest-api/info-handler."
+    (testing "the function emender-jenkins.rest-api/info-handler."
+        (with-redefs [send-response (fn [response request] response)]
+            (let [request {:configuration
+                              {:info
+                                  {:version "1.0"}
+                               :api
+                                  {:prefix "/api"}}}]
+                (are [x y] (= x (info-handler request y))
+                    {:name       "Emender Jenkins Service"
+                     :version    "1.0"
+                     :api_prefix "/api"
+                     :hostname   "hostname"
+                     :test       "/api"} "hostname")))))
+
