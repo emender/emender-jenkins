@@ -423,7 +423,8 @@
         :edn   "application/edn"
         :csv   "text/csv"
         :txt   "text/plain"
-        :xml   "text/xml"))
+        :xml   "text/xml"
+               "application/json"))
 
 (defn get-metadata
     [request]
