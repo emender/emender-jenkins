@@ -393,3 +393,13 @@
             nil       {:namex "jobname"}
             "jobname" {:name "jobname"})))
 
+(deftest test-mime-type
+    "Check the function emender-jenkins.rest-api/mime-type."
+    (testing "the function emender-jenkins.rest-api/mime-type."
+        (are [x y] (= x (mime-type y))
+            "application/json" :json
+            "application/edn"  :edn
+            "text/csv"         :csv
+            "text/plain"       :txt
+            "text/xml"         :xml)))
+
