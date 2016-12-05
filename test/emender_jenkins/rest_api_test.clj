@@ -410,6 +410,17 @@
             "application/json" nil
             "application/json" :other)))
 
+(deftest test-get-output-format
+    "Check the function emender-jenkins.rest-api/get-output-format."
+    (testing "the function emender-jenkins.rest-api/get-output-format."
+        (are [x y] (= x (get-output-format {:params {"format" y}}))
+            :json "json"
+            :xml  "xml"
+            :csv  "csv"
+            :edn  "edn"
+            :txt  "text"
+            :txt  "txt")))
+
 (deftest test-get-output-format-default
     "Check the function emender-jenkins.rest-api/get-output-format."
     (testing "the function emender-jenkins.rest-api/get-output-format."
