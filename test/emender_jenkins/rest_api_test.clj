@@ -403,3 +403,10 @@
             "text/plain"       :txt
             "text/xml"         :xml)))
 
+(deftest test-mime-type-default
+    "Check the function emender-jenkins.rest-api/mime-type."
+    (testing "the function emender-jenkins.rest-api/mime-type."
+        (are [x y] (= x (mime-type y))
+            "application/json" nil
+            "application/json" :other)))
+
