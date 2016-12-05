@@ -428,3 +428,22 @@
             :json nil
             :json :other)))
 
+(deftest test-test-job?
+    "Check the function emender-jenkins.rest-api/test-job."
+    (testing "the function emender-jenkins.rest-api/test-job."
+        (let [request {:configuration
+                          {:jobs
+                              {:test-jobs-prefix         "test-"
+                               :preview-test-jobs-suffix "(preview)"
+                               :stage-test-jobs-suffix   "(stage)"
+                               :prod-test-jobs-suffix    "(prod)"}}}]
+        (are [x y] (= x (test-job? y request))
+            true  "test-Product_Name-Product_Version-Title_Name (preview)"
+            false "doc-Product_Name-Product_Version-Title_Name (preview)"
+            true  "test-Product_Name-Product_Version-Title_Name (stage)"
+            false "doc-Product_Name-Product_Version-Title_Name (stage)"
+            true  "test-Product_Name-Product_Version-Title_Name (prod)"
+            false "doc-Product_Name-Product_Version-Title_Name (prod)"
+            false "test-Product_Name-Product_Version-Title_Name (other)"
+            false "test-Product_Name-Product_Version-Title_Name"))))
+
