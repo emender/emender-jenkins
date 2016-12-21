@@ -14,7 +14,7 @@
     "Various utility function used by other modules.")
 
 (defn third
-    "Simple utility function - returns third item from a given sequence."
+    "Simple utility function - returns third item from a given sequence, nil if third item does not exist."
     [coll]
     (nth coll 2 nil))
 
