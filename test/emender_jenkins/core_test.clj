@@ -14,6 +14,8 @@
   (:require [clojure.test :refer :all]
             [emender-jenkins.core :refer :all]))
 
+(require '[clojure.tools.cli       :as cli])
+
 ;
 ; Common functions used by tests.
 ;
@@ -159,4 +161,17 @@
         (is (thrown? AssertionError (get-and-check-port "65536")))
         (is (thrown? AssertionError (get-and-check-port "65537")))
         (is (thrown? AssertionError (get-and-check-port "1000000")))))
+
+(deftest test-show-help
+    "Check the function emender-jenkins.core/show-help."
+    (testing "the function emender-jenkins.core/show-help.")
+        (let [options (cli/parse-opts nil cli-options)]
+            (is (= (with-out-str (show-help (:summary options)))
+                   (str "Usage:\n"
+                        "  -h, --help                     show help\n"
+                        "  -p, --port   PORT              port number on which Emender Jenkins should accepts requests\n"
+                        "  -j, --jenkins-url url          url to Jenkins, for example: http://10.20.30.40:8080/\n"
+                        "  -t, --test-jobs-suffix suffix  test jobs suffix, for example 'test'\n"
+                        "  -f, --fetch-only               just start job fetcher once, then stop processing\n"
+                        "  -c, --config                   just show the actual configuration\n")))))
 
