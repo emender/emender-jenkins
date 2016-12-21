@@ -213,6 +213,16 @@
             (is (= {:port 65534} (start-server nil "65534" nil nil)))
             (is (= {:port 65535} (start-server nil "65535" nil nil))))))
 
+(deftest test-start-server-2
+    (testing "emender-jenkins.core/start-server"
+        ; use mock instead of jetty/run-jetty
+        (with-redefs [jetty/run-jetty (fn [app port] port)]
+            (is (= {:host "host" :port 1}     (start-server-on-openshift app "1"     "host")))
+            (is (= {:host "host" :port 2}     (start-server-on-openshift app "2"     "host")))
+            (is (= {:host "host" :port 1000}  (start-server-on-openshift app "1000"  "host")))
+            (is (= {:host "host" :port 65534} (start-server-on-openshift app "65534" "host")))
+            (is (= {:host "host" :port 65535} (start-server-on-openshift app "65535" "host"))))))
+
 (deftest test-show-help
     "Check the function emender-jenkins.core/show-help."
     (testing "the function emender-jenkins.core/show-help.")
