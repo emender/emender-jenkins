@@ -11,7 +11,8 @@
 ;
 
 (ns emender-jenkins.core-test
-  (:require [clojure.test :refer :all]
+  (:require [clojure.test         :refer :all]
+            [ring.adapter.jetty   :as jetty]
             [emender-jenkins.core :refer :all]))
 
 (require '[clojure.tools.cli       :as cli])
@@ -161,6 +162,16 @@
         (is (thrown? AssertionError (get-and-check-port "65536")))
         (is (thrown? AssertionError (get-and-check-port "65537")))
         (is (thrown? AssertionError (get-and-check-port "1000000")))))
+
+(deftest test-start-server-on-regular-machine-positive-1
+    (testing "jenkinscat.core/start-server"
+        ; use mock instead of jetty/run-jetty
+        (with-redefs [jetty/run-jetty (fn [app port] port)]
+            (is (= {:port 1}     (start-server-on-regular-machine app "1")))
+            (is (= {:port 2}     (start-server-on-regular-machine app "2")))
+            (is (= {:port 1000}  (start-server-on-regular-machine app "1000")))
+            (is (= {:port 65534} (start-server-on-regular-machine app "65534")))
+            (is (= {:port 65535} (start-server-on-regular-machine app "65535"))))))
 
 (deftest test-show-help
     "Check the function emender-jenkins.core/show-help."
