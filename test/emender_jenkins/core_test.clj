@@ -175,3 +175,24 @@
                         "  -f, --fetch-only               just start job fetcher once, then stop processing\n"
                         "  -c, --config                   just show the actual configuration\n")))))
 
+(deftest test-main-1
+    "Check the function emender-jenkins.core/main."
+    (testing "the function emender-jenkins.core/main.")
+        (are [x y] (= x y)
+           (with-out-str (-main "-h"))
+                   (str "Usage:\n"
+                        "  -h, --help                     show help\n"
+                        "  -p, --port   PORT              port number on which Emender Jenkins should accepts requests\n"
+                        "  -j, --jenkins-url url          url to Jenkins, for example: http://10.20.30.40:8080/\n"
+                        "  -t, --test-jobs-suffix suffix  test jobs suffix, for example 'test'\n"
+                        "  -f, --fetch-only               just start job fetcher once, then stop processing\n"
+                        "  -c, --config                   just show the actual configuration\n")
+           (with-out-str (-main "--help"))
+                   (str "Usage:\n"
+                        "  -h, --help                     show help\n"
+                        "  -p, --port   PORT              port number on which Emender Jenkins should accepts requests\n"
+                        "  -j, --jenkins-url url          url to Jenkins, for example: http://10.20.30.40:8080/\n"
+                        "  -t, --test-jobs-suffix suffix  test jobs suffix, for example 'test'\n"
+                        "  -f, --fetch-only               just start job fetcher once, then stop processing\n"
+                        "  -c, --config                   just show the actual configuration\n")))
+
