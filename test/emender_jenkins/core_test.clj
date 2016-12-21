@@ -173,6 +173,16 @@
             (is (= {:port 65534} (start-server-on-regular-machine app "65534")))
             (is (= {:port 65535} (start-server-on-regular-machine app "65535"))))))
 
+(deftest test-start-server-on-regular-machine-positive-2
+    (testing "jenkinscat.core/start-server"
+        ; use mock instead of jetty/run-jetty
+        (with-redefs [jetty/run-jetty (fn [app port] app)]
+            (is (= app (start-server-on-regular-machine app "1")))
+            (is (= app (start-server-on-regular-machine app "2")))
+            (is (= app (start-server-on-regular-machine app "1000")))
+            (is (= app (start-server-on-regular-machine app "65534")))
+            (is (= app (start-server-on-regular-machine app "65535"))))))
+
 (deftest test-show-help
     "Check the function emender-jenkins.core/show-help."
     (testing "the function emender-jenkins.core/show-help.")
