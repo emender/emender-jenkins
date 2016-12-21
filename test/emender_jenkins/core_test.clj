@@ -164,7 +164,7 @@
         (is (thrown? AssertionError (get-and-check-port "1000000")))))
 
 (deftest test-start-server-on-regular-machine-positive-1
-    (testing "jenkinscat.core/start-server"
+    (testing "emender-jenkins.core/start-server"
         ; use mock instead of jetty/run-jetty
         (with-redefs [jetty/run-jetty (fn [app port] port)]
             (is (= {:port 1}     (start-server-on-regular-machine app "1")))
@@ -174,7 +174,7 @@
             (is (= {:port 65535} (start-server-on-regular-machine app "65535"))))))
 
 (deftest test-start-server-on-regular-machine-positive-2
-    (testing "jenkinscat.core/start-server"
+    (testing "emender-jenkins.core/start-server"
         ; use mock instead of jetty/run-jetty
         (with-redefs [jetty/run-jetty (fn [app port] app)]
             (is (= app (start-server-on-regular-machine app "1")))
@@ -184,7 +184,7 @@
             (is (= app (start-server-on-regular-machine app "65535"))))))
 
 (deftest test-start-server-on-openshift-positive-1
-    (testing "jenkinscat.core/start-server"
+    (testing "emender-jenkins.core/start-server"
         ; use mock instead of jetty/run-jetty
         (with-redefs [jetty/run-jetty (fn [app params] params)]
             (is (= {:host "host" :port 1}     (start-server-on-openshift app "1"     "host")))
@@ -194,7 +194,7 @@
             (is (= {:host "host" :port 65535} (start-server-on-openshift app "65535" "host"))))))
 
 (deftest test-start-server-on-openshift-positive-2
-    (testing "jenkinscat.core/start-server"
+    (testing "emender-jenkins.core/start-server"
         ; use mock instead of jetty/run-jetty
         (with-redefs [jetty/run-jetty (fn [app params] app)]
             (is (= app (start-server-on-openshift app "1" "host")))
@@ -202,6 +202,16 @@
             (is (= app (start-server-on-openshift app "1000" "host")))
             (is (= app (start-server-on-openshift app "65534" "host")))
             (is (= app (start-server-on-openshift app "65535" "host"))))))
+
+(deftest test-start-server-1
+    (testing "emender-jenkins.core/start-server"
+        ; use mock instead of jetty/run-jetty
+        (with-redefs [jetty/run-jetty (fn [app port] port)]
+            (is (= {:port 1}     (start-server nil "1" nil nil)))
+            (is (= {:port 2}     (start-server nil "2" nil nil)))
+            (is (= {:port 1000}  (start-server nil "1000" nil nil)))
+            (is (= {:port 65534} (start-server nil "65534" nil nil)))
+            (is (= {:port 65535} (start-server nil "65535" nil nil))))))
 
 (deftest test-show-help
     "Check the function emender-jenkins.core/show-help."
