@@ -193,6 +193,16 @@
             (is (= {:host "host" :port 65534} (start-server-on-openshift app "65534" "host")))
             (is (= {:host "host" :port 65535} (start-server-on-openshift app "65535" "host"))))))
 
+(deftest test-start-server-on-openshift-positive-2
+    (testing "jenkinscat.core/start-server"
+        ; use mock instead of jetty/run-jetty
+        (with-redefs [jetty/run-jetty (fn [app params] app)]
+            (is (= app (start-server-on-openshift app "1" "host")))
+            (is (= app (start-server-on-openshift app "2" "host")))
+            (is (= app (start-server-on-openshift app "1000" "host")))
+            (is (= app (start-server-on-openshift app "65534" "host")))
+            (is (= app (start-server-on-openshift app "65535" "host"))))))
+
 (deftest test-show-help
     "Check the function emender-jenkins.core/show-help."
     (testing "the function emender-jenkins.core/show-help.")
