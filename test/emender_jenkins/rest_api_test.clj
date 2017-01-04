@@ -12,7 +12,8 @@
 
 (ns emender-jenkins.rest-api-test
   (:require [clojure.test :refer :all]
-            [emender-jenkins.rest-api :refer :all]))
+            [emender-jenkins.rest-api :refer :all]
+            [clj-jenkins-api.jenkins-api :as jenkins-api]))
 
 ;
 ; Common functions used by tests.
@@ -475,3 +476,28 @@
                     nil
                     ))))))
 
+(def create-job-postdata
+    "{\"name\":\"test-Test_Product-1.0-Test_Book-en-US (preview)\", \"ssh_url_to_repo\":\"https://url-to-repo.git\", \"branch\":\"master\"}")
+
+(def default-request
+    {:configuration
+        {:jobs
+            {:preview-test-jobs-suffix "(preview)"
+             :stage-test-jobs-suffix   "(stage)"
+             :prod-test-jobs-suffix    "(prod)"
+             :test-jobs-prefix         "test-"}}})
+
+(deftest test-create-job
+    "Check the function emender-jenkins.rest-api/create-job."
+    (testing "the function emender-jenkins.rest-api/create-job."
+        (with-redefs [jenkins-api/create-job (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name git-repo branch credentials-id metadata-directory metadata]
+                                                 (jenkins-api/ok-response-structure job-name "create_job" include-jenkins-reply? "created"))
+                      jenkins-api/start-job  (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name]
+                                                 (jenkins-api/ok-response-structure job-name "build" include-jenkins-reply? "added to queue"))
+                      read-request-body      (fn [request] create-job-postdata)
+                      reload-job-list        (fn [response request] response)
+                      send-response          (fn [response request] response)]
+                      (is (= (create-job default-request) {:status "ok"
+                                                           :jobName "test-Test_Product-1.0-Test_Book-en-US (preview)"
+                                                           :command "create_job"}))
+)))
