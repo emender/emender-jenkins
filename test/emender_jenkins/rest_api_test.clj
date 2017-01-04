@@ -485,6 +485,9 @@
 (def create-job-postdata-bad-job-name-2
     "{\"name\":\"test-Test_Product-1.0-Test_Book-en-US\", \"ssh_url_to_repo\":\"https://url-to-repo.git\", \"branch\":\"master\"}")
 
+(def create-job-postdata-invalid-metadata-1
+    "{\"ssh_url_to_repo\":\"https://url-to-repo.git\", \"branch\":\"master\"}")
+
 (def default-request
     {:configuration
         {:jobs
@@ -534,6 +537,20 @@
                       (is (= (create-job default-request) {:status  400
                                                            :headers {"Content-Type" "application/json"}
                                                            :body "{\"status\":\"error\",\"jobName\":\"test-Test_Product-1.0-Test_Book-en-US\",\"command\":\"create_job\",\"message\":\"The name of job is wrong\"}"})))))
+
+(deftest test-create-job-invalid-metadata-1
+    "Check the function emender-jenkins.rest-api/create-job."
+    (testing "the function emender-jenkins.rest-api/create-job."
+        (with-redefs [jenkins-api/create-job (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name git-repo branch credentials-id metadata-directory metadata]
+                                                 (jenkins-api/ok-response-structure job-name "create_job" include-jenkins-reply? "created"))
+                      jenkins-api/start-job  (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name]
+                                                 (jenkins-api/ok-response-structure job-name "build" include-jenkins-reply? "added to queue"))
+                      read-request-body      (fn [request] create-job-postdata-invalid-metadata-1)
+                      reload-job-list        (fn [response request] response)
+                      send-response          (fn [response request] response)]
+                      (is (= (create-job default-request) {:status  400
+                                                           :headers {"Content-Type" "application/json"}
+                                                           :body "{\"status\":\"error\",\"command\":\"create_job\",\"message\":\"invalid or missing input\"}"})))))
 
 (deftest test-create-job-NPE
     "Check the function emender-jenkins.rest-api/create-job."
