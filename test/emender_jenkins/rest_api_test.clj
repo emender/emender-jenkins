@@ -13,6 +13,7 @@
 (ns emender-jenkins.rest-api-test
   (:require [clojure.test :refer :all]
             [emender-jenkins.rest-api :refer :all]
+            [emender-jenkins.results  :as results]
             [clj-jenkins-api.jenkins-api :as jenkins-api]))
 
 ;
@@ -582,8 +583,6 @@
                       read-request-body      (fn [request] create-job-postdata-invalid-metadata-3)
                       reload-job-list        (fn [response request] response)
                       send-response          (fn [response request] response)]
-                      (println create-job-postdata-invalid-metadata-3)
-                      (println (body->results create-job-postdata-invalid-metadata-3))
                       (is (= (create-job default-request) {:status  400
                                                            :headers {"Content-Type" "application/json"}
                                                            :body "{\"status\":\"error\",\"command\":\"create_job\",\"message\":\"invalid input: branch not specified\"}"})))))
@@ -601,4 +600,19 @@
                       (is (= (create-job default-request) {:status  400
                                                            :headers {"Content-Type" "application/json"}
                                                            :body "{\"status\":\"error\",\"command\":\"create_job\",\"message\":\"invalid or missing input\"}"})))))
+
+(deftest test-create-existing-job
+    "Check the function emender-jenkins.rest-api/create-job."
+    (testing "the function emender-jenkins.rest-api/create-job."
+        (with-redefs [jenkins-api/create-job (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name git-repo branch credentials-id metadata-directory metadata]
+                                                 (jenkins-api/ok-response-structure job-name "create_job" include-jenkins-reply? "created"))
+                      jenkins-api/start-job  (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name]
+                                                 (jenkins-api/ok-response-structure job-name "build" include-jenkins-reply? "added to queue"))
+                      read-request-body      (fn [request] nil)
+                      results/job-exists?    (fn [job-name] true)
+                      reload-job-list        (fn [response request] response)
+                      send-error-response    (fn [response request http-code] response)]
+                      (is (= (create-job default-request) {:status  "error"
+                                                           :command "create_job"
+                                                           :message "invalid or missing input"})))))
 
