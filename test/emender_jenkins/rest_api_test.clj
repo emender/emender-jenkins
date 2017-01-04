@@ -491,6 +491,9 @@
 (def create-job-postdata-invalid-metadata-2
     "{\"name\":\"test-Test_Product-1.0-Test_Book-en-US (preview)\", \"branch\":\"master\"}")
 
+(def create-job-postdata-invalid-metadata-3
+    "{\"name\":\"test-Test_Product-1.0-Test_Book-en-US (preview)\", \"ssh_url_to_repo\":\"https://url-to-repo.git\"}")
+
 (def default-request
     {:configuration
         {:jobs
@@ -568,6 +571,22 @@
                       (is (= (create-job default-request) {:status  400
                                                            :headers {"Content-Type" "application/json"}
                                                            :body "{\"status\":\"error\",\"command\":\"create_job\",\"message\":\"invalid input: git repo not specified\"}"})))))
+
+(deftest test-create-job-invalid-metadata-3
+    "Check the function emender-jenkins.rest-api/create-job."
+    (testing "the function emender-jenkins.rest-api/create-job."
+        (with-redefs [jenkins-api/create-job (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name git-repo branch credentials-id metadata-directory metadata]
+                                                 (jenkins-api/ok-response-structure job-name "create_job" include-jenkins-reply? "created"))
+                      jenkins-api/start-job  (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name]
+                                                 (jenkins-api/ok-response-structure job-name "build" include-jenkins-reply? "added to queue"))
+                      read-request-body      (fn [request] create-job-postdata-invalid-metadata-3)
+                      reload-job-list        (fn [response request] response)
+                      send-response          (fn [response request] response)]
+                      (println create-job-postdata-invalid-metadata-3)
+                      (println (body->results create-job-postdata-invalid-metadata-3))
+                      (is (= (create-job default-request) {:status  400
+                                                           :headers {"Content-Type" "application/json"}
+                                                           :body "{\"status\":\"error\",\"command\":\"create_job\",\"message\":\"invalid input: branch not specified\"}"})))))
 
 (deftest test-create-job-NPE
     "Check the function emender-jenkins.rest-api/create-job."
