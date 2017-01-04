@@ -285,14 +285,20 @@
                     (-> (job-already-exist-response job-name :create-job)
                         (send-error-response request :bad-request))
                     (if (job-metadata-ok? job-name git-repo branch)
-                        (-> (jenkins-api/create-job (config/get-jenkins-url request)
-                                                    (config/get-jenkins-auth request)
-                                                    (config/include-jenkins-reply? request)
-                                                    job-name git-repo branch
-                                                    (config/get-credentials-id request)
-                                                    metadata-directory metadata)
-                            (reload-job-list request)
-                            (send-response request))
+                        (let [response
+                            (-> (jenkins-api/create-job (config/get-jenkins-url request)
+                                                        (config/get-jenkins-auth request)
+                                                        (config/include-jenkins-reply? request)
+                                                        job-name git-repo branch
+                                                        (config/get-credentials-id request)
+                                                        metadata-directory metadata))]
+                            (-> (jenkins-api/start-job  (config/get-jenkins-url request)
+                                                        (config/get-jenkins-auth request)
+                                                        (config/include-jenkins-reply? request)
+                                                        job-name))
+                            (-> response
+                                (reload-job-list request)
+                                (send-response request)))
                         (send-job-invalid-metadata-response request :create-job (job-invalid-input job-name git-repo branch))))
                 (send-wrong-job-name-response request job-name :create-job)))
         (catch Exception e
