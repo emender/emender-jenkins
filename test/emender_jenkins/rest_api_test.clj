@@ -608,11 +608,13 @@
                                                  (jenkins-api/ok-response-structure job-name "create_job" include-jenkins-reply? "created"))
                       jenkins-api/start-job  (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name]
                                                  (jenkins-api/ok-response-structure job-name "build" include-jenkins-reply? "added to queue"))
-                      read-request-body      (fn [request] nil)
+                      read-request-body      (fn [request] create-job-postdata)
                       results/job-exists?    (fn [job-name] true)
                       reload-job-list        (fn [response request] response)
+                      send-response          (fn [response request] response)
                       send-error-response    (fn [response request http-code] response)]
                       (is (= (create-job default-request) {:status  "error"
                                                            :command "create_job"
-                                                           :message "invalid or missing input"})))))
+                                                           :jobName "test-Test_Product-1.0-Test_Book-en-US (preview)"
+                                                           :message "Job already exist"})))))
 
