@@ -451,7 +451,7 @@
     "Construct URL used to read all jobs that are currently building."
     [request]
     (let [jenkins-url   (config/get-jenkins-url request)
-          view          (config/get-currently-building-view request)
+          view          "Queue";(config/get-currently-building-view request)
           ]
           (str jenkins-url "view/" view "/")))
 
@@ -528,8 +528,30 @@
              (-> (create-bad-request-response "jobs_in_queue" "Can not read Jenkins queue")
                  (send-error-response request :internal-server-error))))
 
+(defn prepare-jobs-in-queue
+    [jobs-in-queue]
+    (map #(assoc % "state" "QUEUED") (create-jobs-in-queue-response jobs-in-queue)))
+
+(defn prepare-building-jobs
+    [building-jobs]
+    (for [building-job building-jobs]
+        {"state" "BUILDING"
+         "jobName" (get building-job "name")}))
+
+(defn create-running-jobs-response
+    [jobs-in-queue building-jobs]
+    (concat
+        (prepare-jobs-in-queue jobs-in-queue)
+        (prepare-building-jobs building-jobs)))
+
 (defn get-running-jobs
     "Get (and return) all jobs that are in Jenkins queue or that are currently building."
     [request]
-)
+    (let [jobs-in-queue (read-jobs-in-queue request)
+          building-jobs (read-currently-building-jobs request)]
+          (if (and jobs-in-queue building-jobs)
+             (-> (create-running-jobs-response jobs-in-queue building-jobs)
+                 (send-response request))
+             (-> (create-bad-request-response "running_jobs" "Can not read Jenkins queue and/or selected view")
+                 (send-error-response request :internal-server-error)))))
 
