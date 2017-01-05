@@ -151,7 +151,7 @@ Create new job
 
     /api/create_job
 
-Creates new jenkins job
+Creates new jenkins job and starts its build immediately (the job is added into the build queue).
 
 Method: +POST+
 

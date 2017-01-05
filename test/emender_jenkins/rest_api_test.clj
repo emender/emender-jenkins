@@ -12,7 +12,9 @@
 
 (ns emender-jenkins.rest-api-test
   (:require [clojure.test :refer :all]
-            [emender-jenkins.rest-api :refer :all]))
+            [emender-jenkins.rest-api :refer :all]
+            [emender-jenkins.results  :as results]
+            [clj-jenkins-api.jenkins-api :as jenkins-api]))
 
 ;
 ; Common functions used by tests.
@@ -474,4 +476,145 @@
                 (is (= (system-banners request "/api/system/xxx")
                     nil
                     ))))))
+
+(def create-job-postdata
+    "{\"name\":\"test-Test_Product-1.0-Test_Book-en-US (preview)\", \"ssh_url_to_repo\":\"https://url-to-repo.git\", \"branch\":\"master\"}")
+
+(def create-job-postdata-bad-job-name-1
+    "{\"name\":\"xxx-Test_Product-1.0-Test_Book-en-US (preview)\", \"ssh_url_to_repo\":\"https://url-to-repo.git\", \"branch\":\"master\"}")
+
+(def create-job-postdata-bad-job-name-2
+    "{\"name\":\"test-Test_Product-1.0-Test_Book-en-US\", \"ssh_url_to_repo\":\"https://url-to-repo.git\", \"branch\":\"master\"}")
+
+(def create-job-postdata-invalid-metadata-1
+    "{\"ssh_url_to_repo\":\"https://url-to-repo.git\", \"branch\":\"master\"}")
+
+(def create-job-postdata-invalid-metadata-2
+    "{\"name\":\"test-Test_Product-1.0-Test_Book-en-US (preview)\", \"branch\":\"master\"}")
+
+(def create-job-postdata-invalid-metadata-3
+    "{\"name\":\"test-Test_Product-1.0-Test_Book-en-US (preview)\", \"ssh_url_to_repo\":\"https://url-to-repo.git\"}")
+
+(def default-request
+    {:configuration
+        {:jobs
+            {:preview-test-jobs-suffix "(preview)"
+             :stage-test-jobs-suffix   "(stage)"
+             :prod-test-jobs-suffix    "(prod)"
+             :test-jobs-prefix         "test-"}}})
+
+(deftest test-create-job
+    "Check the function emender-jenkins.rest-api/create-job."
+    (testing "the function emender-jenkins.rest-api/create-job."
+        (with-redefs [jenkins-api/create-job (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name git-repo branch credentials-id metadata-directory metadata]
+                                                 (jenkins-api/ok-response-structure job-name "create_job" include-jenkins-reply? "created"))
+                      jenkins-api/start-job  (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name]
+                                                 (jenkins-api/ok-response-structure job-name "build" include-jenkins-reply? "added to queue"))
+                      read-request-body      (fn [request] create-job-postdata)
+                      reload-job-list        (fn [response request] response)
+                      send-response          (fn [response request] response)]
+                      (is (= (create-job default-request) {:status  "ok"
+                                                           :jobName "test-Test_Product-1.0-Test_Book-en-US (preview)"
+                                                           :command "create_job"})))))
+
+(deftest test-create-job-bad-job-name-1
+    "Check the function emender-jenkins.rest-api/create-job."
+    (testing "the function emender-jenkins.rest-api/create-job."
+        (with-redefs [jenkins-api/create-job (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name git-repo branch credentials-id metadata-directory metadata]
+                                                 (jenkins-api/ok-response-structure job-name "create_job" include-jenkins-reply? "created"))
+                      jenkins-api/start-job  (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name]
+                                                 (jenkins-api/ok-response-structure job-name "build" include-jenkins-reply? "added to queue"))
+                      read-request-body      (fn [request] create-job-postdata-bad-job-name-1)
+                      reload-job-list        (fn [response request] response)
+                      send-response          (fn [response request] response)]
+                      (is (= (create-job default-request) {:status  400
+                                                           :headers {"Content-Type" "application/json"}
+                                                           :body "{\"status\":\"error\",\"jobName\":\"xxx-Test_Product-1.0-Test_Book-en-US (preview)\",\"command\":\"create_job\",\"message\":\"The name of job is wrong\"}"})))))
+
+(deftest test-create-job-bad-job-name-2
+    "Check the function emender-jenkins.rest-api/create-job."
+    (testing "the function emender-jenkins.rest-api/create-job."
+        (with-redefs [jenkins-api/create-job (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name git-repo branch credentials-id metadata-directory metadata]
+                                                 (jenkins-api/ok-response-structure job-name "create_job" include-jenkins-reply? "created"))
+                      jenkins-api/start-job  (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name]
+                                                 (jenkins-api/ok-response-structure job-name "build" include-jenkins-reply? "added to queue"))
+                      read-request-body      (fn [request] create-job-postdata-bad-job-name-2)
+                      reload-job-list        (fn [response request] response)
+                      send-response          (fn [response request] response)]
+                      (is (= (create-job default-request) {:status  400
+                                                           :headers {"Content-Type" "application/json"}
+                                                           :body "{\"status\":\"error\",\"jobName\":\"test-Test_Product-1.0-Test_Book-en-US\",\"command\":\"create_job\",\"message\":\"The name of job is wrong\"}"})))))
+
+(deftest test-create-job-invalid-metadata-1
+    "Check the function emender-jenkins.rest-api/create-job."
+    (testing "the function emender-jenkins.rest-api/create-job."
+        (with-redefs [jenkins-api/create-job (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name git-repo branch credentials-id metadata-directory metadata]
+                                                 (jenkins-api/ok-response-structure job-name "create_job" include-jenkins-reply? "created"))
+                      jenkins-api/start-job  (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name]
+                                                 (jenkins-api/ok-response-structure job-name "build" include-jenkins-reply? "added to queue"))
+                      read-request-body      (fn [request] create-job-postdata-invalid-metadata-1)
+                      reload-job-list        (fn [response request] response)
+                      send-response          (fn [response request] response)]
+                      (is (= (create-job default-request) {:status  400
+                                                           :headers {"Content-Type" "application/json"}
+                                                           :body "{\"status\":\"error\",\"command\":\"create_job\",\"message\":\"invalid or missing input\"}"})))))
+
+(deftest test-create-job-invalid-metadata-2
+    "Check the function emender-jenkins.rest-api/create-job."
+    (testing "the function emender-jenkins.rest-api/create-job."
+        (with-redefs [jenkins-api/create-job (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name git-repo branch credentials-id metadata-directory metadata]
+                                                 (jenkins-api/ok-response-structure job-name "create_job" include-jenkins-reply? "created"))
+                      jenkins-api/start-job  (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name]
+                                                 (jenkins-api/ok-response-structure job-name "build" include-jenkins-reply? "added to queue"))
+                      read-request-body      (fn [request] create-job-postdata-invalid-metadata-2)
+                      reload-job-list        (fn [response request] response)
+                      send-response          (fn [response request] response)]
+                      (is (= (create-job default-request) {:status  400
+                                                           :headers {"Content-Type" "application/json"}
+                                                           :body "{\"status\":\"error\",\"command\":\"create_job\",\"message\":\"invalid input: git repo not specified\"}"})))))
+
+(deftest test-create-job-invalid-metadata-3
+    "Check the function emender-jenkins.rest-api/create-job."
+    (testing "the function emender-jenkins.rest-api/create-job."
+        (with-redefs [jenkins-api/create-job (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name git-repo branch credentials-id metadata-directory metadata]
+                                                 (jenkins-api/ok-response-structure job-name "create_job" include-jenkins-reply? "created"))
+                      jenkins-api/start-job  (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name]
+                                                 (jenkins-api/ok-response-structure job-name "build" include-jenkins-reply? "added to queue"))
+                      read-request-body      (fn [request] create-job-postdata-invalid-metadata-3)
+                      reload-job-list        (fn [response request] response)
+                      send-response          (fn [response request] response)]
+                      (is (= (create-job default-request) {:status  400
+                                                           :headers {"Content-Type" "application/json"}
+                                                           :body "{\"status\":\"error\",\"command\":\"create_job\",\"message\":\"invalid input: branch not specified\"}"})))))
+
+(deftest test-create-job-NPE
+    "Check the function emender-jenkins.rest-api/create-job."
+    (testing "the function emender-jenkins.rest-api/create-job."
+        (with-redefs [jenkins-api/create-job (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name git-repo branch credentials-id metadata-directory metadata]
+                                                 (jenkins-api/ok-response-structure job-name "create_job" include-jenkins-reply? "created"))
+                      jenkins-api/start-job  (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name]
+                                                 (jenkins-api/ok-response-structure job-name "build" include-jenkins-reply? "added to queue"))
+                      read-request-body      (fn [request] nil)
+                      reload-job-list        (fn [response request] response)
+                      send-response          (fn [response request] response)]
+                      (is (= (create-job default-request) {:status  400
+                                                           :headers {"Content-Type" "application/json"}
+                                                           :body "{\"status\":\"error\",\"command\":\"create_job\",\"message\":\"invalid or missing input\"}"})))))
+
+(deftest test-create-existing-job
+    "Check the function emender-jenkins.rest-api/create-job."
+    (testing "the function emender-jenkins.rest-api/create-job."
+        (with-redefs [jenkins-api/create-job (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name git-repo branch credentials-id metadata-directory metadata]
+                                                 (jenkins-api/ok-response-structure job-name "create_job" include-jenkins-reply? "created"))
+                      jenkins-api/start-job  (fn [jenkins-url jenkins-auth include-jenkins-reply? job-name]
+                                                 (jenkins-api/ok-response-structure job-name "build" include-jenkins-reply? "added to queue"))
+                      read-request-body      (fn [request] create-job-postdata)
+                      results/job-exists?    (fn [job-name] true)
+                      reload-job-list        (fn [response request] response)
+                      send-response          (fn [response request] response)
+                      send-error-response    (fn [response request http-code] response)]
+                      (is (= (create-job default-request) {:status  "error"
+                                                           :command "create_job"
+                                                           :jobName "test-Test_Product-1.0-Test_Book-en-US (preview)"
+                                                           :message "Job already exist"})))))
 
