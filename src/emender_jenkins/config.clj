@@ -107,6 +107,11 @@
     [request]
     (-> request :configuration :jenkins :currently-building-view))
 
+(defn get-in-queue-url
+    "URL for Jenkins REST API"
+    [request]
+    (-> request :configuration :jenkins :in-queue-url))
+
 (defn pretty-print?
     "Read the pretty-print settings (it is used for JSON output etc.)"
     [request]
