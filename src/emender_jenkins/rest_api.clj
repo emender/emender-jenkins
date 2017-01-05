@@ -447,3 +447,49 @@
         (-> (http-response/response output)
             (http-response/content-type mime-type))))
 
+(defn get-running-jobs
+    [request]
+)
+
+(defn get-currently-building-jobs
+    [request]
+)
+
+(defn get-job-name-from-queue-info
+    "Read job name from the structure about one item in Jenkins build queue."
+    [job-info]
+    (-> job-info (get "task") (get "name")))
+
+(defn jobs-in-queue-url
+    "Construct URL used to read all jobs that are put into Jenkins build queue."
+    [request]
+    (let [jenkins-url   (config/get-jenkins-url request)
+          job-list-part (config/get-in-queue-url request)]
+          (str jenkins-url job-list-part)))
+
+(defn read-queue-info
+    "Read info about queue via Jenkins REST API."
+    [url]
+    (try
+        (-> (jenkins-api/get-command url)
+            json/read-str
+            (get "items"))
+        (catch Exception e
+            (log/error (.getMessage e))
+            nil)))
+
+(defn get-jobs-in-queue
+    [request]
+    (let [url   (jobs-in-queue-url request)
+          items (read-queue-info url)]
+          (if items
+              (let [job-names (map get-job-name-from-queue-info items)
+                    queue-pos (range 1 (count items))
+                    output
+                    (for [[q-pos job-name] (zipmap queue-pos job-names)]
+                       {"queuePos" q-pos
+                        "jobName"  job-name})]
+                        (send-response output request))
+              (-> (create-bad-request-response "jobs_in_queue" "Can not read Jenkins queue")
+                  (send-error-response request :internal-server-error)))))
+
