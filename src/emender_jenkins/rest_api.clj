@@ -451,9 +451,38 @@
     [request]
 )
 
-(defn get-currently-building-jobs
+(defn building-jobs-url
+    "Construct URL used to read all jobs that are currently building."
     [request]
-)
+    (let [jenkins-url   (config/get-jenkins-url request)
+          view          "Queue";(config/get-currently-building-view request)
+          ]
+          (str jenkins-url "view/" view "/")))
+
+(defn read-building-jobs
+    "Read info about building jobs via Jenkins REST API."
+    [url job-list-part]
+    (try
+        (jenkins-api/read-list-of-all-jobs url job-list-part)
+        (catch Exception e
+            (log/error (.getMessage e))
+            nil)))
+
+(defn create-currently-building-jobs-response
+    [jobs]
+    (map #(get % "name") jobs))
+
+(defn get-currently-building-jobs
+    "Get (and return) all jobs that are currently building."
+    [request]
+    (let [url           (building-jobs-url request)
+          job-list-part (config/get-job-list-url request)
+          jobs          (read-building-jobs url job-list-part)]
+          (if jobs
+              (-> (create-currently-building-jobs-response jobs)
+                  (send-response request))
+              (-> (create-bad-request-response "currently_building_jobs" "Can not read Jenkins view")
+                  (send-error-response request :internal-server-error)))))
 
 (defn get-job-name-from-queue-info
     "Read job name from the structure about one item in Jenkins build queue."
