@@ -478,18 +478,22 @@
             (log/error (.getMessage e))
             nil)))
 
+(defn create-jobs-in-queue-response
+    [items]
+    (let [job-names       (map get-job-name-from-queue-info items) ; items are sorted properly!
+          queue-positions (range 1 (count items))]                 ; we need to have index assigned to each item in queue
+          (for [[queue-position job-name] (zipmap queue-positions job-names)]
+             {"queuePos" queue-position
+              "jobName"  job-name})))
+
 (defn get-jobs-in-queue
+    "Get (and return) all jobs that are in Jenkins queue."
     [request]
     (let [url   (jobs-in-queue-url request)
           items (read-queue-info url)]
           (if items
-              (let [job-names (map get-job-name-from-queue-info items)
-                    queue-pos (range 1 (count items))
-                    output
-                    (for [[q-pos job-name] (zipmap queue-pos job-names)]
-                       {"queuePos" q-pos
-                        "jobName"  job-name})]
-                        (send-response output request))
+              (-> (create-jobs-in-queue-response items)
+                  (send-response request))
               (-> (create-bad-request-response "jobs_in_queue" "Can not read Jenkins queue")
                   (send-error-response request :internal-server-error)))))
 
