@@ -86,7 +86,7 @@
             [:get  "get_job_results"]       (rest-api/get-job-results        request uri)
             [:get  "running_jobs"]          (rest-api/get-running-jobs       request)
             [:get  "jobs_in_queue"]         (rest-api/get-jobs-in-queue      request)
-            [:get  "currenty_building_jobs"](rest-api/get-currently-building-jobs request)
+            [:get  "currently_building_jobs"](rest-api/get-currently-building-jobs request)
             [:post "job_started"]           (rest-api/job-started-handler    request)
             [:post "job_finished"]          (rest-api/job-finished-handler   request)
             [:post "job_results"]           (rest-api/job-results            request)

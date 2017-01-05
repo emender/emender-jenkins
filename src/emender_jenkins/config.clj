@@ -97,6 +97,10 @@
     [request]
     (-> request :configuration :jenkins :jenkins-auth))
 
+(defn get-job-list-url
+    [request]
+    (-> request :configuration :jenkins :jenkins-job-list-url))
+
 (defn get-in-queue-view
     "Read name of view that contains list of builds added into queue."
     [request]
