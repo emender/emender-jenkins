@@ -680,3 +680,8 @@
                   "userRemoteConfigs"
                   [{"url" "git@git.domain.name:example-documentation/guide.git"}]}}]))))
 
+(deftest test-read-building-jobs-from-jenkins-exception-catching
+    "Check the function emender-jenkins.rest-api/read-building-jobs-from-jenkins."
+    (with-redefs [jenkins-api/read-list-of-all-jobs (fn [url job-list-part] (throw (new Exception "Exception!")))]
+        (is (= (read-building-jobs-from-jenkins "url" "job-list-part") nil))))
+
