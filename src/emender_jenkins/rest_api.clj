@@ -451,7 +451,7 @@
     "Construct URL used to read all jobs that are currently building."
     [request]
     (let [jenkins-url   (config/get-jenkins-url request)
-          view          "Queue";(config/get-currently-building-view request)
+          view          (config/get-currently-building-view request)
           ]
           (str jenkins-url "view/" view "/")))
 
@@ -509,7 +509,7 @@
 (defn create-jobs-in-queue-response
     [items]
     (let [job-names       (map get-job-name-from-queue-info items) ; items are sorted properly!
-          queue-positions (range 1 (count items))]                 ; we need to have index assigned to each item in queue
+          queue-positions (range 1 (inc (count items)))]                 ; we need to have index assigned to each item in queue
           (for [[queue-position job-name] (zipmap queue-positions job-names)]
              {"queuePos" queue-position
               "jobName"  job-name})))
