@@ -724,3 +724,25 @@
                   "userRemoteConfigs"
                   [{"url" "git@git.domain.name:example-documentation/guide.git"}]}}])))))
 
+(deftest test-get-currently-building-jobs
+    "Check the function emender-jenkins.rest-api/get-currently-building-jobs."
+    (testing "the function emender-jenkins.rest-api/get-currently-building-jobs."
+    (with-redefs [jenkins-api/get-command (fn [all-jobs-url] building-jobs-jenkins-response)
+                  send-response (fn [response request] response)]
+        (let [request {:configuration {:jenkins {:currently-building-view "Building"
+                                                 :jenkins-url "http://10.20.30.40:8080/"}}}]
+             (is (= (get-currently-building-jobs request)
+                    ["test-Example_Documentation-1.0-Guide-en-US (preview)" "test-Example_Documentation-1.0-Guide-en-US (stage)"]))))))
+
+(deftest test-get-currently-building-jobs-negative
+    "Check the function emender-jenkins.rest-api/get-currently-building-jobs."
+    (testing "the function emender-jenkins.rest-api/get-currently-building-jobs."
+    (with-redefs [jenkins-api/read-list-of-all-jobs (fn [url job-part] nil)
+                  send-error-response (fn [response request http-code] response)]
+        (let [request {:configuration {:jenkins {:currently-building-view "Building"
+                                                 :jenkins-url "http://10.20.30.40:8080/"}}}]
+             (is (= (get-currently-building-jobs request)
+                    {:status  "error"
+                     :command "currently_building_jobs"
+                     :message "Can not read Jenkins view"}))))))
+
