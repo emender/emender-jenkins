@@ -691,3 +691,36 @@
         (is (= (create-currently-building-jobs-response (read-building-jobs-from-jenkins "url" "job-list-part"))
                ["test-Example_Documentation-1.0-Guide-en-US (preview)" "test-Example_Documentation-1.0-Guide-en-US (stage)"]))))
 
+(deftest test-read-currently-building-jobs
+    "Check the function emender-jenkins.rest-api/read-building-jobs-from-jenkins."
+    (with-redefs [jenkins-api/get-command (fn [all-jobs-url] building-jobs-jenkins-response)]
+        (let [request {:configuration {:jenkins {:currently-building-view "Building"
+                                             :jenkins-url "http://10.20.30.40:8080/"}}}]
+            (is (= (read-currently-building-jobs request)
+               [{"_class" "hudson.model.FreeStyleProject",
+                 "name" "test-Example_Documentation-1.0-Guide-en-US (preview)",
+                 "url"
+                 "http://10.20.30.40:8080/job/test-Example_Documentation-1.0-Guide-en-US%20(preview)/",
+                 "buildable" true,
+                 "color" "yellow_anime",
+                 "lastSuccessfulBuild"
+                 {"_class" "hudson.model.FreeStyleBuild",
+                  "description" "Total: 4  Passed: 1  Failed: 3"},
+                  "scm"
+                 {"_class" "hudson.plugins.git.GitSCM",
+                  "userRemoteConfigs"
+                  [{"url" "git@git.domain.name:example-documentation/guide.git"}]}}
+                {"_class" "hudson.model.FreeStyleProject",
+                 "name" "test-Example_Documentation-1.0-Guide-en-US (stage)",
+                 "url"
+                 "http://10.20.30.40:8080/job/test-Example_Documentation-1.0-Guide-en-US%20(stage)/",
+                 "buildable" true,
+                 "color" "yellow_anime",
+                 "lastSuccessfulBuild"
+                 {"_class" "hudson.model.FreeStyleBuild",
+                  "description" "Total: 4  Passed: 1  Failed: 3"},
+                 "scm"
+                 {"_class" "hudson.plugins.git.GitSCM",
+                  "userRemoteConfigs"
+                  [{"url" "git@git.domain.name:example-documentation/guide.git"}]}}])))))
+
