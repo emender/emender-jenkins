@@ -496,8 +496,8 @@
             (get-started-on-ms {:configuration nil})               nil)))
 
 (deftest test-get-in-queue-view-1
-    "Check the behaviour of function emender-jenkins.config/get-in-queue."
-    (testing "the behaviour of function emender-jenkins.config/get-in-queue."
+    "Check the behaviour of function emender-jenkins.config/get-in-queue-view."
+    (testing "the behaviour of function emender-jenkins.config/get-in-queue-view."
         (are [x y] (= x y)
             (get-in-queue-view {:configuration {:jenkins {:in-queue-view nil}}}) nil
             (get-in-queue-view {:configuration {:jenkins {:in-queue-view false}}}) false
@@ -505,8 +505,8 @@
             (get-in-queue-view {:configuration {:jenkins {:in-queue-view "Queue"}}}) "Queue")))
 
 (deftest test-get-in-queue-view-2
-    "Check the behaviour of function emender-jenkins.config/get-in-queue."
-    (testing "the behaviour of function emender-jenkins.config/get-in-queue."
+    "Check the behaviour of function emender-jenkins.config/get-in-queue-view."
+    (testing "the behaviour of function emender-jenkins.config/get-in-queue-view."
         (are [x y] (= x y)
             (get-in-queue-view {:configuration {:jenkins {:in-queue-view nil}}}) nil
             (get-in-queue-view {:configuration {:jenkins nil}})                  nil
@@ -528,6 +528,23 @@
             (get-currently-building-view {:configuration {:jenkins {:currently-building-view nil}}}) nil
             (get-currently-building-view {:configuration {:jenkins nil}})                            nil
             (get-currently-building-view {:configuration nil})                                       nil)))
+
+(deftest test-get-in-queue-url-1
+    "Check the behaviour of function emender-jenkins.config/get-in-queue-url."
+    (testing "the behaviour of function emender-jenkins.config/get-in-queue-url."
+        (are [x y] (= x y)
+            (get-in-queue-url {:configuration {:jenkins {:in-queue-url nil}}}) nil
+            (get-in-queue-url {:configuration {:jenkins {:in-queue-url false}}}) false
+            (get-in-queue-url {:configuration {:jenkins {:in-queue-url true}}}) true
+            (get-in-queue-url {:configuration {:jenkins {:in-queue-url "Queue"}}}) "Queue")))
+
+(deftest test-get-in-queue-url-2
+    "Check the behaviour of function emender-jenkins.config/get-in-queue-url."
+    (testing "the behaviour of function emender-jenkins.config/get-in-queue-url."
+        (are [x y] (= x y)
+            (get-in-queue-url {:configuration {:jenkins {:in-queue-url nil}}}) nil
+            (get-in-queue-url {:configuration {:jenkins nil}})                 nil
+            (get-in-queue-url {:configuration nil})                            nil)))
 
 (deftest test-override-options-by-cli-1
     "Check the behaviour of function emender-jenkins.config/override-options-by-cli."
