@@ -536,7 +536,7 @@
             (get-currently-building-view {:configuration {:jenkins {:currently-building-view nil}}}) nil
             (get-currently-building-view {:configuration {:jenkins {:currently-building-view false}}}) false
             (get-currently-building-view {:configuration {:jenkins {:currently-building-view true}}}) true
-            (get-currently-building-view {:configuration {:jenkins {:currently-building-view "Queue"}}}) "Queue")))
+            (get-currently-building-view {:configuration {:jenkins {:currently-building-view "Building"}}}) "Building")))
 
 (deftest test-get-currently-building-view-2
     "Check the behaviour of function emender-jenkins.config/get-currently-building-view."
