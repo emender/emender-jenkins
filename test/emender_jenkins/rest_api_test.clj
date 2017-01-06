@@ -643,12 +643,55 @@
 
 
 (def building-jobs-jenkins-response
-    (str
-    "{\"_class\":\"hudson.model.ListView\","
-    "\"jobs\":["
-        "{\"_class\":\"hudson.model.FreeStyleProject\",\"name\":\"test-Example_Documentation-1.0-Guide-en-US (preview)\",\"url\":\"http://10.20.30.40:8080/job/test-Example_Documentation-1.0-Guide-en-US%20(preview)/\",\"buildable\":true,\"color\":\"yellow_anime\",\"lastSuccessfulBuild\":{\"_class\":\"hudson.model.FreeStyleBuild\",\"description\":\"Total: 4  Passed: 1  Failed: 3\"},\"scm\":{\"_class\":\"hudson.plugins.git.GitSCM\",\"userRemoteConfigs\":[{\"url\":\"git@git.domain.name:example-documentation/guide.git\"}]}},"
-        "{\"_class\":\"hudson.model.FreeStyleProject\",\"name\":\"test-Example_Documentation-1.0-Guide-en-US (stage)\",\"url\":\"http://10.20.30.40:8080/job/test-Example_Documentation-1.0-Guide-en-US%20(stage)/\",\"buildable\":true,\"color\":\"yellow_anime\",\"lastSuccessfulBuild\":{\"_class\":\"hudson.model.FreeStyleBuild\",\"description\":\"Total: 4  Passed: 1  Failed: 3\"},\"scm\":{\"_class\":\"hudson.plugins.git.GitSCM\",\"userRemoteConfigs\":[{\"url\":\"git@git.domain.name:example-documentation/guide.git\"}]}}"
-        "]}"))
+    (str "{\"_class\":\"hudson.model.ListView\","
+          "\"jobs\":["
+          "{\"_class\":\"hudson.model.FreeStyleProject\",\"name\":\"test-Example_Documentation-1.0-Guide-en-US (preview)\",\"url\":\"http://10.20.30.40:8080/job/test-Example_Documentation-1.0-Guide-en-US%20(preview)/\",\"buildable\":true,\"color\":\"yellow_anime\",\"lastSuccessfulBuild\":{\"_class\":\"hudson.model.FreeStyleBuild\",\"description\":\"Total: 4  Passed: 1  Failed: 3\"},\"scm\":{\"_class\":\"hudson.plugins.git.GitSCM\",\"userRemoteConfigs\":[{\"url\":\"git@git.domain.name:example-documentation/guide.git\"}]}},"
+          "{\"_class\":\"hudson.model.FreeStyleProject\",\"name\":\"test-Example_Documentation-1.0-Guide-en-US (stage)\",\"url\":\"http://10.20.30.40:8080/job/test-Example_Documentation-1.0-Guide-en-US%20(stage)/\",\"buildable\":true,\"color\":\"yellow_anime\",\"lastSuccessfulBuild\":{\"_class\":\"hudson.model.FreeStyleBuild\",\"description\":\"Total: 4  Passed: 1  Failed: 3\"},\"scm\":{\"_class\":\"hudson.plugins.git.GitSCM\",\"userRemoteConfigs\":[{\"url\":\"git@git.domain.name:example-documentation/guide.git\"}]}}"
+          "]}"))
+
+(def jobs-in-queue-jenkins-response
+    (str "{\"_class\":\"hudson.model.Queue\","
+          "\"items\":["
+             "{\"_class\":\"hudson.model.Queue$BlockedItem\",\"task\":{\"_class\":\"hudson.model.FreeStyleProject\",\"name\":\"test-Example_Documentation-1.0-Guide-en-US (preview)\"}}"
+             "{\"_class\":\"hudson.model.Queue$BlockedItem\",\"task\":{\"_class\":\"hudson.model.FreeStyleProject\",\"name\":\"test-Example_Documentation-1.0-Guide-en-US (stage)  \"}}"
+         "]}"))
+
+(def read-currently-building-jobs-expected-result
+   [{"_class" "hudson.model.FreeStyleProject",
+     "name" "test-Example_Documentation-1.0-Guide-en-US (preview)",
+     "url"
+     "http://10.20.30.40:8080/job/test-Example_Documentation-1.0-Guide-en-US%20(preview)/",
+     "buildable" true,
+     "color" "yellow_anime",
+     "lastSuccessfulBuild"
+     {"_class" "hudson.model.FreeStyleBuild",
+      "description" "Total: 4  Passed: 1  Failed: 3"},
+      "scm"
+     {"_class" "hudson.plugins.git.GitSCM",
+      "userRemoteConfigs"
+      [{"url" "git@git.domain.name:example-documentation/guide.git"}]}}
+    {"_class" "hudson.model.FreeStyleProject",
+     "name" "test-Example_Documentation-1.0-Guide-en-US (stage)",
+     "url"
+     "http://10.20.30.40:8080/job/test-Example_Documentation-1.0-Guide-en-US%20(stage)/",
+     "buildable" true,
+     "color" "yellow_anime",
+     "lastSuccessfulBuild"
+     {"_class" "hudson.model.FreeStyleBuild",
+      "description" "Total: 4  Passed: 1  Failed: 3"},
+     "scm"
+     {"_class" "hudson.plugins.git.GitSCM",
+      "userRemoteConfigs"
+      [{"url" "git@git.domain.name:example-documentation/guide.git"}]}}])
+
+(deftest test-read-queue-info-from-jenkins
+    "Check the function emender-jenkins.rest-api/read-queue-info-from-jenkins."
+    (testing "the function emender-jenkins.rest-api/read-queue-info-from-jenkins."
+    (with-redefs [jenkins-api/get-command (fn [url] jobs-in-queue-jenkins-response)]
+        (is (= (read-queue-info-from-jenkins "url")
+             [{"_class" "hudson.model.Queue$BlockedItem" "task" {"_class" "hudson.model.FreeStyleProject" "name" "test-Example_Documentation-1.0-Guide-en-US (preview)"}}
+              {"_class" "hudson.model.Queue$BlockedItem" "task" {"_class" "hudson.model.FreeStyleProject" "name" "test-Example_Documentation-1.0-Guide-en-US (stage)  "}}]
+    )))))
 
 (deftest test-read-building-jobs-from-jenkins
     "Check the function emender-jenkins.rest-api/read-building-jobs-from-jenkins."
@@ -698,32 +741,7 @@
         (let [request {:configuration {:jenkins {:currently-building-view "Building"
                                              :jenkins-url "http://10.20.30.40:8080/"}}}]
             (is (= (read-currently-building-jobs request)
-               [{"_class" "hudson.model.FreeStyleProject",
-                 "name" "test-Example_Documentation-1.0-Guide-en-US (preview)",
-                 "url"
-                 "http://10.20.30.40:8080/job/test-Example_Documentation-1.0-Guide-en-US%20(preview)/",
-                 "buildable" true,
-                 "color" "yellow_anime",
-                 "lastSuccessfulBuild"
-                 {"_class" "hudson.model.FreeStyleBuild",
-                  "description" "Total: 4  Passed: 1  Failed: 3"},
-                  "scm"
-                 {"_class" "hudson.plugins.git.GitSCM",
-                  "userRemoteConfigs"
-                  [{"url" "git@git.domain.name:example-documentation/guide.git"}]}}
-                {"_class" "hudson.model.FreeStyleProject",
-                 "name" "test-Example_Documentation-1.0-Guide-en-US (stage)",
-                 "url"
-                 "http://10.20.30.40:8080/job/test-Example_Documentation-1.0-Guide-en-US%20(stage)/",
-                 "buildable" true,
-                 "color" "yellow_anime",
-                 "lastSuccessfulBuild"
-                 {"_class" "hudson.model.FreeStyleBuild",
-                  "description" "Total: 4  Passed: 1  Failed: 3"},
-                 "scm"
-                 {"_class" "hudson.plugins.git.GitSCM",
-                  "userRemoteConfigs"
-                  [{"url" "git@git.domain.name:example-documentation/guide.git"}]}}])))))
+                    read-currently-building-jobs-expected-result)))))
 
 (deftest test-get-currently-building-jobs
     "Check the function emender-jenkins.rest-api/get-currently-building-jobs."
@@ -747,21 +765,10 @@
                      :command "currently_building_jobs"
                      :message "Can not read Jenkins view"}))))))
 
-(def jobs-in-queue-jenkins-response
-    (str "{\"_class\":\"hudson.model.Queue\","
-          "\"items\":["
-             "{\"_class\":\"hudson.model.Queue$BlockedItem\",\"task\":{\"_class\":\"hudson.model.FreeStyleProject\",\"name\":\"test-Example_Documentation-1.0-Guide-en-US (preview)\"}}"
-             "{\"_class\":\"hudson.model.Queue$BlockedItem\",\"task\":{\"_class\":\"hudson.model.FreeStyleProject\",\"name\":\"test-Example_Documentation-1.0-Guide-en-US (stage)  \"}}"
-         "]}"))
-
-(deftest test-read-queue-info-from-jenkins
-    "Check the function emender-jenkins.rest-api/read-queue-info-from-jenkins."
-    (testing "the function emender-jenkins.rest-api/read-queue-info-from-jenkins."
-    (with-redefs [jenkins-api/get-command (fn [url] jobs-in-queue-jenkins-response)]
-        (is (= (read-queue-info-from-jenkins "url")
-             [{"_class" "hudson.model.Queue$BlockedItem" "task" {"_class" "hudson.model.FreeStyleProject" "name" "test-Example_Documentation-1.0-Guide-en-US (preview)"}}
-              {"_class" "hudson.model.Queue$BlockedItem" "task" {"_class" "hudson.model.FreeStyleProject" "name" "test-Example_Documentation-1.0-Guide-en-US (stage)  "}}]
-    )))))
+(def read-jobs-in-queue-expected-result
+    [{"_class" "hudson.model.Queue$BlockedItem" "task" {"_class" "hudson.model.FreeStyleProject" "name" "test-Example_Documentation-1.0-Guide-en-US (preview)"}}
+    {"_class" "hudson.model.Queue$BlockedItem" "task" {"_class" "hudson.model.FreeStyleProject" "name" "test-Example_Documentation-1.0-Guide-en-US (stage)  "}}]
+)
 
 (deftest test-read-queue-info-from-jenkins-negative
     "Check the function emender-jenkins.rest-api/read-queue-info-from-jenkins."
@@ -822,4 +829,66 @@
                     {:status  "error"
                      :command "jobs_in_queue"
                      :message "Can not read Jenkins queue"}))))))
+
+(deftest test-prepare-jobs-in-queue
+    "Check the function emender-jenkins.rest-api/prepare-jobs-in-queue."
+    (testing "the function emender-jenkins.rest-api/prepare-jobs-in-queue."
+        (let [items (-> (json/read-str jobs-in-queue-jenkins-response) (get "items"))]
+            (is (= (prepare-jobs-in-queue items)
+                   [{"queuePos" 1
+                     "jobName" "test-Example_Documentation-1.0-Guide-en-US (preview)"
+                     "state"   "QUEUED"}
+                    {"queuePos" 2
+                     "jobName" "test-Example_Documentation-1.0-Guide-en-US (stage)  "
+                     "state"   "QUEUED"}])))))
+
+(deftest test-prepare-building-jobs
+    "Check the function emender-jenkins.rest-api/prepare-building-jobs."
+    (testing "the function emender-jenkins.rest-api/prepare-building-jobs."
+    (with-redefs [jenkins-api/get-command (fn [all-jobs-url] building-jobs-jenkins-response)]
+        (let [request {:configuration {:jenkins {:currently-building-view "Building"
+                                             :jenkins-url "http://10.20.30.40:8080/"}}}]
+            (is (= (prepare-building-jobs (read-currently-building-jobs request))
+               [{"state"   "BUILDING"
+                 "jobName" "test-Example_Documentation-1.0-Guide-en-US (preview)"}
+                {"state"   "BUILDING"
+                 "jobName" "test-Example_Documentation-1.0-Guide-en-US (stage)"}]))))))
+
+(deftest test-create-running-jobs-response
+    "Check the function emender-jenkins.rest-api/create-running-jobs-response."
+    (testing "the function emender-jenkins.rest-api/create-running-jobs-response."
+    (with-redefs [jenkins-api/get-command (fn [all-jobs-url] building-jobs-jenkins-response)]
+        (let [request       {:configuration {:jenkins {:currently-building-view "Building"
+                                                      :jenkins-url "http://10.20.30.40:8080/"}}}
+              jobs-in-queue (-> (json/read-str jobs-in-queue-jenkins-response) (get "items"))
+              building-jobs (read-currently-building-jobs request)]
+            (is (= (create-running-jobs-response jobs-in-queue building-jobs)
+                  [{"queuePos" 1, "jobName" "test-Example_Documentation-1.0-Guide-en-US (preview)", "state" "QUEUED"}
+                   {"queuePos" 2, "jobName" "test-Example_Documentation-1.0-Guide-en-US (stage)  ", "state" "QUEUED"}
+                   {"state" "BUILDING", "jobName" "test-Example_Documentation-1.0-Guide-en-US (preview)"}
+                   {"state" "BUILDING", "jobName" "test-Example_Documentation-1.0-Guide-en-US (stage)"}]))))))
+
+(deftest test-get-running-jobs
+    "Check the function emender-jenkins.rest-api/get-running-jobs."
+    (testing "the function emender-jenkins.rest-api/get-running-jobs."
+    (with-redefs [read-jobs-in-queue           (fn [request] read-jobs-in-queue-expected-result)
+                  read-currently-building-jobs (fn [request] read-currently-building-jobs-expected-result)]
+        (let [request       {:configuration {:jenkins {:currently-building-view "Building"
+                                                      :jenkins-url "http://10.20.30.40:8080/"}}}]
+             (is (= (get-running-jobs request)
+                    {:status 200
+                     :headers {"Content-Type" "application/json"}
+                     :body "[{\"queuePos\":1,\"jobName\":\"test-Example_Documentation-1.0-Guide-en-US (preview)\",\"state\":\"QUEUED\"},{\"queuePos\":2,\"jobName\":\"test-Example_Documentation-1.0-Guide-en-US (stage)  \",\"state\":\"QUEUED\"},{\"state\":\"BUILDING\",\"jobName\":\"test-Example_Documentation-1.0-Guide-en-US (preview)\"},{\"state\":\"BUILDING\",\"jobName\":\"test-Example_Documentation-1.0-Guide-en-US (stage)\"}]"}))))))
+
+(deftest test-get-running-jobs-negative
+    "Check the function emender-jenkins.rest-api/get-running-jobs."
+    (testing "the function emender-jenkins.rest-api/get-running-jobs."
+    (with-redefs [read-jobs-in-queue           (fn [request] nil)
+                  read-currently-building-jobs (fn [request] nil)]
+        (let [request       {:configuration {:jenkins {:currently-building-view "Building"
+                                                      :jenkins-url "http://10.20.30.40:8080/"}}}]
+             (is (= (get-running-jobs request)
+                    {:status 500
+                     :headers {"Content-Type" "application/json"}
+                     :body "{\"status\":\"error\",\"command\":\"running_jobs\",\"message\":\"Can not read Jenkins queue and\\/or selected view\"}"}))))))
 
