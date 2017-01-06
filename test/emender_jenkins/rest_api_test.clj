@@ -618,3 +618,25 @@
                                                            :jobName "test-Test_Product-1.0-Test_Book-en-US (preview)"
                                                            :message "Job already exist"})))))
 
+(deftest test-get-building-jobs-url
+    "Check the function emender-jenkins.rest-api/get-building-jobs-url."
+    (let [request {:configuration {:jenkins {:currently-building-view "Building"
+                                             :jenkins-url "http://10.20.30.40:8080/"}}}]
+         (is (= "http://10.20.30.40:8080/view/Building/" (get-building-jobs-url request)))))
+
+(deftest test-get-job-in-queue-url
+    "Check the function emender-jenkins.rest-api/get-job-in-queue-url."
+    (let [request {:configuration {:jenkins {:in-queue-url "queue/api/json?tree=items[task[name]]"
+                                             :jenkins-url  "http://10.20.30.40:8080/"}}}]
+         (is (= "http://10.20.30.40:8080/queue/api/json?tree=items[task[name]]" (get-jobs-in-queue-url request)))))
+
+(deftest test-get-job-name-from-queue-info
+    "Check the function emender-jenkins.rest-api/get-job-name-from-queue-info."
+    (are [x y] (= x (get-job-name-from-queue-info y))
+        nil        nil
+        nil        {"something" "else"}
+        nil        {"task" nil}
+        nil        {"task" {"name" nil}}
+        ""         {"task" {"name" ""}}
+        "job-name" {"task" {"name" "job-name"}}))
+
