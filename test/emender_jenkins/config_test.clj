@@ -512,6 +512,23 @@
             (get-in-queue-view {:configuration {:jenkins nil}})                  nil
             (get-in-queue-view {:configuration nil})                             nil)))
 
+(deftest test-get-currently-building-view-1
+    "Check the behaviour of function emender-jenkins.config/get-currently-building-view."
+    (testing "the behaviour of function emender-jenkins.config/get-currently-building-view."
+        (are [x y] (= x y)
+            (get-currently-building-view {:configuration {:jenkins {:currently-building-view nil}}}) nil
+            (get-currently-building-view {:configuration {:jenkins {:currently-building-view false}}}) false
+            (get-currently-building-view {:configuration {:jenkins {:currently-building-view true}}}) true
+            (get-currently-building-view {:configuration {:jenkins {:currently-building-view "Queue"}}}) "Queue")))
+
+(deftest test-get-currently-building-view-2
+    "Check the behaviour of function emender-jenkins.config/get-currently-building-view."
+    (testing "the behaviour of function emender-jenkins.config/get-currently-building-view."
+        (are [x y] (= x y)
+            (get-currently-building-view {:configuration {:jenkins {:currently-building-view nil}}}) nil
+            (get-currently-building-view {:configuration {:jenkins nil}})                            nil
+            (get-currently-building-view {:configuration nil})                                       nil)))
+
 (deftest test-override-options-by-cli-1
     "Check the behaviour of function emender-jenkins.config/override-options-by-cli."
     (testing "the behaviour of function emender-jenkins.config/override-options-by-cli."
