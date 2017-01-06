@@ -640,3 +640,43 @@
         ""         {"task" {"name" ""}}
         "job-name" {"task" {"name" "job-name"}}))
 
+
+(def building-jobs-jenkins-response
+    (str
+    "{\"_class\":\"hudson.model.ListView\","
+    "\"jobs\":["
+        "{\"_class\":\"hudson.model.FreeStyleProject\",\"name\":\"test-Example_Documentation-1.0-Guide-en-US (preview)\",\"url\":\"http://10.20.30.40:8080/job/test-Example_Documentation-1.0-Guide-en-US%20(preview)/\",\"buildable\":true,\"color\":\"yellow_anime\",\"lastSuccessfulBuild\":{\"_class\":\"hudson.model.FreeStyleBuild\",\"description\":\"Total: 4  Passed: 1  Failed: 3\"},\"scm\":{\"_class\":\"hudson.plugins.git.GitSCM\",\"userRemoteConfigs\":[{\"url\":\"git@git.domain.name:example-documentation/guide.git\"}]}},"
+        "{\"_class\":\"hudson.model.FreeStyleProject\",\"name\":\"test-Example_Documentation-1.0-Guide-en-US (stage)\",\"url\":\"http://10.20.30.40:8080/job/test-Example_Documentation-1.0-Guide-en-US%20(stage)/\",\"buildable\":true,\"color\":\"yellow_anime\",\"lastSuccessfulBuild\":{\"_class\":\"hudson.model.FreeStyleBuild\",\"description\":\"Total: 4  Passed: 1  Failed: 3\"},\"scm\":{\"_class\":\"hudson.plugins.git.GitSCM\",\"userRemoteConfigs\":[{\"url\":\"git@git.domain.name:example-documentation/guide.git\"}]}}"
+        "]}"))
+
+(deftest test-read-building-jobs-from-jenkins
+    "Check the function emender-jenkins.rest-api/read-building-jobs-from-jenkins."
+    (with-redefs [jenkins-api/get-command (fn [all-jobs-url] building-jobs-jenkins-response)]
+        (is (= (read-building-jobs-from-jenkins "url" "job-list-part")
+               [{"_class" "hudson.model.FreeStyleProject",
+                 "name" "test-Example_Documentation-1.0-Guide-en-US (preview)",
+                 "url"
+                 "http://10.20.30.40:8080/job/test-Example_Documentation-1.0-Guide-en-US%20(preview)/",
+                 "buildable" true,
+                 "color" "yellow_anime",
+                 "lastSuccessfulBuild"
+                 {"_class" "hudson.model.FreeStyleBuild",
+                  "description" "Total: 4  Passed: 1  Failed: 3"},
+                  "scm"
+                 {"_class" "hudson.plugins.git.GitSCM",
+                  "userRemoteConfigs"
+                  [{"url" "git@git.domain.name:example-documentation/guide.git"}]}}
+                {"_class" "hudson.model.FreeStyleProject",
+                 "name" "test-Example_Documentation-1.0-Guide-en-US (stage)",
+                 "url"
+                 "http://10.20.30.40:8080/job/test-Example_Documentation-1.0-Guide-en-US%20(stage)/",
+                 "buildable" true,
+                 "color" "yellow_anime",
+                 "lastSuccessfulBuild"
+                 {"_class" "hudson.model.FreeStyleBuild",
+                  "description" "Total: 4  Passed: 1  Failed: 3"},
+                 "scm"
+                 {"_class" "hudson.plugins.git.GitSCM",
+                  "userRemoteConfigs"
+                  [{"url" "git@git.domain.name:example-documentation/guide.git"}]}}]))))
+
