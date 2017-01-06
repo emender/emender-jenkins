@@ -495,6 +495,23 @@
             (get-started-on-ms {:configuration nil})               nil
             (get-started-on-ms {:configuration nil})               nil)))
 
+(deftest test-get-in-queue-view-1
+    "Check the behaviour of function emender-jenkins.config/get-in-queue."
+    (testing "the behaviour of function emender-jenkins.config/get-in-queue."
+        (are [x y] (= x y)
+            (get-in-queue-view {:configuration {:jenkins {:in-queue-view nil}}}) nil
+            (get-in-queue-view {:configuration {:jenkins {:in-queue-view false}}}) false
+            (get-in-queue-view {:configuration {:jenkins {:in-queue-view true}}}) true
+            (get-in-queue-view {:configuration {:jenkins {:in-queue-view "Queue"}}}) "Queue")))
+
+(deftest test-get-in-queue-view-2
+    "Check the behaviour of function emender-jenkins.config/get-in-queue."
+    (testing "the behaviour of function emender-jenkins.config/get-in-queue."
+        (are [x y] (= x y)
+            (get-in-queue-view {:configuration {:jenkins {:in-queue-view nil}}}) nil
+            (get-in-queue-view {:configuration {:jenkins nil}})                  nil
+            (get-in-queue-view {:configuration nil})                             nil)))
+
 (deftest test-override-options-by-cli-1
     "Check the behaviour of function emender-jenkins.config/override-options-by-cli."
     (testing "the behaviour of function emender-jenkins.config/override-options-by-cli."
