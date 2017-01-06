@@ -685,3 +685,9 @@
     (with-redefs [jenkins-api/read-list-of-all-jobs (fn [url job-list-part] (throw (new Exception "Exception!")))]
         (is (= (read-building-jobs-from-jenkins "url" "job-list-part") nil))))
 
+(deftest test-create-currently-building-jobs-response
+    "Check the function emender-jenkins.rest-api/create-currently-building-jobs-response"
+    (with-redefs [jenkins-api/get-command (fn [all-jobs-url] building-jobs-jenkins-response)]
+        (is (= (create-currently-building-jobs-response (read-building-jobs-from-jenkins "url" "job-list-part"))
+               ["test-Example_Documentation-1.0-Guide-en-US (preview)" "test-Example_Documentation-1.0-Guide-en-US (stage)"]))))
+
