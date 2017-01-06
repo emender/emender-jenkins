@@ -495,6 +495,23 @@
             (get-started-on-ms {:configuration nil})               nil
             (get-started-on-ms {:configuration nil})               nil)))
 
+(deftest test-get-job-list-url-1
+    "Check the behaviour of function emender-jenkins.config/get-job-list-url."
+    (testing "the behaviour of function emender-jenkins.config/get-job-list-url."
+        (are [x y] (= x y)
+            (get-job-list-url {:configuration {:jenkins {:jenkins-job-list-url nil}}}) nil
+            (get-job-list-url {:configuration {:jenkins {:jenkins-job-list-url false}}}) false
+            (get-job-list-url {:configuration {:jenkins {:jenkins-job-list-url true}}}) true
+            (get-job-list-url {:configuration {:jenkins {:jenkins-job-list-url "Queue"}}}) "Queue")))
+
+(deftest test-get-job-list-url-2
+    "Check the behaviour of function emender-jenkins.config/get-job-list-url."
+    (testing "the behaviour of function emender-jenkins.config/get-job-list-url."
+        (are [x y] (= x y)
+            (get-job-list-url {:configuration {:jenkins {:jenkins-job-list-url nil}}}) nil
+            (get-job-list-url {:configuration {:jenkins nil}})                         nil
+            (get-job-list-url {:configuration nil})                                    nil)))
+
 (deftest test-get-in-queue-view-1
     "Check the behaviour of function emender-jenkins.config/get-in-queue-view."
     (testing "the behaviour of function emender-jenkins.config/get-in-queue-view."
