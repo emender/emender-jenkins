@@ -11,9 +11,10 @@
 ;
 
 (ns emender-jenkins.rest-api-test
-  (:require [clojure.test :refer :all]
-            [emender-jenkins.rest-api :refer :all]
-            [emender-jenkins.results  :as results]
+  (:require [clojure.test                :refer :all]
+            [clojure.data.json           :as json]
+            [emender-jenkins.rest-api    :refer :all]
+            [emender-jenkins.results     :as results]
             [clj-jenkins-api.jenkins-api :as jenkins-api]))
 
 ;
@@ -767,4 +768,14 @@
     (testing "the function emender-jenkins.rest-api/read-queue-info-from-jenkins."
     (with-redefs [jenkins-api/get-command (fn [url] nil)]
         (is (= (read-queue-info-from-jenkins "url") nil)))))
+
+(deftest test-create-jobs-in-queue-response
+    "Check the function emender-jenkins.rest-api/create-jobs-in-queue-response."
+    (testing "the function emender-jenkins.rest-api/create-jobs-in-queue-response."
+        (let [items (-> (json/read-str jobs-in-queue-jenkins-response) (get "items"))]
+            (is (= (create-jobs-in-queue-response items)
+                   [{"queuePos" 1
+                     "jobName" "test-Example_Documentation-1.0-Guide-en-US (preview)"}
+                     {"queuePos" 2
+                      "jobName" "test-Example_Documentation-1.0-Guide-en-US (stage)  "}]))))) 
 
