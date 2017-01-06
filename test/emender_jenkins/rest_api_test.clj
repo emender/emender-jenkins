@@ -779,3 +779,47 @@
                      {"queuePos" 2
                       "jobName" "test-Example_Documentation-1.0-Guide-en-US (stage)  "}]))))) 
 
+(deftest test-read-jobs-in-queue-1
+    "Check the function emender-jenkins.rest-api/read-jobs-in-queue."
+    (testing "the function emender-jenkins.rest-api/read-jobs-in-queue."
+    (with-redefs [jenkins-api/get-command (fn [url] nil)]
+        (let [request {:configuration {:jenkins {:currently-building-view "Building"
+                                                 :jenkins-url "http://10.20.30.40:8080/"}}}]
+            (is (= (read-jobs-in-queue request) nil))))))
+
+(deftest test-read-jobs-in-queue-2
+    "Check the function emender-jenkins.rest-api/read-jobs-in-queue."
+    (testing "the function emender-jenkins.rest-api/read-jobs-in-queue."
+    (with-redefs [jenkins-api/get-command (fn [url] jobs-in-queue-jenkins-response)]
+        (let [request {:configuration {:jenkins {:currently-building-view "Building"
+                                                 :jenkins-url "http://10.20.30.40:8080/"}}}]
+            (is (= (read-jobs-in-queue request)
+             [{"_class" "hudson.model.Queue$BlockedItem" "task" {"_class" "hudson.model.FreeStyleProject" "name" "test-Example_Documentation-1.0-Guide-en-US (preview)"}}
+              {"_class" "hudson.model.Queue$BlockedItem" "task" {"_class" "hudson.model.FreeStyleProject" "name" "test-Example_Documentation-1.0-Guide-en-US (stage)  "}}]
+    ))))))
+
+(deftest test-get-jobs-in-queue
+    "Check the function emender-jenkins.rest-api/get-jobs-in-queue."
+    (testing "the function emender-jenkins.rest-api/get-jobs-in-queue."
+    (with-redefs [jenkins-api/get-command (fn [all-jobs-url] jobs-in-queue-jenkins-response)
+                  send-response (fn [response request] response)]
+        (let [request {:configuration {:jenkins {:currently-building-view "Building"
+                                                 :jenkins-url "http://10.20.30.40:8080/"}}}]
+             (is (= (get-jobs-in-queue request)
+                   [{"queuePos" 1
+                     "jobName" "test-Example_Documentation-1.0-Guide-en-US (preview)"}
+                     {"queuePos" 2
+                      "jobName" "test-Example_Documentation-1.0-Guide-en-US (stage)  "}]))))))
+
+(deftest test-get-jobs-in-queue-negative
+    "Check the function emender-jenkins.rest-api/get-jobs-in-queue."
+    (testing "the function emender-jenkins.rest-api/get-jobs-in-queue."
+    (with-redefs [jenkins-api/get-command (fn [all-jobs-url] nil)
+                  send-error-response (fn [response request http-code] response)]
+        (let [request {:configuration {:jenkins {:currently-building-view "Building"
+                                                 :jenkins-url "http://10.20.30.40:8080/"}}}]
+             (is (= (get-jobs-in-queue request)
+                    {:status  "error"
+                     :command "jobs_in_queue"
+                     :message "Can not read Jenkins queue"}))))))
+
