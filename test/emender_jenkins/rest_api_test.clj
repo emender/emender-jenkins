@@ -746,3 +746,25 @@
                      :command "currently_building_jobs"
                      :message "Can not read Jenkins view"}))))))
 
+(def jobs-in-queue-jenkins-response
+    (str "{\"_class\":\"hudson.model.Queue\","
+          "\"items\":["
+             "{\"_class\":\"hudson.model.Queue$BlockedItem\",\"task\":{\"_class\":\"hudson.model.FreeStyleProject\",\"name\":\"test-Example_Documentation-1.0-Guide-en-US (preview)\"}}"
+             "{\"_class\":\"hudson.model.Queue$BlockedItem\",\"task\":{\"_class\":\"hudson.model.FreeStyleProject\",\"name\":\"test-Example_Documentation-1.0-Guide-en-US (stage)  \"}}"
+         "]}"))
+
+(deftest test-read-queue-info-from-jenkins
+    "Check the function emender-jenkins.rest-api/read-queue-info-from-jenkins."
+    (testing "the function emender-jenkins.rest-api/read-queue-info-from-jenkins."
+    (with-redefs [jenkins-api/get-command (fn [url] jobs-in-queue-jenkins-response)]
+        (is (= (read-queue-info-from-jenkins "url")
+             [{"_class" "hudson.model.Queue$BlockedItem" "task" {"_class" "hudson.model.FreeStyleProject" "name" "test-Example_Documentation-1.0-Guide-en-US (preview)"}}
+              {"_class" "hudson.model.Queue$BlockedItem" "task" {"_class" "hudson.model.FreeStyleProject" "name" "test-Example_Documentation-1.0-Guide-en-US (stage)  "}}]
+    )))))
+
+(deftest test-read-queue-info-from-jenkins-negative
+    "Check the function emender-jenkins.rest-api/read-queue-info-from-jenkins."
+    (testing "the function emender-jenkins.rest-api/read-queue-info-from-jenkins."
+    (with-redefs [jenkins-api/get-command (fn [url] nil)]
+        (is (= (read-queue-info-from-jenkins "url") nil)))))
+
