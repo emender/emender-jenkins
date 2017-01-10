@@ -385,6 +385,15 @@
     (testing "the function emender-jenkins.rest-api/uri->job-name."
         (is (thrown? NullPointerException (uri->job-name nil "prefix")))))
 
+(deftest test-get-job-name-from-uri-or-param-1
+    "Check the function emender-jenkins.rest-api/get-job-name-from-uri-or-params."
+    (testing "the function emender-jenkins.rest-api/get-job-name-from-uri-or-params."
+        (are [result request uri-prefix uri] (= result (get-job-name-from-uri-or-params request uri-prefix uri))
+            nil   nil "prefix" "prefix"
+            "   " nil "prefix" "prefix%20%20%20"
+            "test-Product_Name-Product_Version-Book_Name-en-US (prod)" nil "http://10.20.30.40:8080/" "http://10.20.30.40:8080/test-Product_Name-Product_Version-Book_Name-en-US%20(prod)"
+            "test-Product_Name-Product_Version-Book_Name-en-US (prod)" nil "http://jenkins.server.com:8080/" "http://jenkins.server.com:8080/test-Product_Name-Product_Version-Book_Name-en-US%20(prod)")))
+
 (deftest test-body->results
     "Check the function emender-jenkins.rest-api/body->results."
     (testing "the function emender-jenkins.rest-api/body->results."
