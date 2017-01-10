@@ -394,6 +394,13 @@
             "test-Product_Name-Product_Version-Book_Name-en-US (prod)" nil "http://10.20.30.40:8080/" "http://10.20.30.40:8080/test-Product_Name-Product_Version-Book_Name-en-US%20(prod)"
             "test-Product_Name-Product_Version-Book_Name-en-US (prod)" nil "http://jenkins.server.com:8080/" "http://jenkins.server.com:8080/test-Product_Name-Product_Version-Book_Name-en-US%20(prod)")))
 
+(deftest test-get-job-name-from-uri-or-param-2
+    "Check the function emender-jenkins.rest-api/get-job-name-from-uri-or-params."
+    (testing "the function emender-jenkins.rest-api/get-job-name-from-uri-or-params."
+        (are [result request uri-prefix uri] (= result (get-job-name-from-uri-or-params request uri-prefix uri))
+            "job-name" {:params {"name" "job-name"}} "prefix" "prefix"
+        )))
+
 (deftest test-body->results
     "Check the function emender-jenkins.rest-api/body->results."
     (testing "the function emender-jenkins.rest-api/body->results."
