@@ -215,3 +215,23 @@
                     :headers {"Content-Type" "application/json"}
                     :body "{\"name\":\"Emender Jenkins Service\",\"version\":\"1.0\",\"api_prefix\":\"\\/api\",\"hostname\":\"\",\"test\":\"\\/api\"}"}))))))
 
+(deftest test-api-call-handler-2
+    "Check the function emender-jenkins.server/api-call-handler."
+    (testing "the function emender-jenkins.server/api-call-handler."
+        (let [request {:configuration {
+                          :api  {:prefix "/api"}
+                          :info {:version "1.0"}}}]
+            (are [uri result] (= (api-call-handler request uri :get) result)
+                "/api/"
+                {:status 200
+                 :headers {"Content-Type" "application/json"}
+                 :body "{\"name\":\"Emender Jenkins Service\",\"version\":\"1.0\",\"api_prefix\":\"\\/api\",\"hostname\":\"dhcp-lab-190.englab.brq.redhat.com\",\"test\":\"\\/api\"}"}
+                "/api/configuration"
+                {:status 200
+                 :headers {"Content-Type" "application/json"}
+                 :body "{\"api\":{\"prefix\":\"\\/api\"},\"info\":{\"version\":\"1.0\"},\"jenkins\":{\"jenkins-auth\":\"********\"}}"}
+                "/api/system/banners"
+                {:status 200
+                 :headers {"Content-Type" "application/json"}
+                 :body "{\"message\":\"Alpha version\",\"type\":\"Warning\"}"}))))
+
