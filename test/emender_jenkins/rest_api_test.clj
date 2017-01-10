@@ -369,6 +369,11 @@
             (uri->job-name "http://jenkins.server.com:8080/test-Product_Name-Product_Version-Book_Name-en-US%20(prod)" "http://jenkins.server.com:8080/")
             )))
 
+(deftest test-uri->job-name-empty-string-checking
+    "Check the function emender-jenkins.rest-api/uri->job-name."
+    (testing "the function emender-jenkins.rest-api/uri->job-name."
+        (is (nil? (uri->job-name "" "prefix")))))
+
 (deftest test-uri->job-name-NPE
     "Check the function emender-jenkins.rest-api/uri->job-name."
     (testing "the function emender-jenkins.rest-api/uri->job-name."
