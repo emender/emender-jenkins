@@ -203,3 +203,15 @@
                       http-response/content-type (fn [resp content-type] (assoc resp :content-type content-type))]
             (is (= {:response "", :content-type "application/json"} (restcall-head-handler))))))
 
+(deftest test-api-call-handler-1
+    "Check the function emender-jenkins.server/api-call-handler."
+    (testing "the function emender-jenkins.server/api-call-handler."
+        (let [request {:configuration {
+                          :api  {:prefix "/api"}
+                          :info {:version "1.0"}}}]
+            (with-redefs [get-hostname    (fn [] "")]
+            (is (= (api-call-handler request "/api" :get)
+                   {:status 200
+                    :headers {"Content-Type" "application/json"}
+                    :body "{\"name\":\"Emender Jenkins Service\",\"version\":\"1.0\",\"api_prefix\":\"\\/api\",\"hostname\":\"\",\"test\":\"\\/api\"}"}))))))
+
