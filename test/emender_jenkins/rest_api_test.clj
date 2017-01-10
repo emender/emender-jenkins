@@ -369,6 +369,11 @@
             (uri->job-name "http://jenkins.server.com:8080/test-Product_Name-Product_Version-Book_Name-en-US%20(prod)" "http://jenkins.server.com:8080/")
             )))
 
+(deftest test-uri->job-name-NPE
+    "Check the function emender-jenkins.rest-api/uri->job-name."
+    (testing "the function emender-jenkins.rest-api/uri->job-name."
+        (is (thrown? NullPointerException (uri->job-name nil "prefix")))))
+
 (deftest test-body->results
     "Check the function emender-jenkins.rest-api/body->results."
     (testing "the function emender-jenkins.rest-api/body->results."
