@@ -220,12 +220,13 @@
     (testing "the function emender-jenkins.server/api-call-handler."
         (let [request {:configuration {
                           :api  {:prefix "/api"}
-                          :info {:version "1.0"}}}]
+                          :info {:version "1.0"}}}
+              hostname (get-hostname)]
             (are [uri result] (= (api-call-handler request uri :get) result)
                 "/api/"
                 {:status 200
                  :headers {"Content-Type" "application/json"}
-                 :body "{\"name\":\"Emender Jenkins Service\",\"version\":\"1.0\",\"api_prefix\":\"\\/api\",\"hostname\":\"dhcp-lab-190.englab.brq.redhat.com\",\"test\":\"\\/api\"}"}
+                 :body (str "{\"name\":\"Emender Jenkins Service\",\"version\":\"1.0\",\"api_prefix\":\"\\/api\",\"hostname\":\"" hostname "\",\"test\":\"\\/api\"}")}
                 "/api/configuration"
                 {:status 200
                  :headers {"Content-Type" "application/json"}
