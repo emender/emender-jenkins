@@ -223,7 +223,7 @@
         (let [response (metadata-reader/get-metadata)]
             (send-response response request))
         (catch Exception e
-                (.printStackTrace e)
+                ;(.printStackTrace e)
                 (-> (create-error-response "(not needed)" "reload-tests-metadata" (.getMessage e))
                     (send-error-response request :internal-server-error)))))
 
@@ -302,7 +302,7 @@
                         (send-job-invalid-metadata-response request :create-job (job-invalid-input job-name git-repo branch))))
                 (send-wrong-job-name-response request job-name :create-job)))
         (catch Exception e
-            (.printStackTrace e)
+            ;(.printStackTrace e)
             (send-job-invalid-metadata-response request :create-job "invalid or missing input"))))
 
 (defn update-job
