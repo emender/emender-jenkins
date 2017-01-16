@@ -1121,6 +1121,22 @@ HTTP Status Code:
 
 
 
+Jobs in queue
+~~~~~~~~~~~~~
+
+    /api/jobs_in_queue
+
+Returns all jobs placed into Jenkins queue.
+
+Method: +GET+
+
+Content-Type: +application/json+
+
+
+HTTP Status Code:
++HTTP/1.1 200 OK+
+
+
 Reload all results
 ~~~~~~~~~~~~~~~~~~
 
