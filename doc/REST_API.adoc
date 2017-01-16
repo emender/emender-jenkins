@@ -2,7 +2,7 @@ REST API for Emender-Jenkins interface
 ======================================
 :icons: font
 Pavel Tišnovský <ptisnovs@redhat.com>
-v1.0, 2016-06-15
+v1.1, 2017-01-16
 
 Emender-Jenkins Interface is controlled exclusively via REST API.
 Basic supported operations:
