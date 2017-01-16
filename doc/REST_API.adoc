@@ -1153,6 +1153,22 @@ HTTP Status Code:
 +HTTP/1.1 200 OK+
 
 
+Running jobs
+~~~~~~~~~~~~
+
+    /api/running_jobs
+
+Returns all jobs placed into Jenkins queue and jobs that are currently building.
+
+Method: +GET+
+
+Content-Type: +application/json+
+
+
+HTTP Status Code:
++HTTP/1.1 200 OK+
+
+
 Reload all results
 ~~~~~~~~~~~~~~~~~~
 
