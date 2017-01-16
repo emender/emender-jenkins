@@ -509,7 +509,7 @@
 (defn create-jobs-in-queue-response
     [items]
     (let [job-names       (map get-job-name-from-queue-info items) ; items are sorted properly!
-          queue-positions (range 1 (inc (count items)))]                 ; we need to have index assigned to each item in queue
+          queue-positions (range (count items) 0 -1)]              ; we need to have index assigned to each item in queue
           (for [[queue-position job-name] (zipmap queue-positions job-names)]
              {"queuePos" queue-position
               "jobName"  job-name})))
