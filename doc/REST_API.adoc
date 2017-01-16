@@ -1137,6 +1137,22 @@ HTTP Status Code:
 +HTTP/1.1 200 OK+
 
 
+Currently building jobs
+~~~~~~~~~~~~~~~~~~~~~~~
+
+    /api/currently_building_jobs
+
+Returns all test jobs that are currently building.
+
+Method: +GET+
+
+Content-Type: +application/json+
+
+
+HTTP Status Code:
++HTTP/1.1 200 OK+
+
+
 Reload all results
 ~~~~~~~~~~~~~~~~~~
 
