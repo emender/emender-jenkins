@@ -781,10 +781,10 @@
     (testing "the function emender-jenkins.rest-api/create-jobs-in-queue-response."
         (let [items (-> (json/read-str jobs-in-queue-jenkins-response) (get "items"))]
             (is (= (create-jobs-in-queue-response items)
-                   [{"queuePos" 1
+                   [{"queuePos" 2
                      "jobName" "test-Example_Documentation-1.0-Guide-en-US (preview)"}
-                     {"queuePos" 2
-                      "jobName" "test-Example_Documentation-1.0-Guide-en-US (stage)  "}]))))) 
+                    {"queuePos" 1
+                     "jobName" "test-Example_Documentation-1.0-Guide-en-US (stage)  "}]))))) 
 
 (deftest test-read-jobs-in-queue-1
     "Check the function emender-jenkins.rest-api/read-jobs-in-queue."
@@ -813,10 +813,10 @@
         (let [request {:configuration {:jenkins {:currently-building-view "Building"
                                                  :jenkins-url "http://10.20.30.40:8080/"}}}]
              (is (= (get-jobs-in-queue request)
-                   [{"queuePos" 1
+                   [{"queuePos" 2
                      "jobName" "test-Example_Documentation-1.0-Guide-en-US (preview)"}
-                     {"queuePos" 2
-                      "jobName" "test-Example_Documentation-1.0-Guide-en-US (stage)  "}]))))))
+                    {"queuePos" 1
+                     "jobName" "test-Example_Documentation-1.0-Guide-en-US (stage)  "}]))))))
 
 (deftest test-get-jobs-in-queue-negative
     "Check the function emender-jenkins.rest-api/get-jobs-in-queue."
@@ -835,10 +835,10 @@
     (testing "the function emender-jenkins.rest-api/prepare-jobs-in-queue."
         (let [items (-> (json/read-str jobs-in-queue-jenkins-response) (get "items"))]
             (is (= (prepare-jobs-in-queue items)
-                   [{"queuePos" 1
+                   [{"queuePos" 2
                      "jobName" "test-Example_Documentation-1.0-Guide-en-US (preview)"
                      "state"   "QUEUED"}
-                    {"queuePos" 2
+                    {"queuePos" 1
                      "jobName" "test-Example_Documentation-1.0-Guide-en-US (stage)  "
                      "state"   "QUEUED"}])))))
 
@@ -863,8 +863,8 @@
               jobs-in-queue (-> (json/read-str jobs-in-queue-jenkins-response) (get "items"))
               building-jobs (read-currently-building-jobs request)]
             (is (= (create-running-jobs-response jobs-in-queue building-jobs)
-                  [{"queuePos" 1, "jobName" "test-Example_Documentation-1.0-Guide-en-US (preview)", "state" "QUEUED"}
-                   {"queuePos" 2, "jobName" "test-Example_Documentation-1.0-Guide-en-US (stage)  ", "state" "QUEUED"}
+                  [{"queuePos" 2, "jobName" "test-Example_Documentation-1.0-Guide-en-US (preview)", "state" "QUEUED"}
+                   {"queuePos" 1, "jobName" "test-Example_Documentation-1.0-Guide-en-US (stage)  ", "state" "QUEUED"}
                    {"state" "BUILDING", "jobName" "test-Example_Documentation-1.0-Guide-en-US (preview)"}
                    {"state" "BUILDING", "jobName" "test-Example_Documentation-1.0-Guide-en-US (stage)"}]))))))
 
@@ -878,7 +878,7 @@
              (is (= (get-running-jobs request)
                     {:status 200
                      :headers {"Content-Type" "application/json"}
-                     :body "[{\"queuePos\":1,\"jobName\":\"test-Example_Documentation-1.0-Guide-en-US (preview)\",\"state\":\"QUEUED\"},{\"queuePos\":2,\"jobName\":\"test-Example_Documentation-1.0-Guide-en-US (stage)  \",\"state\":\"QUEUED\"},{\"state\":\"BUILDING\",\"jobName\":\"test-Example_Documentation-1.0-Guide-en-US (preview)\"},{\"state\":\"BUILDING\",\"jobName\":\"test-Example_Documentation-1.0-Guide-en-US (stage)\"}]"}))))))
+                     :body "[{\"queuePos\":2,\"jobName\":\"test-Example_Documentation-1.0-Guide-en-US (preview)\",\"state\":\"QUEUED\"},{\"queuePos\":1,\"jobName\":\"test-Example_Documentation-1.0-Guide-en-US (stage)  \",\"state\":\"QUEUED\"},{\"state\":\"BUILDING\",\"jobName\":\"test-Example_Documentation-1.0-Guide-en-US (preview)\"},{\"state\":\"BUILDING\",\"jobName\":\"test-Example_Documentation-1.0-Guide-en-US (stage)\"}]"}))))))
 
 (deftest test-get-running-jobs-negative
     "Check the function emender-jenkins.rest-api/get-running-jobs."
