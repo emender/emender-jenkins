@@ -2,7 +2,7 @@ REST API for Emender-Jenkins interface
 ======================================
 :icons: font
 Pavel Tišnovský <ptisnovs@redhat.com>
-v1.0, 2016-06-15
+v1.1, 2017-01-16
 
 Emender-Jenkins Interface is controlled exclusively via REST API.
 Basic supported operations:
@@ -1119,6 +1119,54 @@ Post Data:
 HTTP Status Code:
 +HTTP/1.1 200 OK+
 
+
+
+Jobs in queue
+~~~~~~~~~~~~~
+
+    /api/jobs_in_queue
+
+Returns all jobs placed into Jenkins queue.
+
+Method: +GET+
+
+Content-Type: +application/json+
+
+
+HTTP Status Code:
++HTTP/1.1 200 OK+
+
+
+Currently building jobs
+~~~~~~~~~~~~~~~~~~~~~~~
+
+    /api/currently_building_jobs
+
+Returns all test jobs that are currently building.
+
+Method: +GET+
+
+Content-Type: +application/json+
+
+
+HTTP Status Code:
++HTTP/1.1 200 OK+
+
+
+Running jobs
+~~~~~~~~~~~~
+
+    /api/running_jobs
+
+Returns all jobs placed into Jenkins queue and jobs that are currently building.
+
+Method: +GET+
+
+Content-Type: +application/json+
+
+
+HTTP Status Code:
++HTTP/1.1 200 OK+
 
 
 Reload all results

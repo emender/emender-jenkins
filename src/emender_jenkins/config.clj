@@ -1,5 +1,5 @@
 ;
-;  (C) Copyright 2016  Pavel Tisnovsky
+;  (C) Copyright 2016, 2017  Pavel Tisnovsky
 ;
 ;  All rights reserved. This program and the accompanying materials
 ;  are made available under the terms of the Eclipse Public License v1.0
@@ -96,6 +96,25 @@
     "Read Jenkins auth string from the configuration passed via HTTP request."
     [request]
     (-> request :configuration :jenkins :jenkins-auth))
+
+(defn get-job-list-url
+    [request]
+    (-> request :configuration :jenkins :jenkins-job-list-url))
+
+(defn get-in-queue-view
+    "Read name of view that contains list of builds added into queue."
+    [request]
+    (-> request :configuration :jenkins :in-queue-view))
+
+(defn get-currently-building-view
+    "Read name of view that contains list of builds that are currently builing."
+    [request]
+    (-> request :configuration :jenkins :currently-building-view))
+
+(defn get-in-queue-url
+    "URL for Jenkins REST API"
+    [request]
+    (-> request :configuration :jenkins :in-queue-url))
 
 (defn pretty-print?
     "Read the pretty-print settings (it is used for JSON output etc.)"
