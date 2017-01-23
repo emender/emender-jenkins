@@ -938,3 +938,18 @@
                      :headers {"Content-Type" "application/json"}
                      :body    "{\"response\":{\"deep\":{\"structure\":\"ok\"}}}"})))))
 
+(deftest test-send-response-pretty-print
+    "Check the function emender-jenkins.rest-api/send-response."
+    (testing "the function emender-jenkins.rest-api/send-response."
+        (let [request       {:configuration {:jenkins {:currently-building-view "Building"
+                                                      :jenkins-url "http://10.20.30.40:8080/"}
+                                             :config  {:pretty-print true}}}]
+             (is (= (send-response {:response :ok} request)
+                    {:status  200
+                     :headers {"Content-Type" "application/json"}
+                     :body    "{\"response\":\"ok\"}\n"}))
+             (is (= (send-response {:response {:deep {:structure :ok}}} request)
+                    {:status  200
+                     :headers {"Content-Type" "application/json"}
+                     :body    "{\"response\":{\"deep\":{\"structure\":\"ok\"}}}\n"})))))
+
