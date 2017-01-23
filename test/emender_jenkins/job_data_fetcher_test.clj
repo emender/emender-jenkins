@@ -62,5 +62,14 @@
 (deftest test-fetch-data
     "Checking the function fetch-data."
     (testing "the function fetch-data."
-        (with-redefs [results/reload-all-results (fn [configuration] '())]
-            (is (= '() (fetch-data nil))))))
+        (with-redefs [results/reload-all-results (fn [configuration] :ok)]
+            (is (= :ok (fetch-data nil))))))
+
+(deftest test-try-to-fetch-data
+    "Checking the function try-to-fetch-data."
+    (testing "the function try-to-fetch-data."
+        (with-redefs [results/reload-all-results (fn [configuration] (throw (new Exception)))]
+            (is (nil? (try-to-fetch-data nil)))
+        (with-redefs [results/reload-all-results (fn [configuration] :ok)]
+            (is (= :ok (try-to-fetch-data nil)))))))
+
