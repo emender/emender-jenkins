@@ -35,6 +35,19 @@
         (catch Exception e
             (log/error e "Exception in job fetcher"))))
 
+(defn run-fetcher-one-iteration
+    "One iteration of job data fetcher."
+    [configuration]
+    (log/info "Fetcher is reading job results")
+    (let [start-time (System/currentTimeMillis)]
+        (try-to-fetch-data configuration)
+        (let [end-time (System/currentTimeMillis)
+              duration (- end-time start-time)]
+              (reset! started-on  (time-utils/get-formatted-time start-time))
+              (reset! finished-on (time-utils/get-formatted-time end-time))
+              (reset! last-duration    duration)
+              (log/info "Done in " duration "ms "))))
+
 (defn run-fetcher-in-a-loop
     "Run the fetcher periodically. The sleep amount should containg time delay
     in minutes."
@@ -42,15 +55,8 @@
     (let [ms-to-sleep (time-utils/compute-sleep-amount sleep-amount)]
         (while true
             (do
-                (log/info "Fetcher is reading job results")
-                (let [start-time (System/currentTimeMillis)]
-                    (try-to-fetch-data configuration)
-                    (let [end-time (System/currentTimeMillis)
-                          duration (- end-time start-time)]
-                          (reset! started-on  (time-utils/get-formatted-time start-time))
-                          (reset! finished-on (time-utils/get-formatted-time end-time))
-                          (reset! last-duration    duration)
-                          (log/info "Done in " duration "ms , sleeping for" sleep-amount " minutes")))
+                (run-fetcher-one-iteration configuration)
+                (log/info "Sleeping for" sleep-amount " minutes")
                 (Thread/sleep ms-to-sleep)))))
 
 (defn run-fetcher
