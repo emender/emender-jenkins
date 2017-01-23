@@ -924,3 +924,17 @@
                      :headers {"Content-Type" "application/json"}
                      :body "{\"status\":\"error\",\"command\":\"running_jobs\",\"message\":\"Can not read Jenkins queue and\\/or selected view\"}"}))))))
 
+(deftest test-send-response
+    "Check the function emender-jenkins.rest-api/send-response."
+    (testing "the function emender-jenkins.rest-api/send-response."
+        (let [request       {:configuration {:jenkins {:currently-building-view "Building"
+                                                      :jenkins-url "http://10.20.30.40:8080/"}}}]
+             (is (= (send-response {:response :ok} request)
+                    {:status  200
+                     :headers {"Content-Type" "application/json"}
+                     :body    "{\"response\":\"ok\"}"}))
+             (is (= (send-response {:response {:deep {:structure :ok}}} request)
+                    {:status  200
+                     :headers {"Content-Type" "application/json"}
+                     :body    "{\"response\":{\"deep\":{\"structure\":\"ok\"}}}"})))))
+
