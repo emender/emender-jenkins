@@ -498,6 +498,25 @@
                      :hostname   "hostname"
                      :test       "/api"} "hostname")))))
 
+(deftest test-configuration-handler
+    "Check the function emender-jenkins.rest-api/configuration-handler."
+    (testing "the function emender-jenkins.rest-api/configuration-handler."
+        (with-redefs [send-response (fn [response request] response)]
+            (let [request {:configuration
+                              {:config
+                                  {:verbose-show-configuration true}
+                               :info
+                                  {:version "1.0"}
+                               :api
+                                  {:prefix "/api"}}}]
+                (is (= (configuration-handler request)
+                       {:config
+                           {:verbose-show-configuration true}
+                            :info
+                                {:version "1.0"}
+                                 :api
+                                     {:prefix "/api"}}))))))
+
 (deftest test-system-banners
     "Check the function emender-jenkins.rest-api/system-banners."
     (testing "the function emender-jenkins.rest-api/system-banners."
