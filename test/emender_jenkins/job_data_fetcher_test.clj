@@ -12,7 +12,8 @@
 
 (ns emender-jenkins.job-data-fetcher-test
   (:require [clojure.test :refer :all]
-            [emender-jenkins.job-data-fetcher :refer :all]))
+            [emender-jenkins.job-data-fetcher :refer :all]
+            [emender-jenkins.results          :as results]))
 
 ;
 ; Common functions used by tests.
@@ -58,3 +59,8 @@
 ; Function behaviours
 ;
 
+(deftest test-fetch-data
+    "Checking the function fetch-data."
+    (testing "the function fetch-data."
+        (with-redefs [results/reload-all-results (fn [configuration] '())]
+            (is (= '() (fetch-data nil))))))
