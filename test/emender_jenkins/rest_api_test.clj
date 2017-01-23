@@ -967,3 +967,30 @@
                      :headers {"Content-Type" "application/json"}
                      :body    "{\"response\":{\"deep\":{\"structure\":\"error\"}}}"})))))
 
+(deftest test-send-error-response-http-codes
+    "Check the function emender-jenkins.rest-api/send-error-response."
+    (testing "the function emender-jenkins.rest-api/send-error-response."
+        (let [request       {:configuration {:jenkins {:currently-building-view "Building"
+                                                      :jenkins-url "http://10.20.30.40:8080/"}}}
+              response      {:response :error}]
+              (are [x y] (= (send-error-response response request x) y)
+                  :ok
+                    {:status  200
+                     :headers {"Content-Type" "application/json"}
+                     :body    "{\"response\":\"error\"}"}
+                  :bad-request
+                    {:status  400
+                     :headers {"Content-Type" "application/json"}
+                     :body    "{\"response\":\"error\"}"}
+                  :not-found
+                    {:status  404
+                     :headers {"Content-Type" "application/json"}
+                     :body    "{\"response\":\"error\"}"}
+                  :internal-server-error
+                    {:status  500
+                     :headers {"Content-Type" "application/json"}
+                     :body    "{\"response\":\"error\"}"}
+                  :not-implemented
+                    {:status  501
+                     :headers {"Content-Type" "application/json"}
+                     :body    "{\"response\":\"error\"}"}))))
