@@ -1010,3 +1010,15 @@
                      :headers {"Content-Type" "application/json"}
                      :body    "{\"response\":{\"deep\":{\"structure\":\"ok\"}}}\n"})))))
 
+(deftest test-send-plain-response
+    "Check the function emender-jenkins.rest-api/send-plain-response."
+    (testing "the function emender-jenkins.rest-api/send-plain-response."
+         (is (= (send-plain-response {:response :error})
+                {:status  200
+                 :headers {"Content-Type" "application/json"}
+                 :body    {:response :error}}))
+         (is (= (send-plain-response {:response {:deep {:structure :error}}})
+                {:status  200
+                 :headers {"Content-Type" "application/json"}
+                 :body    {:response {:deep {:structure :error}}}}))))
+
