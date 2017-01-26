@@ -69,8 +69,9 @@
 (defn run-fetcher-in-thread
     "Run the fetcher (its loop) in a separate thread."
     [configuration]
-    (log/info "starting job fetcher")
-    (log/debug "delay" (-> configuration :fetcher :delay))
-    ; he have to use lambda here because we need to pass parameter into the run-fetcher function
-    (.start (Thread. #(run-fetcher configuration))))
+    (when (-> configuration :fetcher :run-job-fetcher)
+        (log/info "starting job fetcher")
+        (log/debug "delay" (-> configuration :fetcher :job-fetcher-delay))
+        ; he have to use lambda here because we need to pass parameter into the run-fetcher function
+        (.start (Thread. #(run-fetcher configuration)))))
 
