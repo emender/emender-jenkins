@@ -62,9 +62,9 @@
 (defn run-fetcher
     "Run the endless fetcher loop."
     [configuration]
-    (let [sleep-amount  (-> configuration :fetcher :delay)]
+    (let [sleep-amount  (-> configuration :fetcher :job-fetcher-delay)]
         (log/info "Fetcher started in its own thread, configured sleep amount: " sleep-amount)
-        (run-fetcher-in-a-loop (-> configuration :fetcher :delay) configuration)))
+        (run-fetcher-in-a-loop sleep-amount configuration)))
 
 (defn run-fetcher-in-thread
     "Run the fetcher (its loop) in a separate thread."
