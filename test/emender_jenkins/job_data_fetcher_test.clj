@@ -77,14 +77,12 @@
     "Checking the function run-fetcher-one-iteration."
     (testing "the function run-fetcher-one-iteration."
         (with-redefs [results/reload-all-results (fn [configuration] :ok)]
-            (reset! started-on    nil)
-            (reset! finished-on   nil)
-            (reset! last-duration nil)
-            (run-fetcher-one-iteration nil)
-            (is (not (nil? @started-on)))
-            (is (not (nil? @finished-on)))
-            (is (not (nil? @last-duration)))
-            (is (re-matches #"\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d" @started-on))
-            (is (re-matches #"\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d" @finished-on))
-            (is (>= @last-duration 0)))))
+            (let [status (atom {})]
+            (run-fetcher-one-iteration nil fetch-data status)
+            (is (not (nil? (:started-on @status))))
+            (is (not (nil? (:finished-on @status))))
+            (is (not (nil? (:last-duration @status))))
+            (is (re-matches #"\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d" (:started-on  @status)))
+            (is (re-matches #"\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d" (:finished-on @status)))
+            (is (>= (:last-duration @status) 0))))))
 

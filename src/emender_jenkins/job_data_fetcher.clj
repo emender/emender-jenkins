@@ -1,5 +1,5 @@
 ;
-;  (C) Copyright 2016  Pavel Tisnovsky
+;  (C) Copyright 2016, 2017  Pavel Tisnovsky
 ;
 ;  All rights reserved. This program and the accompanying materials
 ;  are made available under the terms of the Eclipse Public License v1.0
@@ -18,9 +18,10 @@
 (require '[emender-jenkins.results    :as results])
 (require '[emender-jenkins.time-utils :as time-utils])
 
-(def started-on    (atom nil))
-(def finished-on   (atom nil))
-(def last-duration (atom nil))
+(def status (atom {
+    :started-on    nil
+    :finished-on   nil
+    :last-duration nil}))
 
 (defn fetch-data
     "Read job statuses and job results. Stores them in the data structure in result module."
@@ -37,34 +38,35 @@
 
 (defn run-fetcher-one-iteration
     "One iteration of job data fetcher."
-    [configuration]
+    [configuration fetch-data-function status-map]
     (log/info "Fetcher is reading job results")
     (let [start-time (System/currentTimeMillis)]
-        (try-to-fetch-data configuration)
+        (fetch-data-function configuration)
         (let [end-time (System/currentTimeMillis)
               duration (- end-time start-time)]
-              (reset! started-on  (time-utils/get-formatted-time start-time))
-              (reset! finished-on (time-utils/get-formatted-time end-time))
-              (reset! last-duration    duration)
+              (reset! status-map {
+                  :started-on    (time-utils/get-formatted-time start-time)
+                  :finished-on   (time-utils/get-formatted-time end-time)
+                  :last-duration duration})
               (log/info "Done in " duration "ms "))))
 
 (defn run-fetcher-in-a-loop
     "Run the fetcher periodically. The sleep amount should containg time delay
     in minutes."
-    [sleep-amount configuration]
+    [sleep-amount configuration fetch-data-function status-map]
     (let [ms-to-sleep (time-utils/compute-sleep-amount sleep-amount)]
         (while true
             (do
-                (run-fetcher-one-iteration configuration)
+                (run-fetcher-one-iteration configuration fetch-data-function status-map)
                 (log/info "Sleeping for" sleep-amount " minutes")
                 (Thread/sleep ms-to-sleep)))))
 
 (defn run-fetcher
     "Run the endless fetcher loop."
-    [configuration]
+    [configuration fetch-data-function status-map]
     (let [sleep-amount  (-> configuration :fetcher :job-fetcher-delay)]
         (log/info "Fetcher started in its own thread, configured sleep amount: " sleep-amount)
-        (run-fetcher-in-a-loop sleep-amount configuration)))
+        (run-fetcher-in-a-loop sleep-amount configuration fetch-data-function status-map)))
 
 (defn run-fetcher-in-thread
     "Run the fetcher (its loop) in a separate thread."
@@ -73,5 +75,5 @@
         (log/info "starting job fetcher")
         (log/debug "delay" (-> configuration :fetcher :job-fetcher-delay))
         ; he have to use lambda here because we need to pass parameter into the run-fetcher function
-        (.start (Thread. #(run-fetcher configuration)))))
+        (.start (Thread. #(run-fetcher configuration fetch-data status)))))
 
