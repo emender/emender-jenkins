@@ -62,17 +62,17 @@
 
 (defn run-fetcher
     "Run the endless fetcher loop."
-    [configuration fetch-data-function status-map]
-    (let [sleep-amount  (-> configuration :fetcher :build-queue-fetcher-delay)]
-        (log/info "Fetcher started in its own thread, configured sleep amount: " sleep-amount)
-        (run-fetcher-in-a-loop sleep-amount configuration fetch-data-function status-map)))
+    [configuration sleep-amount fetch-data-function status-map]
+    (log/info "Fetcher started in its own thread, configured sleep amount: " sleep-amount)
+    (run-fetcher-in-a-loop sleep-amount configuration fetch-data-function status-map))
 
 (defn run-fetcher-in-thread
     "Run the fetcher (its loop) in a separate thread."
     [configuration]
     (when (-> configuration :fetcher :run-build-queue-fetcher)
         (log/info "starting build queue fetcher")
-        (log/debug "delay" (-> configuration :fetcher :build-queue-fetcher-delay))
-        ; he have to use lambda here because we need to pass parameter into the run-fetcher function
-        (.start (Thread. #(run-fetcher configuration fetch-data status)))))
+        (let [sleep-amount (-> configuration :fetcher :build-queue-fetcher-delay)]
+            (log/debug "delay" sleep-amount)
+            ; he have to use lambda here because we need to pass parameter into the run-fetcher function
+            (.start (Thread. #(run-fetcher configuration sleep-amount fetch-data status))))))
 
