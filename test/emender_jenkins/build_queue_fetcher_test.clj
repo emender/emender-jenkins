@@ -13,7 +13,9 @@
 (ns emender-jenkins.build-queue-fetcher-test
   (:require [clojure.test :refer :all]
             [emender-jenkins.build-queue-fetcher :refer :all]
-            [emender-jenkins.results          :as results]))
+            [emender-jenkins.results             :as results]
+            [clj-jenkins-api.jenkins-api         :as jenkins-api]
+            [emender-jenkins.common-fetcher      :as common-fetcher]))
 
 ;
 ; Common functions used by tests.
@@ -40,4 +42,26 @@
 ;
 ; Function behaviours
 ;
+
+(deftest test-fetch-data
+    "Check the function emender-jenkins.build-queue-fetcher/fetch-data."
+    (testing "the function emender-jenkins.build-queue-fetcher/fetch-data."
+        (let [configuration    {:jenkins {:currently-building-view "Building"
+                                          :jenkins-url "http://10.20.30.40:8080/"}}]
+        (with-redefs [jenkins-api/get-command (fn [url] nil)]
+            (fetch-data configuration)
+            (is (nil? (results/get-currently-building-jobs)))
+            (is (nil? (results/get-jobs-in-queue)))
+            (is (nil? (results/get-running-jobs)))))))
+
+(deftest test-run-fetcher-in-thread
+    "Check the function emender-jenkins.build-queue-fetcher/run-fetcher-in-thread"
+    (testing "the function emender-jenkins.build-queue-fetcher/run-fetcher-in-thread"
+        (let [started (atom nil)]
+        (with-redefs [common-fetcher/run-fetcher (fn [name config sleep-amount func status] (reset! started true))]
+            (run-fetcher-in-thread {:fetcher {:run-build-queue-fetcher false}})
+            (is (nil? @started))
+            (run-fetcher-in-thread {:fetcher {:run-build-queue-fetcher true}})
+            (Thread/sleep 1)
+            (is (not (nil? @started)))))))
 
