@@ -15,6 +15,7 @@
 
 (require '[clojure.tools.logging   :as log])
 
+(require '[emender-jenkins.results        :as results])
 (require '[emender-jenkins.common-fetcher :as common-fetcher])
 
 (def status (atom {
@@ -25,7 +26,9 @@
 (defn fetch-data
     "Read job statuses and job results. Stores them in the data structure in result module."
     [configuration]
-    (println "***"))
+    (results/read-currently-building-jobs configuration)
+    (results/read-jobs-in-queue configuration)
+    (results/read-running-jobs configuration))
 
 (defn run-fetcher-in-thread
     "Run the fetcher (its loop) in a separate thread."
