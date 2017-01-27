@@ -455,6 +455,13 @@
             (is (= (read-currently-building-jobs configuration)
                     read-currently-building-jobs-expected-result)))))
 
+(deftest test-read-currently-building-jobs-negative
+    "Check the function emender-jenkins.results/read-building-jobs-from-jenkins."
+    (with-redefs [jenkins-api/get-command (fn [all-jobs-url] nil)]
+        (let [configuration {:jenkins {:currently-building-view "Building"
+                                       :jenkins-url "http://10.20.30.40:8080/"}}]
+            (is (nil? (read-currently-building-jobs configuration))))))
+
 (deftest test-read-queue-info-from-jenkins-negative
     "Check the function emender-jenkins.results/read-queue-info-from-jenkins."
     (testing "the function emender-jenkins.results/read-queue-info-from-jenkins."
