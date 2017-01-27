@@ -305,7 +305,8 @@
           jobs          (read-building-jobs-from-jenkins url job-list-part)]
           (reset! currently-building-jobs-jenkins-response jobs)
           (reset! currently-building-jobs
-              (if jobs (create-currently-building-jobs-response jobs) nil))))
+              (if jobs (create-currently-building-jobs-response jobs) nil))
+          jobs))
 
 (defn get-job-name-from-queue-info
     "Read job name from the structure about one item in Jenkins build queue."
@@ -344,7 +345,8 @@
           jobs  (read-queue-info-from-jenkins url)]
           (reset! jobs-in-queue-jenkins-response jobs)
           (reset! jobs-in-queue
-              (if jobs (create-jobs-in-queue-response jobs) nil))))
+              (if jobs (create-jobs-in-queue-response jobs) nil))
+          jobs))
 
 (defn prepare-jobs-in-queue
     [jobs-in-queue]
