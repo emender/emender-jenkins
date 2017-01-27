@@ -535,3 +535,19 @@
                    {"state" "BUILDING", "jobName" "test-Example_Documentation-1.0-Guide-en-US (preview)"}
                    {"state" "BUILDING", "jobName" "test-Example_Documentation-1.0-Guide-en-US (stage)"}]))))))
 
+(deftest test-read-running-jobs
+    "Check the function emender-jenkins.results/read-running-jobs."
+    (testing "the function emender-jenkins.results/read-running-jobs."
+        (reset! jobs-in-queue-jenkins-response [])
+        (reset! currently-building-jobs-jenkins-response [])
+        (read-running-jobs nil)
+        (is (seq? @running-jobs))))
+
+(deftest test-read-running-jobs-negative
+    "Check the function emender-jenkins.results/read-running-jobs."
+    (testing "the function emender-jenkins.results/read-running-jobs."
+        (reset! jobs-in-queue-jenkins-response nil)
+        (reset! currently-building-jobs-jenkins-response nil)
+        (read-running-jobs nil)
+        (is (nil? @running-jobs))))
+
