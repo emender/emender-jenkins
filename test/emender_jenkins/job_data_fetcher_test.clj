@@ -31,29 +31,11 @@
     (testing "if the emender-jenkins.job-data-fetcher/fetch-data definition exists."
         (is (callable? 'emender-jenkins.job-data-fetcher/fetch-data))))
 
-
-(deftest test-try-to-fetch-data-existence
-    "Check that the emender-jenkins.job-data-fetcher/try-to-fetch-data definition exists."
-    (testing "if the emender-jenkins.job-data-fetcher/try-to-fetch-data definition exists."
-        (is (callable? 'emender-jenkins.job-data-fetcher/try-to-fetch-data))))
-
-
-(deftest test-run-fetcher-in-a-loop-existence
-    "Check that the emender-jenkins.job-data-fetcher/run-fetcher-in-a-loop definition exists."
-    (testing "if the emender-jenkins.job-data-fetcher/run-fetcher-in-a-loop definition exists."
-        (is (callable? 'emender-jenkins.job-data-fetcher/run-fetcher-in-a-loop))))
-
-
-(deftest test-run-fetcher-existence
-    "Check that the emender-jenkins.job-data-fetcher/run-fetcher definition exists."
-    (testing "if the emender-jenkins.job-data-fetcher/run-fetcher definition exists."
-        (is (callable? 'emender-jenkins.job-data-fetcher/run-fetcher))))
-
-
 (deftest test-run-fetcher-in-thread-existence
     "Check that the emender-jenkins.job-data-fetcher/run-fetcher-in-thread definition exists."
     (testing "if the emender-jenkins.job-data-fetcher/run-fetcher-in-thread definition exists."
         (is (callable? 'emender-jenkins.job-data-fetcher/run-fetcher-in-thread))))
+
 
 ;
 ; Function behaviours
@@ -64,25 +46,4 @@
     (testing "the function fetch-data."
         (with-redefs [results/reload-all-results (fn [configuration] :ok)]
             (is (= :ok (fetch-data nil))))))
-
-(deftest test-try-to-fetch-data
-    "Checking the function try-to-fetch-data."
-    (testing "the function try-to-fetch-data."
-        (with-redefs [results/reload-all-results (fn [configuration] (throw (new Exception)))]
-            (is (nil? (try-to-fetch-data nil)))
-        (with-redefs [results/reload-all-results (fn [configuration] :ok)]
-            (is (= :ok (try-to-fetch-data nil)))))))
-
-(deftest test-run-fetcher-one-iteration
-    "Checking the function run-fetcher-one-iteration."
-    (testing "the function run-fetcher-one-iteration."
-        (with-redefs [results/reload-all-results (fn [configuration] :ok)]
-            (let [status (atom {})]
-            (run-fetcher-one-iteration nil fetch-data status)
-            (is (not (nil? (:started-on @status))))
-            (is (not (nil? (:finished-on @status))))
-            (is (not (nil? (:last-duration @status))))
-            (is (re-matches #"\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d" (:started-on  @status)))
-            (is (re-matches #"\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d" (:finished-on @status)))
-            (is (>= (:last-duration @status) 0))))))
 
