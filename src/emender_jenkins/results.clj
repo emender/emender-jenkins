@@ -13,7 +13,8 @@
 (ns emender-jenkins.results
     "Module with functions to handle and manipulate test results.")
 
-(require '[clojure.pprint :as pprint])
+(require '[clojure.pprint              :as pprint])
+(require '[clojure.data.json           :as json])
 (require '[clj-fileutils.fileutils     :as file-utils])
 (require '[clj-jenkins-api.jenkins-api :as jenkins-api])
 (require '[clojure.tools.logging       :as log])
@@ -258,6 +259,116 @@
     [job-name]
     (if job-name
         (some #(= job-name (:jobName %)) @results)))
+
+(def currently-building-jobs                  (atom nil))
+(def jobs-in-queue                            (atom nil))
+(def currently-building-jobs-jenkins-response (atom nil))
+(def jobs-in-queue-jenkins-response           (atom nil))
+(def running-jobs                             (atom nil))
+
+(defn get-currently-building-jobs
+    []
+    @currently-building-jobs)
+
+(defn get-jobs-in-queue
+    []
+    @jobs-in-queue)
+
+(defn get-running-jobs
+    []
+    @running-jobs)
+
+(defn get-building-jobs-url
+    "Construct URL used to read all jobs that are currently building."
+    [configuration]
+    (let [jenkins-url   (-> configuration :jenkins :jenkins-url)
+          view          (-> configuration :jenkins :currently-building-view)]
+          (str jenkins-url "view/" view "/")))
+
+(defn read-building-jobs-from-jenkins
+    "Read info about building jobs via Jenkins REST API."
+    [url job-list-part]
+    (try
+        (jenkins-api/read-list-of-all-jobs url job-list-part)
+        (catch Exception e
+            (log/error (.getMessage e))
+            nil)))
+
+(defn create-currently-building-jobs-response
+    [jobs]
+    (map #(get % "name") jobs))
+
+(defn read-currently-building-jobs
+    [configuration]
+    (let [url           (get-building-jobs-url configuration)
+          job-list-part (-> configuration :jenkins :jenkins-job-list-url)
+          jobs          (read-building-jobs-from-jenkins url job-list-part)]
+          (reset! currently-building-jobs-jenkins-response jobs)
+          (reset! currently-building-jobs
+              (if jobs (create-currently-building-jobs-response jobs) nil))))
+
+(defn get-job-name-from-queue-info
+    "Read job name from the structure about one item in Jenkins build queue."
+    [job-info]
+    (-> job-info (get "task") (get "name")))
+
+(defn get-jobs-in-queue-url
+    "Construct URL used to read all jobs that are put into Jenkins build queue."
+    [configuration]
+    (let [jenkins-url   (-> configuration :jenkins :jenkins-url)
+          job-list-part (-> configuration :jenkins :in-queue-url)]
+          (str jenkins-url job-list-part)))
+
+(defn read-queue-info-from-jenkins
+    "Read info about queue via Jenkins REST API."
+    [url]
+    (try
+        (-> (jenkins-api/get-command url)
+            json/read-str
+            (get "items"))
+        (catch Exception e
+            (log/error (.getMessage e))
+            nil)))
+
+(defn create-jobs-in-queue-response
+    [items]
+    (let [job-names       (map get-job-name-from-queue-info items) ; items are sorted properly!
+          queue-positions (range (count items) 0 -1)]              ; we need to have index assigned to each item in queue
+          (for [[queue-position job-name] (zipmap queue-positions job-names)]
+             {"queuePos" queue-position
+              "jobName"  job-name})))
+
+(defn read-jobs-in-queue
+    [configuration]
+    (let [url   (get-jobs-in-queue-url configuration)
+          jobs  (read-queue-info-from-jenkins url)]
+          (reset! jobs-in-queue-jenkins-response jobs)
+          (reset! jobs-in-queue
+              (if jobs (create-jobs-in-queue-response jobs) nil))))
+
+(defn prepare-jobs-in-queue
+    [jobs-in-queue]
+    (map #(assoc % "state" "QUEUED") (create-jobs-in-queue-response jobs-in-queue)))
+
+(defn prepare-building-jobs
+    [building-jobs]
+    (for [building-job building-jobs]
+        {"state" "BUILDING"
+         "jobName" (get building-job "name")}))
+
+(defn create-running-jobs-response
+    [jobs-in-queue building-jobs]
+    (concat
+        (prepare-jobs-in-queue jobs-in-queue)
+        (prepare-building-jobs building-jobs)))
+
+(defn read-running-jobs
+    "Get (and return) all jobs that are in Jenkins queue or that are currently building."
+    [configuration]
+    (let [jobs-in-queue @jobs-in-queue-jenkins-response
+          building-jobs @currently-building-jobs-jenkins-response]
+          (reset! running-jobs
+          (if (and jobs-in-queue building-jobs) (create-running-jobs-response jobs-in-queue building-jobs)))))
 
 ; REPL testing
 ; (require '[clojure.pprint :as pprint])
