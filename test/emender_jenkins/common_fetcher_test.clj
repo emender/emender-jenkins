@@ -69,3 +69,18 @@
             (is (re-matches #"\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d" (:finished-on @status)))
             (is (>= (:last-duration @status) 0))))))
 
+(deftest test-run-fetcher
+    "Checking the function run-fetcher."
+    (testing "the function run-fetcher."
+        (with-redefs [run-fetcher-in-a-loop (fn [name sleep config func status] name)]
+            (= "Fetcher name" (run-fetcher "Fetcher name" 0 nil nil nil)))))
+
+(deftest test-run-fetcher-in-a-loop
+    "Checking the function run-fetcher-in-a-loop."
+    (testing "the function run-fetcher-in-a-loop."
+        (let [counter (atom 10)]
+        (with-redefs [run-fetcher-one-iteration (fn [name config func status]
+                                                    (swap! counter dec)
+                                                    (if (zero? @counter) (throw (RuntimeException. name))))]
+            (is (thrown-with-msg? RuntimeException #"Fetcher name" (run-fetcher-in-a-loop "Fetcher name" 0 nil nil nil)))))))
+
