@@ -551,3 +551,23 @@
         (read-running-jobs nil)
         (is (nil? @running-jobs))))
 
+(deftest test-update-running-jobs-cache
+    "Check the function emender-jenkins.results/update-running-jobs-cache."
+    (testing "the function emender-jenkins.results/update-running-jobs-cache."
+        (with-redefs [update-currently-building-jobs-cache (fn [configuration] true)
+                      update-jobs-in-queue-cache (fn [configuration] true)
+                      read-running-jobs (fn [configuration] true)]
+             (is (update-running-jobs-cache nil)))
+        (with-redefs [update-currently-building-jobs-cache (fn [configuration] false)
+                      update-jobs-in-queue-cache (fn [configuration] true)
+                      read-running-jobs (fn [configuration] true)]
+             (is (update-running-jobs-cache nil)))
+        (with-redefs [update-currently-building-jobs-cache (fn [configuration] true)
+                      update-jobs-in-queue-cache (fn [configuration] false)
+                      read-running-jobs (fn [configuration] true)]
+             (is (update-running-jobs-cache nil)))
+        (with-redefs [update-currently-building-jobs-cache (fn [configuration] false)
+                      update-jobs-in-queue-cache (fn [configuration] false)
+                      read-running-jobs (fn [configuration] true)]
+             (is (not (update-running-jobs-cache nil))))))
+
