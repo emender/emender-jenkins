@@ -20,6 +20,7 @@
 (require '[clojure.tools.logging       :as log])
 
 (require '[emender-jenkins.config      :as config])
+(require '[emender-jenkins.time-utils  :as time-utils])
 (use     '[emender-jenkins.utils])
 
 (def results (atom nil))
@@ -261,22 +262,14 @@
         (some #(= job-name (:jobName %)) @results)))
 
 (def currently-building-jobs                  (atom nil))
-(def jobs-in-queue                            (atom nil))
 (def currently-building-jobs-jenkins-response (atom nil))
+(def currently-building-jobs-cache-timestamp(atom nil))
+
+(def jobs-in-queue                            (atom nil))
 (def jobs-in-queue-jenkins-response           (atom nil))
+(def jobs-in-queue-cache-timestamp          (atom nil))
+
 (def running-jobs                             (atom nil))
-
-(defn get-currently-building-jobs
-    []
-    @currently-building-jobs)
-
-(defn get-jobs-in-queue
-    []
-    @jobs-in-queue)
-
-(defn get-running-jobs
-    []
-    @running-jobs)
 
 (defn get-building-jobs-url
     "Construct URL used to read all jobs that are currently building."
@@ -371,6 +364,71 @@
           building-jobs @currently-building-jobs-jenkins-response]
           (reset! running-jobs
           (if (and jobs-in-queue building-jobs) (create-running-jobs-response jobs-in-queue building-jobs)))))
+
+(defn update-timestamp
+    [atom-name]
+    (reset! atom-name (time-utils/ms->seconds (System/currentTimeMillis))))
+
+(defn update-cache
+    "Returns true if update was performed."
+    [cache-name cache-timestamp max-age function-to-call configuration]
+    (let [cache-age (time-utils/elapsed-time @cache-timestamp)]
+        (if (not cache-age)
+            (do
+                (log/info (str cache-name " cache will be read for the first time"))
+                (function-to-call configuration)
+                (update-timestamp cache-timestamp)
+                true)
+            (when (> cache-age max-age)
+                (log/info (str "Updating " cache-name " (the cache is " cache-age "ms old, max age is set to " max-age "ms"))
+                (function-to-call configuration)
+                (update-timestamp cache-timestamp)
+                true))))
+
+(defn update-currently-building-jobs-cache
+    "Updates currently building jobs cache if its age is too old."
+    [configuration]
+    (update-cache "currenty building jobs"
+                  currently-building-jobs-cache-timestamp
+                  (-> configuration :fetcher :currently-building-jobs-cache-max-age)
+                  read-currently-building-jobs
+                  configuration))
+
+(defn update-jobs-in-queue-cache
+    "Updates jobs in queue cache if its age is too old."
+    [configuration]
+    (update-cache "jobs in queue"
+                  jobs-in-queue-cache-timestamp
+                  (-> configuration :fetcher :jobs-in-queue-cache-max-age)
+                  read-jobs-in-queue
+                  configuration))
+
+(defn update-running-jobs-cache
+    "Updates running jobs cache if its age is too old."
+    [configuration]
+    ; we need to use local vars here to avoid short-circuit evaluation!
+    (let [cache1-updated (update-currently-building-jobs-cache configuration)
+          cache2-updated (update-jobs-in-queue-cache configuration)]
+         (if (or cache1-updated cache2-updated)
+             (read-running-jobs configuration))))
+
+(defn get-currently-building-jobs
+    "Get the content of currently building jobs cache, cache is re-read if needed."
+    [configuration]
+    (update-currently-building-jobs-cache configuration)
+    @currently-building-jobs)
+
+(defn get-jobs-in-queue
+    "Get the content of jobs in queue cache, cache is re-read if needed."
+    [configuration]
+    (update-jobs-in-queue-cache configuration)
+    @jobs-in-queue)
+
+(defn get-running-jobs
+    "Get the content of running jobs cache, cache is re-read if needed."
+    [configuration]
+    (update-running-jobs-cache configuration)
+    @running-jobs)
 
 ; REPL testing
 ; (require '[clojure.pprint :as pprint])
