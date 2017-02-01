@@ -36,6 +36,8 @@
         (update-in [:fetcher :run-job-fetcher]           utils/parse-boolean)
         (update-in [:fetcher :build-queue-fetcher-delay] utils/parse-float)
         (update-in [:fetcher :run-build-queue-fetcher]   utils/parse-boolean)
+        (update-in [:fetcher :currently-building-jobs-cache-max-age] utils/parse-int)
+        (update-in [:fetcher :jobs-in-queue-cache-max-age]           utils/parse-int)
         (update-in [:irc :port]                          utils/parse-int)
         (update-in [:irc :connect]                       utils/parse-boolean)))
 
