@@ -380,7 +380,7 @@
                 (update-timestamp cache-timestamp)
                 true)
             (when (> cache-age max-age)
-                (log/info (str "Updating " cache-name " (the cache is " cache-age "ms old, max age is set to " max-age "ms"))
+                (log/info (str "Updating " cache-name " (the cache is " (int cache-age) " seconds old, max age is set to " max-age " seconds)"))
                 (function-to-call configuration)
                 (update-timestamp cache-timestamp)
                 true))))
