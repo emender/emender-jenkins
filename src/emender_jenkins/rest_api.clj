@@ -450,7 +450,7 @@
 (defn get-currently-building-jobs
     "Get (and return) all jobs that are currently building."
     [request]
-    (if-let [response (results/get-currently-building-jobs)]
+    (if-let [response (results/get-currently-building-jobs (:configuration request))]
              (send-response response request)
              (-> (create-bad-request-response "currently_building_jobs" "Can not read Jenkins view")
                  (send-error-response request :internal-server-error))))
@@ -458,7 +458,7 @@
 (defn get-jobs-in-queue
     "Get (and return) all jobs that are in Jenkins queue."
     [request]
-    (if-let [response (results/get-jobs-in-queue)]
+    (if-let [response (results/get-jobs-in-queue (:configuration request))]
              (send-response response request)
              (-> (create-bad-request-response "jobs_in_queue" "Can not read Jenkins queue")
                  (send-error-response request :internal-server-error))))
@@ -466,7 +466,7 @@
 (defn get-running-jobs
     "Get (and return) all jobs that are in Jenkins queue or that are currently building."
     [request]
-    (if-let [response (results/get-running-jobs)]
+    (if-let [response (results/get-running-jobs (:configuration request))]
              (send-response response request)
              (-> (create-bad-request-response "running_jobs" "Can not read Jenkins queue and/or selected view")
                  (send-error-response request :internal-server-error))))

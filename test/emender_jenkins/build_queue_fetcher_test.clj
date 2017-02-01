@@ -47,12 +47,14 @@
     "Check the function emender-jenkins.build-queue-fetcher/fetch-data."
     (testing "the function emender-jenkins.build-queue-fetcher/fetch-data."
         (let [configuration    {:jenkins {:currently-building-view "Building"
-                                          :jenkins-url "http://10.20.30.40:8080/"}}]
+                                          :jenkins-url "http://10.20.30.40:8080/"}
+                                :fetcher {:currently-building-jobs-cache-max-age 10
+                                          :jobs-in-queue-cache-max-age 20}}]
         (with-redefs [jenkins-api/get-command (fn [url] nil)]
             (fetch-data configuration)
-            (is (nil? (results/get-currently-building-jobs)))
-            (is (nil? (results/get-jobs-in-queue)))
-            (is (nil? (results/get-running-jobs)))))))
+            (is (nil? (results/get-currently-building-jobs configuration)))
+            (is (nil? (results/get-jobs-in-queue configuration)))
+            (is (nil? (results/get-running-jobs configuration)))))))
 
 (deftest test-run-fetcher-in-thread
     "Check the function emender-jenkins.build-queue-fetcher/run-fetcher-in-thread"

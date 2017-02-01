@@ -693,21 +693,24 @@
     "Check the function emender-jenkins.rest-api/get-running-jobs."
     (testing "the function emender-jenkins.rest-api/get-running-jobs."
         (let [request       {:configuration {:jenkins {:currently-building-view "Building"
-                                                      :jenkins-url "http://10.20.30.40:8080/"}}}]
+                                                      :jenkins-url "http://10.20.30.40:8080/"}
+                                             :fetcher {:currently-building-jobs-cache-max-age 10
+                                                       :jobs-in-queue-cache-max-age 20}}}]
              (with-redefs [jenkins-api/get-command (fn [all-jobs-url] jobs-in-queue-expected-jenkins-response)]
                   (results/read-jobs-in-queue (:configuration request)))
              (with-redefs [jenkins-api/get-command (fn [all-jobs-url] building-jobs-jenkins-response)]
                   (results/read-currently-building-jobs (:configuration request)))
              (results/read-running-jobs (:configuration request))
-             (is (= (get-running-jobs request)
-                    {:status 200
-                     :headers {"Content-Type" "application/json"}
-                     :body "[{\"queuePos\":2,\"jobName\":\"test-Example_Documentation-1.0-Guide-en-US (preview)\",\"state\":\"QUEUED\"},{\"queuePos\":1,\"jobName\":\"test-Example_Documentation-1.0-Guide-en-US (stage)  \",\"state\":\"QUEUED\"},{\"state\":\"BUILDING\",\"jobName\":\"test-Example_Documentation-1.0-Guide-en-US (preview)\"},{\"state\":\"BUILDING\",\"jobName\":\"test-Example_Documentation-1.0-Guide-en-US (stage)\"}]"})))))
+             (with-redefs [results/update-running-jobs-cache (fn [configuration] nil)]
+                 (is (= (get-running-jobs request)
+                        {:status 200
+                         :headers {"Content-Type" "application/json"}
+                         :body "[{\"queuePos\":2,\"jobName\":\"test-Example_Documentation-1.0-Guide-en-US (preview)\",\"state\":\"QUEUED\"},{\"queuePos\":1,\"jobName\":\"test-Example_Documentation-1.0-Guide-en-US (stage)  \",\"state\":\"QUEUED\"},{\"state\":\"BUILDING\",\"jobName\":\"test-Example_Documentation-1.0-Guide-en-US (preview)\"},{\"state\":\"BUILDING\",\"jobName\":\"test-Example_Documentation-1.0-Guide-en-US (stage)\"}]"}))))))
 
 (deftest test-get-running-jobs-negative
     "Check the function emender-jenkins.rest-api/get-running-jobs."
     (testing "the function emender-jenkins.rest-api/get-running-jobs."
-    (with-redefs [results/get-running-jobs     (fn [] nil)]
+    (with-redefs [results/get-running-jobs     (fn [configuration] nil)]
         (let [request       {:configuration {:jenkins {:currently-building-view "Building"
                                                       :jenkins-url "http://10.20.30.40:8080/"}}}]
              (is (= (get-running-jobs request)
@@ -719,7 +722,8 @@
     "Check the function emender-jenkins.rest-api/get-currently-building-jobs."
     (testing "the function emender-jenkins.rest-api/get-currently-building-jobs."
     (with-redefs [jenkins-api/get-command (fn [all-jobs-url] building-jobs-jenkins-response)
-                  send-response           (fn [response request] response)]
+                  send-response           (fn [response request] response)
+                  results/update-currently-building-jobs-cache (fn [configuration] nil)]
         (let [request {:configuration {:jenkins {:currently-building-view "Building"
                                                  :jenkins-url "http://10.20.30.40:8080/"}}}]
              (results/read-currently-building-jobs (:configuration request))
@@ -729,7 +733,7 @@
 (deftest test-get-currently-building-jobs-negative
     "Check the function emender-jenkins.rest-api/get-currently-building-jobs."
     (testing "the function emender-jenkins.rest-api/get-currently-building-jobs."
-    (with-redefs [results/get-currently-building-jobs (fn [] nil)
+    (with-redefs [results/get-currently-building-jobs (fn [configuration] nil)
                   send-error-response (fn [response request what] response)]
         (let [request {:configuration {:jenkins {:currently-building-view "Building"
                                                  :jenkins-url "http://10.20.30.40:8080/"}}}]
@@ -749,7 +753,8 @@
     "Check the function emender-jenkins.rest-api/get-jobs-in-queue."
     (testing "the function emender-jenkins.rest-api/get-jobs-in-queue."
     (with-redefs [jenkins-api/get-command (fn [all-jobs-url] jobs-in-queue-expected-jenkins-response)
-                  send-response           (fn [response request] response)]
+                  send-response           (fn [response request] response)
+                  results/update-jobs-in-queue-cache (fn [configuration] nil)]
         (let [request {:configuration {:jenkins {:currently-building-view "Building"
                                                  :jenkins-url "http://10.20.30.40:8080/"}}}]
              (results/read-jobs-in-queue (:configuration request))
@@ -762,7 +767,7 @@
 (deftest test-get-jobs-in-queue-negative
     "Check the function emender-jenkins.rest-api/get-jobs-in-queue."
     (testing "the function emender-jenkins.rest-api/get-jobs-in-queue."
-    (with-redefs [results/get-jobs-in-queue (fn [] nil)
+    (with-redefs [results/get-jobs-in-queue (fn [configuration] nil)
                   send-error-response (fn [response request what] response)]
         (let [request {:configuration {:jenkins {:currently-building-view "Building"
                                                  :jenkins-url "http://10.20.30.40:8080/"}}}]
