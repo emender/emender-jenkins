@@ -556,8 +556,10 @@
                  (send-error-response request :internal-server-error)))))
 
 (defn throw-exception
-    [message previous-exception]
-    (throw (new Exception (str message (.getMessage previous-exception)))))
+    ( [message]
+      (throw (new Exception message)))
+    ( [message previous-exception]
+      (throw (new Exception (str message (.getMessage previous-exception))))))
 
 (defn read-waive-input-data
     [request]
@@ -575,14 +577,29 @@
             (assoc :product (results/job-name->product-name job-name))
             (assoc :version (results/job-name->version job-name))
             (assoc :guide   (results/job-name->book-name job-name))
-            (dissoc :job_name)
-            )))
+            (dissoc :job_name))))
+
+(defn assert-not-empty
+    [waive-data key-name message]
+    (if (empty? (get waive-data key-name))
+        (throw-exception message)))
+
+(defn check-waive-data
+    [waive-data]
+    (assert-not-empty waive-data :product    "Product name not specified")
+    (assert-not-empty waive-data :version    "Version not specified")
+    (assert-not-empty waive-data :guide      "Guide (book) name not specified")
+    (assert-not-empty waive-data :test_suite "Test suite not specified")
+    (assert-not-empty waive-data :test_name  "Test name not specified")
+    (assert-not-empty waive-data :cause      "Cause not specified")
+    (assert-not-empty waive-data :added      "Added (date) not specified"))
 
 (defn parse-waive-data
     [input-data]
     (let [parsed-data (if (:job_name input-data)
                           (parse-job-name input-data)
                           input-data)]
+         (check-waive-data parsed-data)
          parsed-data))
 
 (defn waive
@@ -592,7 +609,7 @@
         (let [waive-input-data  (read-waive-input-data request)
               parsed-waive-data (parse-waive-data waive-input-data)]
               (send-response parsed-waive-data request))
-        (catch Exception e
+        (catch Throwable e
             (let [error-message (str "Error waiving test results: " (.getMessage e))]
                 (log/error error-message)
                 (send-error-response error-message request :bad-request)))
