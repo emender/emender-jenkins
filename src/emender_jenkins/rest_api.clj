@@ -46,7 +46,7 @@
     :internal-server-error 500
     :not-implemented       501})
 
-(def metadata-directory "data")
+(def job-templates-directory "job-templates")
 
 (defn read-request-body
     "Read all informations from the request body."
@@ -291,7 +291,7 @@
                                                         (config/include-jenkins-reply? request)
                                                         job-name git-repo branch
                                                         (config/get-credentials-id request)
-                                                        metadata-directory metadata))]
+                                                        job-templates-directory metadata))]
                             (-> (jenkins-api/start-job  (config/get-jenkins-url request)
                                                         (config/get-jenkins-auth request)
                                                         (config/include-jenkins-reply? request)
@@ -322,7 +322,7 @@
                                                     (config/include-jenkins-reply? request)
                                                     job-name git-repo branch
                                                     (config/get-credentials-id request)
-                                                    metadata-directory metadata)
+                                                    job-templates-directory metadata)
                             ;(reload-job-list request)
                             (send-response request))
                         (send-job-invalid-metadata-response request :update-job (job-invalid-input job-name git-repo branch)))
