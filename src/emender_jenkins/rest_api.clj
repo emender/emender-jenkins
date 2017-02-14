@@ -555,6 +555,10 @@
              (-> (create-bad-request-response "running_jobs" "Can not read Jenkins queue and/or selected view")
                  (send-error-response request :internal-server-error)))))
 
+(defn throw-exception
+    [message previous-exception]
+    (throw (new Exception (str message (.getMessage previous-exception)))))
+
 (defn read-waive-input-data
     [request]
     (try
@@ -562,15 +566,32 @@
             read-request-body
             (json/read-str :key-fn clojure.core/keyword))
         (catch Exception e
-            (throw (new Exception (str "Can not read POST data: " (.getMessage e)))))))
+            (throw-exception "Can not read POST data: " e))))
+
+(defn parse-job-name
+    [input-data]
+    (let [job-name (:job_name input-data)]
+        (-> input-data
+            (assoc :product (results/job-name->product-name job-name))
+            (assoc :version (results/job-name->version job-name))
+            (assoc :guide   (results/job-name->book-name job-name))
+            (dissoc :job_name)
+            )))
+
+(defn parse-waive-data
+    [input-data]
+    (let [parsed-data (if (:job_name input-data)
+                          (parse-job-name input-data)
+                          input-data)]
+         parsed-data))
 
 (defn waive
     "Waive one test result."
     [request]
     (try
-        (let [waive-input-data  (read-waive-input-data request)]
-             ; parsed-waive-data (parse-waive-data waive-input-data)]
-              (send-response waive-input-data request))
+        (let [waive-input-data  (read-waive-input-data request)
+              parsed-waive-data (parse-waive-data waive-input-data)]
+              (send-response parsed-waive-data request))
         (catch Exception e
             (let [error-message (str "Error waiving test results: " (.getMessage e))]
                 (log/error error-message)
