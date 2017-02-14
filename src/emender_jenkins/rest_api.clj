@@ -1,5 +1,5 @@
 ;
-;  (C) Copyright 2016  Pavel Tisnovsky
+;  (C) Copyright 2016, 2017  Pavel Tisnovsky
 ;
 ;  All rights reserved. This program and the accompanying materials
 ;  are made available under the terms of the Eclipse Public License v1.0
@@ -554,4 +554,22 @@
                  (send-response request))
              (-> (create-bad-request-response "running_jobs" "Can not read Jenkins queue and/or selected view")
                  (send-error-response request :internal-server-error)))))
+
+(defn read-test-to-waive
+    [request]
+    (try
+        (-> request
+            read-request-body
+            (json/read-str :key-fn clojure.core/keyword))
+        (catch Exception e
+            (log/error "Can not read POST data" (.getMessage e)))))
+
+(defn waive
+    "Waive one test result."
+    [request]
+    (if-let [test-to-waive (read-test-to-waive request)]
+        (send-response test-to-waive request)
+        (send-error-response "Bad request" request :bad-request)
+    )
+)
 
