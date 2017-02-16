@@ -15,5 +15,34 @@
 
 (require '[clojure.java.jdbc       :as jdbc])
 
-(require '[emender-jenkins.db-spec     :as db-spec])
+(require '[clojure.tools.logging   :as log])
+
+(require '[emender-jenkins.db-spec :as db-spec])
+
+(defn select-product-id
+    [product-name]
+    (log/info "select-product-id" product-name)
+    (->
+        (jdbc/query db-spec/emender-jenkins-db
+           ["select id from product_names where name=?" product-name])
+           first
+           :id))
+
+(defn insert-product-name
+    [product-name]
+    (log/info "insert-product-name" product-name)
+    (jdbc/insert! db-spec/emender-jenkins-db
+        :product_names {:name product-name}))
+
+(defn select-product-id-or-insert
+    [product-name]
+    (if-let [product-id (select-product-id product-name)]
+            product-id
+            (do (insert-product-name product-name)
+                (select-product-id product-name))))
+
+(defn insert-test-waive
+    [waive-data]
+    (println waive-data)
+)
 
