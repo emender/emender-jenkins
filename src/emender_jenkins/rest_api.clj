@@ -37,7 +37,8 @@
     :delete-job            "delete_job"
     :update-job            "update_job"
     :get-job               "get_job"
-    :get-job-results       "get_job_results"})
+    :get-job-results       "get_job_results"
+    :waive                 "waive"})
 
 ; HTTP codes used by several REST API responses
 (def http-codes {
@@ -204,6 +205,11 @@
 (defn send-job-invalid-metadata-response
     [request command message]
     (-> (create-bad-request-response (get commands command) message)
+        (send-error-response request :bad-request)))
+
+(defn send-waive-error-response
+    [request message]
+    (-> (create-bad-request-response (get commands :waive) message)
         (send-error-response request :bad-request)))
 
 (defn reload-all-results
@@ -607,7 +613,5 @@
         (catch Throwable e
             (let [error-message (str "Error waiving test results: " (.getMessage e))]
                 (log/error error-message)
-                (send-error-response error-message request :bad-request)))
-    )
-)
+                (send-waive-error-response request error-message)))))
 
