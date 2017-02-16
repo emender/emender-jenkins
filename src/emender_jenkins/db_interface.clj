@@ -41,6 +41,29 @@
             (do (insert-product-name product-name)
                 (select-product-id product-name))))
 
+(defn select-product-version-id
+    [product-id version]
+    (log/info "select-product-version-id" product-id version)
+    (->
+        (jdbc/query db-spec/emender-jenkins-db
+           ["select id from product_versions where product_id=? and version=?" product-id version])
+           first
+           :id))
+
+(defn insert-product-version
+    [product-id version]
+    (log/info "insert-product-version" product-id version)
+    (jdbc/insert! db-spec/emender-jenkins-db
+        :product_versions {:product_id product-id
+                           :version    version}))
+
+(defn select-product-version-or-insert
+    [product-id version]
+    (if-let [version-id (select-product-version-id product-id version)]
+            version-id
+            (do (insert-product-version product-id version)
+                (select-product-version-id product-id version))))
+
 (defn insert-test-waive
     [waive-data]
     (println waive-data)
