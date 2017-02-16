@@ -26,6 +26,7 @@
 (require '[emender-jenkins.metadata-exporter :as metadata-exporter])
 (require '[emender-jenkins.metadata-analyzer :as metadata-analyzer])
 (require '[emender-jenkins.process-info      :as process-info])
+(require '[emender-jenkins.utils             :refer :all])
 
 ; command names used by various REST API responses
 (def commands {
@@ -554,12 +555,6 @@
                  (send-response request))
              (-> (create-bad-request-response "running_jobs" "Can not read Jenkins queue and/or selected view")
                  (send-error-response request :internal-server-error)))))
-
-(defn throw-exception
-    ( [message]
-      (throw (new Exception message)))
-    ( [message previous-exception]
-      (throw (new Exception (str message (.getMessage previous-exception))))))
 
 (defn read-waive-input-data
     [request]
