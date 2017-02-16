@@ -5,7 +5,6 @@
     "filename" : "en-US/Subsystems.xml",
     "test_suite" : "TestWritingStyle",
     "test_name"  : "testSpellChecking",
-    "cause"      : "interoperating",
-    "added"      : "2017-02-14 16:05:00"
+    "cause"      : "interoperating"
 }
 
