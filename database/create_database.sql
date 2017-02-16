@@ -1,13 +1,14 @@
 create table product_names (
     id            integer primary key asc,
-    name          text not null
+    name          text not null unique
 );
 
 create table product_versions (
     id            integer primary key asc,
     product_id    integer not null,
     version       text not null,
-    foreign key   (product_id) references product_names(id)
+    foreign key   (product_id) references product_names(id),
+    unique (product_id, version) on conflict fail
 );
 
 create table guides (
