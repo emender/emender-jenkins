@@ -109,9 +109,50 @@
             (do (insert-test-name test-suite-id test-name)
                 (select-test-id test-suite-id test-name))))
 
+(defn select-guide-id
+    [version-id guide-name]
+    (log/info "select-guide-id" version-id guide-name)
+    (->
+        (jdbc/query db-spec/emender-jenkins-db
+           ["select id from guides where prod_ver_id=? and name=?" version-id guide-name])
+           first
+           :id))
+
+(defn insert-guide-name
+    [version-id guide-name]
+    (log/info "insert-guide-name" version-id guide-name)
+    (jdbc/insert! db-spec/emender-jenkins-db
+        :guides {:prod_ver_id version-id
+                 :name   guide-name}))
+
+(defn select-guide-id-or-insert
+    [version-id guide-name]
+    (if-let [guide-id (select-guide-id version-id guide-name)]
+            guide-id
+            (do (insert-guide-name version-id guide-name)
+                (select-guide-id version-id guide-name))))
+
 (defn insert-test-waive
     [waive-data]
-    (println waive-data)
+    (let [product-id    (select-product-id-or-insert                 (:product    waive-data))
+          version-id    (select-product-version-or-insert product-id (:version    waive-data))
+          guide-id      (select-guide-id-or-insert        version-id (:guide      waive-data))
+          test-suite-id (select-test-suite-id-or-insert              (:test_suite waive-data))
+          test-id       (select-test-id-or-insert  test-suite-id     (:test_name  waive-data))]
+         (jdbc/insert! db-spec/emender-jenkins-db
+             :waives {:guide_id guide-id
+                      :test_id  test-id
+                      :cause    (:cause waive-data)
+                      }
+         ))
 )
 
+;(insert-test-waive {
+;    :product    "Product name"
+;    :version    "Version number"
+;    :guide      "Guide name"
+;    :test_suite "Test suite name"
+;    :test_name  "Test name"
+;    :cause      "Cause"
+;})
 
