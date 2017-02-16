@@ -64,6 +64,28 @@
             (do (insert-product-version product-id version)
                 (select-product-version-id product-id version))))
 
+(defn select-test-suite-id
+    [test-suite-name]
+    (log/info "select-test-suite-id" test-suite-name)
+    (->
+        (jdbc/query db-spec/emender-jenkins-db
+           ["select id from test_suites where name=?" test-suite-name])
+           first
+           :id))
+
+(defn insert-test-suite-name
+    [test-suite-name]
+    (log/info "insert-test-suite-name" test-suite-name)
+    (jdbc/insert! db-spec/emender-jenkins-db
+        :test_suites {:name test-suite-name}))
+
+(defn select-test-suite-id-or-insert
+    [test-suite-name]
+    (if-let [test-suite-id (select-test-suite-id test-suite-name)]
+            test-suite-id
+            (do (insert-test-suite-name test-suite-name)
+                (select-test-suite-id test-suite-name))))
+
 (defn insert-test-waive
     [waive-data]
     (println waive-data)
