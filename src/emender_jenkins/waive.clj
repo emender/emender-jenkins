@@ -65,5 +65,6 @@
     [request]
         (let [waive-input-data  (read-waive-input-data request)
               parsed-waive-data (parse-waive-data waive-input-data)]
+              (db-interface/insert-test-waive parsed-waive-data)
               parsed-waive-data))
 
