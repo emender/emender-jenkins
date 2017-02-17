@@ -13,11 +13,12 @@
 (ns emender-jenkins.waive
     "Test waiving functionality")
 
-(require '[clojure.data.json       :as json])
-(require '[clj-fileutils.fileutils :as file-utils])
+(require '[clojure.data.json            :as json])
+(require '[clj-fileutils.fileutils      :as file-utils])
 
-(require '[emender-jenkins.results :as results])
-(require '[emender-jenkins.utils   :refer :all])
+(require '[emender-jenkins.results      :as results])
+(require '[emender-jenkins.utils        :refer :all])
+(require '[emender-jenkins.db-interface :as db-interface])
 
 (defn read-waive-input-data
     [request]
@@ -50,8 +51,7 @@
     (assert-not-empty waive-data :guide      "Guide (book) name not specified")
     (assert-not-empty waive-data :test_suite "Test suite not specified")
     (assert-not-empty waive-data :test_name  "Test name not specified")
-    (assert-not-empty waive-data :cause      "Cause not specified")
-    (assert-not-empty waive-data :added      "Added (date) not specified"))
+    (assert-not-empty waive-data :cause      "Cause not specified"))
 
 (defn parse-waive-data
     [input-data]

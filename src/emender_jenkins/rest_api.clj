@@ -574,3 +574,8 @@
                 (log/error error-message)
                 (send-waive-error-response request error-message)))))
 
+(defn get-waives
+    "Read test waives."
+    [request]
+    )
+
