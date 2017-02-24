@@ -68,3 +68,12 @@
               (db-interface/insert-test-waive parsed-waive-data)
               parsed-waive-data))
 
+(defn get-waives
+    [product version book test-case test-name]
+    {:product   product
+     :version   version
+     :book      book
+     :test_case test-case
+     :test_name test-name
+     })
+

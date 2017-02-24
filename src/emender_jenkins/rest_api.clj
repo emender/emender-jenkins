@@ -581,16 +581,22 @@
         (subs uri (count prefix))))
 
 (defn waives-resources
+    "Retrieve names of resources from the URI."
     [uri]
-    (if (.startsWith uri "/api/")
-        (subs uri (count "/api/"))))
+    (-> (clojure.string/split uri #"/")
+        rest))
 
 (defn get-waives
     "Read test waives."
     [request uri]
     (if-let [rest-uri (remove-prefix uri "/api/")]
-        (-> {:a "aaa" :b "bbb"}
-            (send-response request))
+        (let [resources (waives-resources rest-uri)]
+             ; we need to know product, version, book, test case, and test name
+             (if (= (count resources) 5)
+                 (-> (apply waive/get-waives resources)
+                     (send-response request))
+                 (-> (create-bad-request-response (get commands :waives) "Not all resources are specified")
+                     (send-error-response request :bad-request))))
         (-> (create-bad-request-response (get commands :waives) (str "Bad URI" uri))
             (send-error-response request :bad-request))))
 
