@@ -583,7 +583,10 @@
 (defn waives-resources
     "Retrieve names of resources from the URI."
     [uri]
-    (-> (clojure.string/split uri #"/")
+    (-> uri
+        (.replaceAll "%20" " ")
+        (.replaceAll "\\+" " ")
+        (clojure.string/split #"/")
         rest))
 
 (defn get-waives
