@@ -91,7 +91,7 @@
             [:post "job_finished"]          (rest-api/job-finished-handler   request)
             [:post "job_results"]           (rest-api/job-results            request)
             [:post "waive"]                 (rest-api/waive                  request)
-            [:get  "waives"]                (rest-api/get-waives             request)
+            [:get  "waives"]                (rest-api/get-waives             request uri)
                                             (rest-api/unknown-call-handler   request uri method))))
 
 (defn restcall-options-handler

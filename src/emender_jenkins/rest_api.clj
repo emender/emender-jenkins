@@ -38,7 +38,8 @@
     :update-job            "update_job"
     :get-job               "get_job"
     :get-job-results       "get_job_results"
-    :waive                 "waive"})
+    :waive                 "waive"
+    :waives                "waives"})
 
 ; HTTP codes used by several REST API responses
 (def http-codes {
@@ -574,8 +575,22 @@
                 (log/error error-message)
                 (send-waive-error-response request error-message)))))
 
+(defn remove-prefix
+    [uri prefix]
+    (if (.startsWith uri prefix)
+        (subs uri (count prefix))))
+
+(defn waives-resources
+    [uri]
+    (if (.startsWith uri "/api/")
+        (subs uri (count "/api/"))))
+
 (defn get-waives
     "Read test waives."
-    [request]
-    )
+    [request uri]
+    (if-let [rest-uri (remove-prefix uri "/api/")]
+        (-> {:a "aaa" :b "bbb"}
+            (send-response request))
+        (-> (create-bad-request-response (get commands :waives) (str "Bad URI" uri))
+            (send-error-response request :bad-request))))
 
