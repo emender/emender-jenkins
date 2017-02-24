@@ -211,7 +211,8 @@
                                        (-> configuration :irc :channel)
                                        (-> configuration :irc :nick))
                 (log/info "IRC bot started"))
-            (job-data-fetcher/run-fetcher-in-thread configuration)
+            (if (-> configuration :fetcher :enabled)
+                (job-data-fetcher/run-fetcher-in-thread configuration))
             (start-server configuration (get-port port) openshift-port openshift-ip))))
 
 (defn -main
