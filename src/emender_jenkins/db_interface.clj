@@ -147,6 +147,10 @@
          ))
 )
 
+(defn read-waives
+    [product version book test-case test-name]
+    )
+
 ;(insert-test-waive {
 ;    :product    "Product name"
 ;    :version    "Version number"
