@@ -33,6 +33,7 @@
         (update-in [:config :include-jenkins-reply]      utils/parse-boolean)
         (update-in [:config :verbose-show-configuration] utils/parse-boolean)
         (update-in [:fetcher :delay]                     utils/parse-int)
+        (update-in [:fetcher :enabled]                   utils/parse-boolean)
         (update-in [:irc :port]                          utils/parse-int)
         (update-in [:irc :connect]                       utils/parse-boolean)))
 
