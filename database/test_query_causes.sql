@@ -9,6 +9,6 @@ select product_names.name, product_versions.version, guides.name, test_suites.na
       and product_versions.version = '6.9'
       and guides.name = 'Installation Guide 3'
       and test_suites.name = 'Test suite 1'
-      and tests.name       = 'Test #1 for suite #1'
+      and tests.name       = 'Test 1 for suite 1'
          ;
 
