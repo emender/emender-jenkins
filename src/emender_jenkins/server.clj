@@ -1,5 +1,5 @@
 ;
-;  (C) Copyright 2016  Pavel Tisnovsky
+;  (C) Copyright 2016, 2017  Pavel Tisnovsky
 ;
 ;  All rights reserved. This program and the accompanying materials
 ;  are made available under the terms of the Eclipse Public License v1.0
@@ -90,6 +90,8 @@
             [:post "job_started"]           (rest-api/job-started-handler    request)
             [:post "job_finished"]          (rest-api/job-finished-handler   request)
             [:post "job_results"]           (rest-api/job-results            request)
+            [:post "waive"]                 (rest-api/waive                  request)
+            [:get  "waives"]                (rest-api/get-waives             request uri)
                                             (rest-api/unknown-call-handler   request uri method))))
 
 (defn restcall-options-handler

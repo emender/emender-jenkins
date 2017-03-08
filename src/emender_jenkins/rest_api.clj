@@ -1,5 +1,5 @@
 ;
-;  (C) Copyright 2016  Pavel Tisnovsky
+;  (C) Copyright 2016, 2017  Pavel Tisnovsky
 ;
 ;  All rights reserved. This program and the accompanying materials
 ;  are made available under the terms of the Eclipse Public License v1.0
@@ -26,6 +26,7 @@
 (require '[emender-jenkins.metadata-exporter :as metadata-exporter])
 (require '[emender-jenkins.metadata-analyzer :as metadata-analyzer])
 (require '[emender-jenkins.process-info      :as process-info])
+(require '[emender-jenkins.waive             :as waive])
 
 ; command names used by various REST API responses
 (def commands {
@@ -36,7 +37,9 @@
     :delete-job            "delete_job"
     :update-job            "update_job"
     :get-job               "get_job"
-    :get-job-results       "get_job_results"})
+    :get-job-results       "get_job_results"
+    :waive                 "waive"
+    :waives                "waives"})
 
 ; HTTP codes used by several REST API responses
 (def http-codes {
@@ -46,7 +49,7 @@
     :internal-server-error 500
     :not-implemented       501})
 
-(def metadata-directory "data")
+(def job-templates-directory "job-templates")
 
 (defn read-request-body
     "Read all informations from the request body."
@@ -205,6 +208,11 @@
     (-> (create-bad-request-response (get commands command) message)
         (send-error-response request :bad-request)))
 
+(defn send-waive-error-response
+    [request message]
+    (-> (create-bad-request-response (get commands :waive) message)
+        (send-error-response request :bad-request)))
+
 (defn reload-all-results
     [request]
     (try
@@ -291,7 +299,7 @@
                                                         (config/include-jenkins-reply? request)
                                                         job-name git-repo branch
                                                         (config/get-credentials-id request)
-                                                        metadata-directory metadata))]
+                                                        job-templates-directory metadata))]
                             (-> (jenkins-api/start-job  (config/get-jenkins-url request)
                                                         (config/get-jenkins-auth request)
                                                         (config/include-jenkins-reply? request)
@@ -322,7 +330,7 @@
                                                     (config/include-jenkins-reply? request)
                                                     job-name git-repo branch
                                                     (config/get-credentials-id request)
-                                                    metadata-directory metadata)
+                                                    job-templates-directory metadata)
                             ;(reload-job-list request)
                             (send-response request))
                         (send-job-invalid-metadata-response request :update-job (job-invalid-input job-name git-repo branch)))
@@ -470,4 +478,44 @@
              (send-response response request)
              (-> (create-bad-request-response "running_jobs" "Can not read Jenkins queue and/or selected view")
                  (send-error-response request :internal-server-error))))
+
+(defn waive
+    "Waive one test result."
+    [request]
+    (try
+        (-> request
+            waive/waive-test
+            (send-response request))
+        (catch Throwable e
+            (let [error-message (str "Error waiving test results: " (.getMessage e))]
+                (log/error error-message)
+                (send-waive-error-response request error-message)))))
+
+(defn remove-prefix
+    [uri prefix]
+    (if (.startsWith uri prefix)
+        (subs uri (count prefix))))
+
+(defn waives-resources
+    "Retrieve names of resources from the URI."
+    [uri]
+    (-> uri
+        (.replaceAll "%20" " ")
+        (.replaceAll "\\+" " ")
+        (clojure.string/split #"/")
+        rest))
+
+(defn get-waives
+    "Read test waives."
+    [request uri]
+    (if-let [rest-uri (remove-prefix uri "/api/")]
+        (let [resources (waives-resources rest-uri)]
+             ; we need to know product, version, book, test case, and test name
+             (if (= (count resources) 5)
+                 (-> (apply waive/get-waives resources)
+                     (send-response request))
+                 (-> (create-bad-request-response (get commands :waives) "Not all resources are specified")
+                     (send-error-response request :bad-request))))
+        (-> (create-bad-request-response (get commands :waives) (str "Bad URI" uri))
+            (send-error-response request :bad-request))))
 

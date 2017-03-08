@@ -71,3 +71,9 @@
     (or (= string "true")
         (= string "True")))
 
+(defn throw-exception
+    ( [message]
+      (throw (new Exception message)))
+    ( [message previous-exception]
+      (throw (new Exception (str message (.getMessage previous-exception))))))
+
