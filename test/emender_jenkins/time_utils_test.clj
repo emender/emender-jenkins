@@ -24,16 +24,16 @@
     (clojure.test/function? function-name))
 
 
-(deftest test-minutes-to-seconds-existence
-    "Check that the emender-jenkins.time-utils/minutes-to-seconds definition exists."
-    (testing "if the emender-jenkins.time-utils/minutes-to-seconds definition exists."
-        (is (callable? 'emender-jenkins.time-utils/minutes-to-seconds))))
+(deftest test-minutes->seconds-existence
+    "Check that the emender-jenkins.time-utils/minutes->seconds definition exists."
+    (testing "if the emender-jenkins.time-utils/minutes->seconds definition exists."
+        (is (callable? 'emender-jenkins.time-utils/minutes->seconds))))
 
 
-(deftest test-seconds-to-ms-existence
-    "Check that the emender-jenkins.time-utils/seconds-to-ms definition exists."
-    (testing "if the emender-jenkins.time-utils/seconds-to-ms definition exists."
-        (is (callable? 'emender-jenkins.time-utils/seconds-to-ms))))
+(deftest test-seconds->ms-existence
+    "Check that the emender-jenkins.time-utils/seconds->ms definition exists."
+    (testing "if the emender-jenkins.time-utils/seconds->ms definition exists."
+        (is (callable? 'emender-jenkins.time-utils/seconds->ms))))
 
 
 (deftest test-compute-sleep-amount-existence
@@ -52,22 +52,22 @@
 ; Function behaviours
 ;
 
-(deftest test-minutes-to-seconds
-    "Check the function emender-jenkins.time-utils/minutes-to-seconds."
-    (testing "the function emender-jenkins.time-utils/minutes-to-seconds."
+(deftest test-minutes->seconds
+    "Check the function emender-jenkins.time-utils/minutes->seconds."
+    (testing "the function emender-jenkins.time-utils/minutes->seconds."
         (are [x y] (= x y)
-               0 (minutes-to-seconds 0)
-              60 (minutes-to-seconds 1)
-             120 (minutes-to-seconds 2)
-            3600 (minutes-to-seconds 60))))
+               0 (minutes->seconds 0)
+              60 (minutes->seconds 1)
+             120 (minutes->seconds 2)
+            3600 (minutes->seconds 60))))
 
-(deftest test-seconds-to-ms
-    "Check the function emender-jenkins.time-utils/seconds-to-ms."
-    (testing "the function emender-jenkins.time-utils/seconds-to-ms."
+(deftest test-seconds->ms
+    "Check the function emender-jenkins.time-utils/seconds->ms."
+    (testing "the function emender-jenkins.time-utils/seconds->ms."
         (are [x y] (= x y)
-               0 (seconds-to-ms 0)
-            1000 (seconds-to-ms 1)
-            2000 (seconds-to-ms 2))))
+               0 (seconds->ms 0)
+            1000 (seconds->ms 1)
+            2000 (seconds->ms 2))))
 
 (deftest test-compute-sleep-amount
     "Check the function emender-jenkins.time-utils/compute-sleep-amount."

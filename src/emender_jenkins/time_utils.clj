@@ -13,22 +13,27 @@
 (ns emender-jenkins.time-utils
      "Module that contains helper functions to work with time.")
 
-(defn minutes-to-seconds
+(defn minutes->seconds
     "Convert minutes to seconds."
     [minutes]
     (* minutes 60))
 
-(defn seconds-to-ms
+(defn seconds->ms
     "Convert seconds to milliseconds."
     [seconds]
     (* seconds 1000))
+
+(defn ms->seconds
+    "Convert milliseconds to seconds."
+    [ms]
+    (/ ms 1000))
 
 (defn compute-sleep-amount
     "Convert sleep amount specified in minutes into millisesonds."
     [minutes]
     (-> minutes
-        minutes-to-seconds
-        seconds-to-ms))
+        minutes->seconds
+        seconds->ms))
 
 (defn get-formatted-time
     "Returns formatted time."
@@ -36,4 +41,11 @@
     (let [sdf         (new java.text.SimpleDateFormat "yyyy-MM-dd HH:mm:ss")
           result-date (new java.util.Date ms)]
           (.format sdf result-date)))
+
+(defn elapsed-time
+    "Compute time elapsed from the given timestamp."
+    [timestamp]
+    (let [current-time (ms->seconds (System/currentTimeMillis))]
+        (if timestamp
+            (- current-time timestamp))))
 

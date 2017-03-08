@@ -21,13 +21,14 @@
 (require '[clojure.tools.cli       :as cli])
 (require '[clojure.tools.logging   :as log])
 
-(require '[emender-jenkins.server           :as server])
-(require '[emender-jenkins.results          :as results])
-(require '[emender-jenkins.config           :as config])
-(require '[emender-jenkins.middleware       :as middleware])
-(require '[emender-jenkins.process-info     :as process-info])
-(require '[emender-jenkins.job-data-fetcher :as job-data-fetcher])
-(require '[emender-jenkins.irc-bot          :as irc-bot])
+(require '[emender-jenkins.server              :as server])
+(require '[emender-jenkins.results             :as results])
+(require '[emender-jenkins.config              :as config])
+(require '[emender-jenkins.middleware          :as middleware])
+(require '[emender-jenkins.process-info        :as process-info])
+(require '[emender-jenkins.job-data-fetcher    :as job-data-fetcher])
+(require '[emender-jenkins.build-queue-fetcher :as build-queue-fetcher])
+(require '[emender-jenkins.irc-bot             :as irc-bot])
 
 (def cli-options
     "Definitions of all command line options that are  currenty supported."
@@ -211,8 +212,13 @@
                                        (-> configuration :irc :channel)
                                        (-> configuration :irc :nick))
                 (log/info "IRC bot started"))
+
+            (job-data-fetcher/run-fetcher-in-thread configuration)
+            (build-queue-fetcher/run-fetcher-in-thread configuration)
+
             (if (-> configuration :fetcher :enabled)
                 (job-data-fetcher/run-fetcher-in-thread configuration))
+
             (start-server configuration (get-port port) openshift-port openshift-ip))))
 
 (defn -main

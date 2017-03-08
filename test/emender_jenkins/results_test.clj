@@ -12,7 +12,9 @@
 
 (ns emender-jenkins.results-test
   (:require [clojure.test :refer :all]
-            [emender-jenkins.results :refer :all]))
+            [clojure.data.json :as json]
+            [emender-jenkins.results :refer :all]
+            [clj-jenkins-api.jenkins-api :as jenkins-api]))
 
 ;
 ; Common functions used by tests.
@@ -328,3 +330,244 @@
             nil   (parse-test-results "")
             nil   (parse-test-results "xyzzy")
             nil   (parse-test-results "Total: "))))
+
+(deftest test-get-building-jobs-url
+    "Check the function emender-jenkins.results/get-building-jobs-url."
+    (let [configuration {:jenkins {:currently-building-view "Building"
+                                             :jenkins-url "http://10.20.30.40:8080/"}}]
+         (is (= "http://10.20.30.40:8080/view/Building/" (get-building-jobs-url configuration)))))
+
+(deftest test-get-job-in-queue-url
+    "Check the function emender-jenkins.results/get-job-in-queue-url."
+    (let [configuration {:jenkins {:in-queue-url "queue/api/json?tree=items[task[name]]"
+                                             :jenkins-url  "http://10.20.30.40:8080/"}}]
+         (is (= "http://10.20.30.40:8080/queue/api/json?tree=items[task[name]]" (get-jobs-in-queue-url configuration)))))
+
+(deftest test-get-job-name-from-queue-info
+    "Check the function emender-jenkins.results/get-job-name-from-queue-info."
+    (are [x y] (= x (get-job-name-from-queue-info y))
+        nil        nil
+        nil        {"something" "else"}
+        nil        {"task" nil}
+        nil        {"task" {"name" nil}}
+        ""         {"task" {"name" ""}}
+        "job-name" {"task" {"name" "job-name"}}))
+
+
+(def building-jobs-jenkins-response
+    (str "{\"_class\":\"hudson.model.ListView\","
+          "\"jobs\":["
+          "{\"_class\":\"hudson.model.FreeStyleProject\",\"name\":\"test-Example_Documentation-1.0-Guide-en-US (preview)\",\"url\":\"http://10.20.30.40:8080/job/test-Example_Documentation-1.0-Guide-en-US%20(preview)/\",\"buildable\":true,\"color\":\"yellow_anime\",\"lastSuccessfulBuild\":{\"_class\":\"hudson.model.FreeStyleBuild\",\"description\":\"Total: 4  Passed: 1  Failed: 3\"},\"scm\":{\"_class\":\"hudson.plugins.git.GitSCM\",\"userRemoteConfigs\":[{\"url\":\"git@git.domain.name:example-documentation/guide.git\"}]}},"
+          "{\"_class\":\"hudson.model.FreeStyleProject\",\"name\":\"test-Example_Documentation-1.0-Guide-en-US (stage)\",\"url\":\"http://10.20.30.40:8080/job/test-Example_Documentation-1.0-Guide-en-US%20(stage)/\",\"buildable\":true,\"color\":\"yellow_anime\",\"lastSuccessfulBuild\":{\"_class\":\"hudson.model.FreeStyleBuild\",\"description\":\"Total: 4  Passed: 1  Failed: 3\"},\"scm\":{\"_class\":\"hudson.plugins.git.GitSCM\",\"userRemoteConfigs\":[{\"url\":\"git@git.domain.name:example-documentation/guide.git\"}]}}"
+          "]}"))
+
+(def jobs-in-queue-expected-jenkins-response
+    (str "{\"_class\":\"hudson.model.Queue\","
+          "\"items\":["
+             "{\"_class\":\"hudson.model.Queue$BlockedItem\",\"task\":{\"_class\":\"hudson.model.FreeStyleProject\",\"name\":\"test-Example_Documentation-1.0-Guide-en-US (preview)\"}}"
+             "{\"_class\":\"hudson.model.Queue$BlockedItem\",\"task\":{\"_class\":\"hudson.model.FreeStyleProject\",\"name\":\"test-Example_Documentation-1.0-Guide-en-US (stage)  \"}}"
+         "]}"))
+
+(def read-currently-building-jobs-expected-result
+   [{"_class" "hudson.model.FreeStyleProject",
+     "name" "test-Example_Documentation-1.0-Guide-en-US (preview)",
+     "url"
+     "http://10.20.30.40:8080/job/test-Example_Documentation-1.0-Guide-en-US%20(preview)/",
+     "buildable" true,
+     "color" "yellow_anime",
+     "lastSuccessfulBuild"
+     {"_class" "hudson.model.FreeStyleBuild",
+      "description" "Total: 4  Passed: 1  Failed: 3"},
+      "scm"
+     {"_class" "hudson.plugins.git.GitSCM",
+      "userRemoteConfigs"
+      [{"url" "git@git.domain.name:example-documentation/guide.git"}]}}
+    {"_class" "hudson.model.FreeStyleProject",
+     "name" "test-Example_Documentation-1.0-Guide-en-US (stage)",
+     "url"
+     "http://10.20.30.40:8080/job/test-Example_Documentation-1.0-Guide-en-US%20(stage)/",
+     "buildable" true,
+     "color" "yellow_anime",
+     "lastSuccessfulBuild"
+     {"_class" "hudson.model.FreeStyleBuild",
+      "description" "Total: 4  Passed: 1  Failed: 3"},
+     "scm"
+     {"_class" "hudson.plugins.git.GitSCM",
+      "userRemoteConfigs"
+      [{"url" "git@git.domain.name:example-documentation/guide.git"}]}}])
+
+(deftest test-read-queue-info-from-jenkins
+    "Check the function emender-jenkins.results/read-queue-info-from-jenkins."
+    (testing "the function emender-jenkins.results/read-queue-info-from-jenkins."
+    (with-redefs [jenkins-api/get-command (fn [url] jobs-in-queue-expected-jenkins-response)]
+        (is (= (read-queue-info-from-jenkins "url")
+             [{"_class" "hudson.model.Queue$BlockedItem" "task" {"_class" "hudson.model.FreeStyleProject" "name" "test-Example_Documentation-1.0-Guide-en-US (preview)"}}
+              {"_class" "hudson.model.Queue$BlockedItem" "task" {"_class" "hudson.model.FreeStyleProject" "name" "test-Example_Documentation-1.0-Guide-en-US (stage)  "}}]
+    )))))
+
+(deftest test-read-building-jobs-from-jenkins
+    "Check the function emender-jenkins.results/read-building-jobs-from-jenkins."
+    (with-redefs [jenkins-api/get-command (fn [all-jobs-url] building-jobs-jenkins-response)]
+        (is (= (read-building-jobs-from-jenkins "url" "job-list-part")
+               [{"_class" "hudson.model.FreeStyleProject",
+                 "name" "test-Example_Documentation-1.0-Guide-en-US (preview)",
+                 "url"
+                 "http://10.20.30.40:8080/job/test-Example_Documentation-1.0-Guide-en-US%20(preview)/",
+                 "buildable" true,
+                 "color" "yellow_anime",
+                 "lastSuccessfulBuild"
+                 {"_class" "hudson.model.FreeStyleBuild",
+                  "description" "Total: 4  Passed: 1  Failed: 3"},
+                  "scm"
+                 {"_class" "hudson.plugins.git.GitSCM",
+                  "userRemoteConfigs"
+                  [{"url" "git@git.domain.name:example-documentation/guide.git"}]}}
+                {"_class" "hudson.model.FreeStyleProject",
+                 "name" "test-Example_Documentation-1.0-Guide-en-US (stage)",
+                 "url"
+                 "http://10.20.30.40:8080/job/test-Example_Documentation-1.0-Guide-en-US%20(stage)/",
+                 "buildable" true,
+                 "color" "yellow_anime",
+                 "lastSuccessfulBuild"
+                 {"_class" "hudson.model.FreeStyleBuild",
+                  "description" "Total: 4  Passed: 1  Failed: 3"},
+                 "scm"
+                 {"_class" "hudson.plugins.git.GitSCM",
+                  "userRemoteConfigs"
+                  [{"url" "git@git.domain.name:example-documentation/guide.git"}]}}]))))
+
+(deftest test-read-building-jobs-from-jenkins-exception-catching
+    "Check the function emender-jenkins.results/read-building-jobs-from-jenkins."
+    (with-redefs [jenkins-api/read-list-of-all-jobs (fn [url job-list-part] (throw (new Exception "Exception!")))]
+        (is (= (read-building-jobs-from-jenkins "url" "job-list-part") nil))))
+
+(deftest test-create-currently-building-jobs-response
+    "Check the function emender-jenkins.results/create-currently-building-jobs-response"
+    (with-redefs [jenkins-api/get-command (fn [all-jobs-url] building-jobs-jenkins-response)]
+        (is (= (create-currently-building-jobs-response (read-building-jobs-from-jenkins "url" "job-list-part"))
+               ["test-Example_Documentation-1.0-Guide-en-US (preview)" "test-Example_Documentation-1.0-Guide-en-US (stage)"]))))
+
+(deftest test-read-currently-building-jobs
+    "Check the function emender-jenkins.results/read-building-jobs-from-jenkins."
+    (with-redefs [jenkins-api/get-command (fn [all-jobs-url] building-jobs-jenkins-response)]
+        (let [configuration {:jenkins {:currently-building-view "Building"
+                                       :jenkins-url "http://10.20.30.40:8080/"}}]
+            (is (= (read-currently-building-jobs configuration)
+                    read-currently-building-jobs-expected-result)))))
+
+(deftest test-read-currently-building-jobs-negative
+    "Check the function emender-jenkins.results/read-building-jobs-from-jenkins."
+    (with-redefs [jenkins-api/get-command (fn [all-jobs-url] nil)]
+        (let [configuration {:jenkins {:currently-building-view "Building"
+                                       :jenkins-url "http://10.20.30.40:8080/"}}]
+            (is (nil? (read-currently-building-jobs configuration))))))
+
+(deftest test-read-queue-info-from-jenkins-negative
+    "Check the function emender-jenkins.results/read-queue-info-from-jenkins."
+    (testing "the function emender-jenkins.results/read-queue-info-from-jenkins."
+    (with-redefs [jenkins-api/get-command (fn [url] nil)]
+        (is (= (read-queue-info-from-jenkins "url") nil)))))
+
+(deftest test-create-jobs-in-queue-response
+    "Check the function emender-jenkins.results/create-jobs-in-queue-response."
+    (testing "the function emender-jenkins.results/create-jobs-in-queue-response."
+        (let [items (-> (json/read-str jobs-in-queue-expected-jenkins-response) (get "items"))]
+            (is (= (create-jobs-in-queue-response items)
+                   [{"queuePos" 2
+                     "jobName" "test-Example_Documentation-1.0-Guide-en-US (preview)"}
+                    {"queuePos" 1
+                     "jobName" "test-Example_Documentation-1.0-Guide-en-US (stage)  "}]))))) 
+
+(deftest test-read-jobs-in-queue-1
+    "Check the function emender-jenkins.results/read-jobs-in-queue."
+    (testing "the function emender-jenkins.results/read-jobs-in-queue."
+    (with-redefs [jenkins-api/get-command (fn [url] nil)]
+        (let [configuration {:jenkins {:currently-building-view "Building"
+                                       :jenkins-url "http://10.20.30.40:8080/"}}]
+            (is (= (read-jobs-in-queue configuration) nil))))))
+
+(deftest test-read-jobs-in-queue-2
+    "Check the function emender-jenkins.results/read-jobs-in-queue."
+    (testing "the function emender-jenkins.results/read-jobs-in-queue."
+    (with-redefs [jenkins-api/get-command (fn [url] jobs-in-queue-expected-jenkins-response)]
+        (let [configuration {:jenkins {:currently-building-view "Building"
+                                       :jenkins-url "http://10.20.30.40:8080/"}}]
+            (is (= (read-jobs-in-queue configuration)
+             [{"_class" "hudson.model.Queue$BlockedItem" "task" {"_class" "hudson.model.FreeStyleProject" "name" "test-Example_Documentation-1.0-Guide-en-US (preview)"}}
+              {"_class" "hudson.model.Queue$BlockedItem" "task" {"_class" "hudson.model.FreeStyleProject" "name" "test-Example_Documentation-1.0-Guide-en-US (stage)  "}}]
+    ))))))
+
+(deftest test-prepare-jobs-in-queue
+    "Check the function emender-jenkins.results/prepare-jobs-in-queue."
+    (testing "the function emender-jenkins.results/prepare-jobs-in-queue."
+        (let [items (-> (json/read-str jobs-in-queue-expected-jenkins-response) (get "items"))]
+            (is (= (prepare-jobs-in-queue items)
+                   [{"queuePos" 2
+                     "jobName" "test-Example_Documentation-1.0-Guide-en-US (preview)"
+                     "state"   "QUEUED"}
+                    {"queuePos" 1
+                     "jobName" "test-Example_Documentation-1.0-Guide-en-US (stage)  "
+                     "state"   "QUEUED"}])))))
+
+(deftest test-prepare-building-jobs
+    "Check the function emender-jenkins.results/prepare-building-jobs."
+    (testing "the function emender-jenkins.results/prepare-building-jobs."
+    (with-redefs [jenkins-api/get-command (fn [all-jobs-url] building-jobs-jenkins-response)]
+        (let [configuration {:jenkins {:currently-building-view "Building"
+                                       :jenkins-url "http://10.20.30.40:8080/"}}]
+            (is (= (prepare-building-jobs (read-currently-building-jobs configuration))
+               [{"state"   "BUILDING"
+                 "jobName" "test-Example_Documentation-1.0-Guide-en-US (preview)"}
+                {"state"   "BUILDING"
+                 "jobName" "test-Example_Documentation-1.0-Guide-en-US (stage)"}]))))))
+
+(deftest test-create-running-jobs-response
+    "Check the function emender-jenkins.results/create-running-jobs-response."
+    (testing "the function emender-jenkins.results/create-running-jobs-response."
+    (with-redefs [jenkins-api/get-command (fn [all-jobs-url] building-jobs-jenkins-response)]
+        (let [configuration    {:jenkins {:currently-building-view "Building"
+                                          :jenkins-url "http://10.20.30.40:8080/"}}
+              jobs-in-queue (-> (json/read-str jobs-in-queue-expected-jenkins-response) (get "items"))
+              building-jobs (read-currently-building-jobs configuration)]
+            (is (= (create-running-jobs-response jobs-in-queue building-jobs)
+                  [{"queuePos" 2, "jobName" "test-Example_Documentation-1.0-Guide-en-US (preview)", "state" "QUEUED"}
+                   {"queuePos" 1, "jobName" "test-Example_Documentation-1.0-Guide-en-US (stage)  ", "state" "QUEUED"}
+                   {"state" "BUILDING", "jobName" "test-Example_Documentation-1.0-Guide-en-US (preview)"}
+                   {"state" "BUILDING", "jobName" "test-Example_Documentation-1.0-Guide-en-US (stage)"}]))))))
+
+(deftest test-read-running-jobs
+    "Check the function emender-jenkins.results/read-running-jobs."
+    (testing "the function emender-jenkins.results/read-running-jobs."
+        (reset! jobs-in-queue-jenkins-response [])
+        (reset! currently-building-jobs-jenkins-response [])
+        (read-running-jobs nil)
+        (is (seq? @running-jobs))))
+
+(deftest test-read-running-jobs-negative
+    "Check the function emender-jenkins.results/read-running-jobs."
+    (testing "the function emender-jenkins.results/read-running-jobs."
+        (reset! jobs-in-queue-jenkins-response nil)
+        (reset! currently-building-jobs-jenkins-response nil)
+        (read-running-jobs nil)
+        (is (nil? @running-jobs))))
+
+(deftest test-update-running-jobs-cache
+    "Check the function emender-jenkins.results/update-running-jobs-cache."
+    (testing "the function emender-jenkins.results/update-running-jobs-cache."
+        (with-redefs [update-currently-building-jobs-cache (fn [configuration] true)
+                      update-jobs-in-queue-cache (fn [configuration] true)
+                      read-running-jobs (fn [configuration] true)]
+             (is (update-running-jobs-cache nil)))
+        (with-redefs [update-currently-building-jobs-cache (fn [configuration] false)
+                      update-jobs-in-queue-cache (fn [configuration] true)
+                      read-running-jobs (fn [configuration] true)]
+             (is (update-running-jobs-cache nil)))
+        (with-redefs [update-currently-building-jobs-cache (fn [configuration] true)
+                      update-jobs-in-queue-cache (fn [configuration] false)
+                      read-running-jobs (fn [configuration] true)]
+             (is (update-running-jobs-cache nil)))
+        (with-redefs [update-currently-building-jobs-cache (fn [configuration] false)
+                      update-jobs-in-queue-cache (fn [configuration] false)
+                      read-running-jobs (fn [configuration] true)]
+             (is (not (update-running-jobs-cache nil))))))
+
