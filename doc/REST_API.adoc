@@ -2,7 +2,7 @@ REST API for Emender-Jenkins interface
 ======================================
 :icons: font
 Pavel Tišnovský <ptisnovs@redhat.com>
-v1.1, 2017-01-16
+v1.2, 2017-03-27
 
 Emender-Jenkins Interface is controlled exclusively via REST API.
 Basic supported operations:
@@ -164,8 +164,11 @@ Post Data (minimal version):
 {
     "name"            : "jobName (test)",
     "ssh_url_to_repo" : "git@some:repo.git",
-    "branch"          : "preview"
-} 
+    "branch"          : "preview",
+    "metadata": {
+        "uuid"        : "UUID of job"
+    } 
+}
 ----
 
 Post Data (max. version):
@@ -183,7 +186,8 @@ Post Data (max. version):
         "language"         : "en-US",
         "environment"      : "preview",
         "content_directory": "Book directory",
-        "content_type"     : "book"
+        "content_type"     : "book",
+        "uuid"             : "UUID of job"
     } 
 } 
 ----
@@ -379,6 +383,7 @@ Response:
     "jobName":     "test-Product_Name-Product_Version-Book_Name-Language (test)",
     "product":     "Product_Name",
     "version":     "Product_Version",
+    "uuid"     :   "UUID of job",
     "environment": "prod",
     "title":       "Book_Name",
     "jobStatus":   "ok/unstable/failure/disabled",
@@ -399,6 +404,7 @@ HTTP Status Code:
     "jobName":     "test-Product_Name-Product_Version-Book_Name-Language (test)",
     "product":     "Product_Name",
     "version":     "Product_Version",
+    "uuid"     :   "UUID of job",
     "environment": "prod",
     "title":       "Book_Name",
     "jobStatus":   "failure",
@@ -476,8 +482,11 @@ Post Data (minimal version):
 {
     "name"            : "test-Product_Name-Product_Version-Book_Name-Language (test)",
     "ssh_url_to_repo" : "git@some:repo.git",
-    "branch"          : "preview"
-} 
+    "branch"          : "preview",
+    "metadata": {
+        "uuid"        : "UUID of job",
+    }
+}
 ----
 
 Post Data (max. version): 
@@ -496,6 +505,7 @@ Post Data (max. version):
         "environment": "preview",
         "content_directory": "Book directory",
         "content_type": "book"
+        "uuid"     :  "UUID of job",
     } 
 }
 ----
@@ -633,6 +643,7 @@ Response:
                         "product":     "Red Hat Enterprise Linux",
                         "environment": "preview",
                         "version":     "7",
+                        "uuid" :       "UUID of job",
                         "testSummary": {
                             "url"    : "url to generated results",
                              "results":{"total":7, "passed":5, "failed":2}}},
@@ -644,6 +655,7 @@ Response:
                         "product":"Red Hat Enterprise Linux",
                         "environment":"stage",
                         "version":"7",
+                        "uuid" :       "UUID of job",
                         "testSummary": {
                              "url"    : "url to generated results",
                              "results":{"total":7, "passed":5, "failed":2}}},
@@ -663,6 +675,7 @@ Response:
                         "product":"Red Hat Enterprise Linux",
                         "environment":"preview",
                         "version":"6",
+                        "uuid" :       "UUID of job",
                         "testSummary": {
                             "message":null,
                             "results":null},
@@ -674,6 +687,7 @@ Response:
                         "product":"Red Hat Enterprise Linux",
                         "environment":"stage",
                         "version":"6",
+                        "uuid" :       "UUID of job",
                         "testSummary": null,
                        }
                        "prod":
@@ -684,6 +698,7 @@ Response:
                         "product":"Red Hat Enterprise Linux",
                         "environment":"prod",
                         "version":"6",
+                        "uuid" :       "UUID of job",
                         "testSummary": null,
                        }
                       }
