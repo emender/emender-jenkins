@@ -15,9 +15,9 @@
 
 (require '[clojure.data.json            :as json])
 (require '[clj-fileutils.fileutils      :as file-utils])
+(require '[clj-utils.utils              :refer :all])
 
 (require '[emender-jenkins.results      :as results])
-(require '[emender-jenkins.utils        :refer :all])
 (require '[emender-jenkins.db-interface :as db-interface])
 
 (defn read-waive-input-data

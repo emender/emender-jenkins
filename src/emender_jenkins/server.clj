@@ -19,7 +19,7 @@
 
 (require '[emender-jenkins.config   :as config])
 (require '[emender-jenkins.rest-api :as rest-api])
-(use     '[emender-jenkins.utils])
+(use     '[clj-utils.utils])
 
 (defn return-file
     "Creates HTTP response containing content of specified file.

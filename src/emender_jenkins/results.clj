@@ -21,7 +21,7 @@
 
 (require '[emender-jenkins.config      :as config])
 (require '[emender-jenkins.time-utils  :as time-utils])
-(use     '[emender-jenkins.utils])
+(use     '[clj-utils.utils])
 
 (def results (atom nil))
 
